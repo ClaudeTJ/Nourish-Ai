@@ -1,0 +1,2489 @@
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="NourishAI">
+<meta name="theme-color" content="#4f6e53">
+<title>NourishAI — Smart Meal Planner</title>
+<script>
+// Generate icon SVG as data URI and inject apple-touch-icon at runtime
+(function(){
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180">
+    <defs>
+      <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#3d5940"/>
+        <stop offset="100%" style="stop-color:#7a9e7e"/>
+      </linearGradient>
+      <linearGradient id="leaf" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#a8c5ac"/>
+        <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0.9"/>
+      </linearGradient>
+    </defs>
+    <!-- Background rounded rect -->
+    <rect width="180" height="180" rx="40" fill="url(#bg)"/>
+    <!-- Decorative circle top-right -->
+    <circle cx="150" cy="30" r="55" fill="rgba(255,255,255,0.06)"/>
+    <!-- Fork shape -->
+    <g transform="translate(52, 32)">
+      <!-- Fork handle -->
+      <rect x="27" y="70" width="9" height="48" rx="4.5" fill="url(#leaf)"/>
+      <!-- Fork tines -->
+      <rect x="18" y="18" width="5" height="34" rx="2.5" fill="url(#leaf)"/>
+      <rect x="27" y="18" width="5" height="34" rx="2.5" fill="url(#leaf)"/>
+      <rect x="36" y="18" width="5" height="34" rx="2.5" fill="url(#leaf)"/>
+      <!-- Fork neck -->
+      <rect x="21" y="50" width="17" height="22" rx="4" fill="url(#leaf)"/>
+    </g>
+    <!-- Leaf accent -->
+    <ellipse cx="118" cy="75" rx="22" ry="13" fill="rgba(168,197,172,0.35)" transform="rotate(-35 118 75)"/>
+    <ellipse cx="118" cy="75" rx="13" ry="4" fill="rgba(168,197,172,0.5)" transform="rotate(-35 118 75)"/>
+    <!-- Dot accent -->
+    <circle cx="118" cy="118" r="7" fill="rgba(201,125,78,0.7)"/>
+  </svg>`;
+  const encoded = 'data:image/svg+xml;base64,' + btoa(svg);
+  const link = document.createElement('link');
+  link.rel = 'apple-touch-icon';
+  link.href = encoded;
+  document.head.appendChild(link);
+  // Also favicon
+  const fav = document.createElement('link');
+  fav.rel = 'icon'; fav.type = 'image/svg+xml'; fav.href = encoded;
+  document.head.appendChild(fav);
+})();
+</script><link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxODAgMTgwIj4KICAgIDxkZWZzPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojM2Q1OTQwIi8+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojN2E5ZTdlIi8+CiAgICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0ibGVhZiIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6I2E4YzVhYyIvPgogICAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6I2ZmZmZmZjtzdG9wLW9wYWNpdHk6MC45Ii8+CiAgICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8IS0tIEJhY2tncm91bmQgcm91bmRlZCByZWN0IC0tPgogICAgPHJlY3Qgd2lkdGg9IjE4MCIgaGVpZ2h0PSIxODAiIHJ4PSI0MCIgZmlsbD0idXJsKCNiZykiLz4KICAgIDwhLS0gRGVjb3JhdGl2ZSBjaXJjbGUgdG9wLXJpZ2h0IC0tPgogICAgPGNpcmNsZSBjeD0iMTUwIiBjeT0iMzAiIHI9IjU1IiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMDYpIi8+CiAgICA8IS0tIEZvcmsgc2hhcGUgLS0+CiAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1MiwgMzIpIj4KICAgICAgPCEtLSBGb3JrIGhhbmRsZSAtLT4KICAgICAgPHJlY3QgeD0iMjciIHk9IjcwIiB3aWR0aD0iOSIgaGVpZ2h0PSI0OCIgcng9IjQuNSIgZmlsbD0idXJsKCNsZWFmKSIvPgogICAgICA8IS0tIEZvcmsgdGluZXMgLS0+CiAgICAgIDxyZWN0IHg9IjE4IiB5PSIxOCIgd2lkdGg9IjUiIGhlaWdodD0iMzQiIHJ4PSIyLjUiIGZpbGw9InVybCgjbGVhZikiLz4KICAgICAgPHJlY3QgeD0iMjciIHk9IjE4IiB3aWR0aD0iNSIgaGVpZ2h0PSIzNCIgcng9IjIuNSIgZmlsbD0idXJsKCNsZWFmKSIvPgogICAgICA8cmVjdCB4PSIzNiIgeT0iMTgiIHdpZHRoPSI1IiBoZWlnaHQ9IjM0IiByeD0iMi41IiBmaWxsPSJ1cmwoI2xlYWYpIi8+CiAgICAgIDwhLS0gRm9yayBuZWNrIC0tPgogICAgICA8cmVjdCB4PSIyMSIgeT0iNTAiIHdpZHRoPSIxNyIgaGVpZ2h0PSIyMiIgcng9IjQiIGZpbGw9InVybCgjbGVhZikiLz4KICAgIDwvZz4KICAgIDwhLS0gTGVhZiBhY2NlbnQgLS0+CiAgICA8ZWxsaXBzZSBjeD0iMTE4IiBjeT0iNzUiIHJ4PSIyMiIgcnk9IjEzIiBmaWxsPSJyZ2JhKDE2OCwxOTcsMTcyLDAuMzUpIiB0cmFuc2Zvcm09InJvdGF0ZSgtMzUgMTE4IDc1KSIvPgogICAgPGVsbGlwc2UgY3g9IjExOCIgY3k9Ijc1IiByeD0iMTMiIHJ5PSI0IiBmaWxsPSJyZ2JhKDE2OCwxOTcsMTcyLDAuNSkiIHRyYW5zZm9ybT0icm90YXRlKC0zNSAxMTggNzUpIi8+CiAgICA8IS0tIERvdCBhY2NlbnQgLS0+CiAgICA8Y2lyY2xlIGN4PSIxMTgiIGN5PSIxMTgiIHI9IjciIGZpbGw9InJnYmEoMjAxLDEyNSw3OCwwLjcpIi8+CiAgPC9zdmc+"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxODAgMTgwIj4KICAgIDxkZWZzPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojM2Q1OTQwIi8+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojN2E5ZTdlIi8+CiAgICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0ibGVhZiIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6I2E4YzVhYyIvPgogICAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6I2ZmZmZmZjtzdG9wLW9wYWNpdHk6MC45Ii8+CiAgICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8IS0tIEJhY2tncm91bmQgcm91bmRlZCByZWN0IC0tPgogICAgPHJlY3Qgd2lkdGg9IjE4MCIgaGVpZ2h0PSIxODAiIHJ4PSI0MCIgZmlsbD0idXJsKCNiZykiLz4KICAgIDwhLS0gRGVjb3JhdGl2ZSBjaXJjbGUgdG9wLXJpZ2h0IC0tPgogICAgPGNpcmNsZSBjeD0iMTUwIiBjeT0iMzAiIHI9IjU1IiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMDYpIi8+CiAgICA8IS0tIEZvcmsgc2hhcGUgLS0+CiAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1MiwgMzIpIj4KICAgICAgPCEtLSBGb3JrIGhhbmRsZSAtLT4KICAgICAgPHJlY3QgeD0iMjciIHk9IjcwIiB3aWR0aD0iOSIgaGVpZ2h0PSI0OCIgcng9IjQuNSIgZmlsbD0idXJsKCNsZWFmKSIvPgogICAgICA8IS0tIEZvcmsgdGluZXMgLS0+CiAgICAgIDxyZWN0IHg9IjE4IiB5PSIxOCIgd2lkdGg9IjUiIGhlaWdodD0iMzQiIHJ4PSIyLjUiIGZpbGw9InVybCgjbGVhZikiLz4KICAgICAgPHJlY3QgeD0iMjciIHk9IjE4IiB3aWR0aD0iNSIgaGVpZ2h0PSIzNCIgcng9IjIuNSIgZmlsbD0idXJsKCNsZWFmKSIvPgogICAgICA8cmVjdCB4PSIzNiIgeT0iMTgiIHdpZHRoPSI1IiBoZWlnaHQ9IjM0IiByeD0iMi41IiBmaWxsPSJ1cmwoI2xlYWYpIi8+CiAgICAgIDwhLS0gRm9yayBuZWNrIC0tPgogICAgICA8cmVjdCB4PSIyMSIgeT0iNTAiIHdpZHRoPSIxNyIgaGVpZ2h0PSIyMiIgcng9IjQiIGZpbGw9InVybCgjbGVhZikiLz4KICAgIDwvZz4KICAgIDwhLS0gTGVhZiBhY2NlbnQgLS0+CiAgICA8ZWxsaXBzZSBjeD0iMTE4IiBjeT0iNzUiIHJ4PSIyMiIgcnk9IjEzIiBmaWxsPSJyZ2JhKDE2OCwxOTcsMTcyLDAuMzUpIiB0cmFuc2Zvcm09InJvdGF0ZSgtMzUgMTE4IDc1KSIvPgogICAgPGVsbGlwc2UgY3g9IjExOCIgY3k9Ijc1IiByeD0iMTMiIHJ5PSI0IiBmaWxsPSJyZ2JhKDE2OCwxOTcsMTcyLDAuNSkiIHRyYW5zZm9ybT0icm90YXRlKC0zNSAxMTggNzUpIi8+CiAgICA8IS0tIERvdCBhY2NlbnQgLS0+CiAgICA8Y2lyY2xlIGN4PSIxMTgiIGN5PSIxMTgiIHI9IjciIGZpbGw9InJnYmEoMjAxLDEyNSw3OCwwLjcpIi8+CiAgPC9zdmc+">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sage: #7a9e7e;
+    --sage-light: #a8c5ac;
+    --sage-dark: #4f6e53;
+    --cream: #faf6f0;
+    --warm-white: #ffffff;
+    --charcoal: #1e2420;
+    --mid: #4a5550;
+    --soft: #8a9490;
+    --accent: #c97d4e;
+    --accent-light: #e8a87c;
+    --danger: #c96b6b;
+    --card-bg: rgba(255,255,255,0.82);
+    --border: rgba(122,158,126,0.18);
+    --shadow: 0 8px 40px rgba(30,36,32,0.10);
+    --shadow-sm: 0 2px 12px rgba(30,36,32,0.07);
+    --radius: 20px;
+    --radius-sm: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--charcoal);
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    overflow-x: hidden;
+  }
+
+  /* Organic background */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -30%;
+    right: -20%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(122,158,126,0.13) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -20%;
+    left: -15%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(201,125,78,0.09) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    bottom: 0;
+    left: 0; right: 0;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0 max(10px, env(safe-area-inset-bottom));
+    z-index: 100;
+  }
+  .nav-btn {
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    background: none; border: none; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px; font-weight: 500;
+    color: var(--soft);
+    transition: color 0.2s;
+    padding: 4px 16px;
+    border-radius: 12px;
+  }
+  .nav-btn.active { color: var(--sage-dark); }
+  .nav-btn svg { width: 22px; height: 22px; stroke-width: 1.8; }
+  .nav-btn.active svg { stroke: var(--sage-dark); }
+
+  /* PAGES */
+  .page { display: none; padding: 0 0 90px; min-height: 100vh; position: relative; z-index: 1; }
+  .page.active { display: block; }
+
+  /* HEADER */
+  .page-header {
+    padding: 60px 20px 24px;
+    background: linear-gradient(180deg, rgba(122,158,126,0.12) 0%, transparent 100%);
+  }
+  .page-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px; font-weight: 900;
+    color: var(--charcoal);
+    line-height: 1.1;
+  }
+  .page-header p {
+    margin-top: 6px;
+    font-size: 14px; color: var(--soft);
+    font-weight: 400;
+  }
+  .page-header .logo-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--sage-dark); color: white;
+    padding: 4px 10px; border-radius: 20px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+    backdrop-filter: blur(8px);
+  }
+  .card + .card { margin-top: 14px; }
+  .section { padding: 0 16px; margin-bottom: 16px; }
+
+  /* MACRO RINGS */
+  .macro-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+    margin: 16px 0;
+  }
+  .macro-pill {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px 10px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+  }
+  .macro-pill .value {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 700;
+    color: var(--charcoal);
+  }
+  .macro-pill .label { font-size: 11px; color: var(--soft); margin-top: 2px; font-weight: 500; }
+  .macro-pill .sub { font-size: 10px; color: var(--sage); font-weight: 600; margin-top: 1px; }
+  .macro-pill.protein .value { color: var(--sage-dark); }
+  .macro-pill.carbs .value { color: var(--accent); }
+  .macro-pill.fat .value { color: #a07040; }
+
+  /* PROFILE FORM */
+  .form-group { margin-bottom: 16px; }
+  .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--mid); margin-bottom: 6px; letter-spacing: 0.3px; text-transform: uppercase; }
+  .form-group input, .form-group select {
+    width: 100%;
+    background: rgba(255,255,255,0.9);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 13px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--charcoal);
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+  .form-group input:focus, .form-group select:focus { border-color: var(--sage); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%;
+    background: var(--sage-dark);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 15px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px; font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn:hover { background: var(--sage); }
+  .btn.accent { background: var(--accent); }
+  .btn.accent:hover { background: var(--accent-light); }
+  .btn.outline {
+    background: transparent;
+    border: 1.5px solid var(--sage);
+    color: var(--sage-dark);
+  }
+  .btn.sm { padding: 10px 16px; font-size: 13px; width: auto; }
+
+  /* STATS BAR */
+  .stats-bar {
+    display: flex; gap: 10px;
+    overflow-x: auto; padding: 0 16px;
+    scrollbar-width: none;
+  }
+  .stats-bar::-webkit-scrollbar { display: none; }
+  .stat-chip {
+    flex-shrink: 0;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 40px;
+    padding: 8px 16px;
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 500;
+    color: var(--mid);
+    box-shadow: var(--shadow-sm);
+  }
+  .stat-chip strong { color: var(--charcoal); font-weight: 700; }
+  .stat-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sage); }
+  .stat-dot.orange { background: var(--accent); }
+  .stat-dot.gold { background: #c8a040; }
+
+  /* MEAL PLAN */
+  .day-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 12px;
+  }
+  .day-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 18px;
+    background: rgba(122,158,126,0.08);
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+  }
+  .day-header h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px; font-weight: 700;
+  }
+  .day-header .day-cals {
+    font-size: 12px; color: var(--soft); font-weight: 500;
+  }
+  .day-meals { padding: 12px 0; }
+  .meal-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 10px 18px;
+    border-bottom: 1px solid rgba(122,158,126,0.08);
+  }
+  .meal-item:last-child { border-bottom: none; }
+  .meal-type-badge {
+    flex-shrink: 0;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 3px 8px; border-radius: 6px;
+    background: rgba(122,158,126,0.12); color: var(--sage-dark);
+    margin-top: 2px;
+  }
+  .meal-type-badge.lunch { background: rgba(201,125,78,0.12); color: var(--accent); }
+  .meal-type-badge.dinner { background: rgba(79,110,83,0.12); color: var(--sage-dark); }
+  .meal-type-badge.snack { background: rgba(200,160,64,0.12); color: #8a6a20; }
+  .meal-info { flex: 1; }
+  .meal-info .meal-name { font-size: 14px; font-weight: 600; color: var(--charcoal); line-height: 1.3; }
+  .meal-info .meal-macros { font-size: 11px; color: var(--soft); margin-top: 3px; }
+  .meal-cals { font-size: 13px; font-weight: 700; color: var(--sage-dark); flex-shrink: 0; }
+
+  /* LOADING */
+  .loading-state {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 60px 20px; gap: 16px;
+  }
+  .spinner {
+    width: 40px; height: 40px;
+    border: 3px solid var(--border);
+    border-top-color: var(--sage);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-state p { color: var(--soft); font-size: 14px; text-align: center; line-height: 1.5; }
+
+  /* WEIGHT LOG */
+  .weight-entry {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .weight-entry:last-child { border-bottom: none; }
+  .weight-entry .date { font-size: 13px; color: var(--soft); }
+  .weight-entry .weight-val { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; }
+  .weight-entry .change { font-size: 12px; font-weight: 600; }
+  .weight-entry .change.down { color: var(--sage-dark); }
+  .weight-entry .change.up { color: var(--danger); }
+
+  /* CHART */
+  #weightChart { width: 100%; height: 180px; }
+
+  /* EMPTY STATE */
+  .empty-state {
+    text-align: center; padding: 40px 20px;
+    color: var(--soft);
+  }
+  .empty-state .icon { font-size: 40px; margin-bottom: 12px; }
+  .empty-state h3 { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--mid); margin-bottom: 8px; }
+  .empty-state p { font-size: 13px; line-height: 1.5; }
+
+  /* ALERT */
+  .alert {
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 13px; font-weight: 500;
+    margin-bottom: 14px;
+  }
+  .alert.success { background: rgba(122,158,126,0.15); color: var(--sage-dark); border: 1px solid rgba(122,158,126,0.3); }
+  .alert.info { background: rgba(201,125,78,0.1); color: #7a4820; border: 1px solid rgba(201,125,78,0.2); }
+
+  /* PROGRESS BAR */
+  .progress-bar-wrap { margin: 8px 0; }
+  .progress-bar-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--soft); margin-bottom: 4px; }
+  .progress-bar-track { height: 6px; background: rgba(122,158,126,0.12); border-radius: 3px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; border-radius: 3px; background: var(--sage); transition: width 0.4s ease; }
+  .progress-bar-fill.orange { background: var(--accent); }
+  .progress-bar-fill.gold { background: #c8a040; }
+
+  /* TAGS */
+  .tag { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .tag.green { background: rgba(122,158,126,0.15); color: var(--sage-dark); }
+  .tag.orange { background: rgba(201,125,78,0.12); color: var(--accent); }
+
+  /* CHEVRON */
+  .chevron { transition: transform 0.25s; }
+  .chevron.open { transform: rotate(180deg); }
+
+  /* COLLAPSIBLE */
+  .collapsible { overflow: hidden; max-height: 0; transition: max-height 0.3s ease; }
+  .collapsible.open { max-height: 2000px; }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-size: 11px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; color: var(--soft);
+    padding: 0 16px; margin-bottom: 10px; margin-top: 20px;
+  }
+
+  /* GENERATE BUTTON AREA */
+  .generate-area {
+    padding: 0 16px;
+    margin-bottom: 20px;
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--charcoal); color: white;
+    padding: 10px 20px; border-radius: 30px;
+    font-size: 13px; font-weight: 500;
+    opacity: 0; transition: opacity 0.3s, transform 0.3s;
+    z-index: 200; white-space: nowrap;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* HERO STAT */
+  .hero-stat {
+    background: linear-gradient(135deg, var(--sage-dark) 0%, var(--sage) 100%);
+    border-radius: var(--radius);
+    padding: 24px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+  .hero-stat::before {
+    content: '';
+    position: absolute; top: -30px; right: -30px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+  }
+  .hero-stat .hero-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; opacity: 0.75; }
+  .hero-stat .hero-val { font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 900; line-height: 1; margin: 6px 0; }
+  .hero-stat .hero-sub { font-size: 13px; opacity: 0.8; }
+
+  /* API KEY INPUT */
+  .api-key-wrap { position: relative; }
+  .api-key-wrap input { padding-right: 50px; }
+  .api-key-toggle {
+    position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; cursor: pointer; color: var(--soft);
+    font-size: 13px; font-weight: 600;
+  }
+
+  /* MEAL ACTIONS ROW */
+  .meal-actions {
+    display: flex; gap: 6px; margin-top: 6px;
+  }
+  .meal-action-btn {
+    font-size: 11px; font-weight: 600; padding: 4px 10px;
+    border-radius: 20px; border: 1px solid var(--border);
+    background: white; color: var(--mid); cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+  .meal-action-btn:hover { background: var(--sage-dark); color: white; border-color: var(--sage-dark); }
+  .meal-action-btn.recipe { border-color: rgba(201,125,78,0.3); color: var(--accent); }
+  .meal-action-btn.recipe:hover { background: var(--accent); color: white; border-color: var(--accent); }
+
+  /* BOTTOM SHEET MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(30,36,32,0.5);
+    z-index: 300; opacity: 0; pointer-events: none;
+    transition: opacity 0.25s;
+    backdrop-filter: blur(4px);
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal-sheet {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: var(--cream);
+    border-radius: 24px 24px 0 0;
+    padding: 0 0 max(24px, env(safe-area-inset-bottom));
+    z-index: 301;
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+    max-height: 90vh; overflow-y: auto;
+  }
+  .modal-sheet.open { transform: translateY(0); }
+  .modal-handle {
+    width: 36px; height: 4px; background: var(--border);
+    border-radius: 2px; margin: 12px auto 0;
+  }
+  .modal-header {
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .modal-header h2 { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; }
+  .modal-close {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: rgba(122,158,126,0.12); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; font-size: 16px;
+    color: var(--mid);
+  }
+  .modal-body { padding: 16px 20px; }
+
+  /* EATEN / DEFICIT TRACKING */
+  .meal-eaten-btn {
+    font-size: 11px; font-weight: 600; padding: 4px 10px;
+    border-radius: 20px; border: 1.5px solid var(--border);
+    background: white; color: var(--soft); cursor: pointer;
+    font-family: 'DM Sans', sans-serif; transition: all 0.15s;
+  }
+  .meal-eaten-btn.eaten {
+    background: var(--sage-dark); color: white; border-color: var(--sage-dark);
+  }
+  .meal-item.eaten { opacity: 0.6; }
+  .meal-item.eaten .meal-name { text-decoration: line-through; }
+
+  /* CALORIE DEFICIT BANNER */
+  .deficit-banner {
+    margin: 8px 18px;
+    background: rgba(201,125,78,0.1); border: 1px solid rgba(201,125,78,0.3);
+    border-radius: 12px; padding: 10px 14px;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  }
+  .deficit-banner-text { font-size: 12px; color: var(--accent); font-weight: 600; }
+  .deficit-banner-btn {
+    font-size: 11px; font-weight: 700; padding: 5px 12px;
+    border-radius: 20px; background: var(--accent); color: white;
+    border: none; cursor: pointer; font-family: 'DM Sans', sans-serif;
+    white-space: nowrap; flex-shrink: 0;
+  }
+
+  /* DAY CALORIE PROGRESS */
+  .day-cal-bar {
+    height: 3px; background: rgba(122,158,126,0.15);
+    margin: 0 18px 2px; border-radius: 2px; overflow: hidden;
+  }
+  .day-cal-fill { height: 100%; border-radius: 2px; background: var(--sage); transition: width 0.3s; }
+  .day-cal-fill.over { background: var(--danger); }
+
+  /* SHOP DUAL-STATE */
+  .shop-item-purchased .shop-checkbox { background: #c8a040; border-color: #c8a040; }
+  .shop-item-purchased .shop-checkbox::after { content: '✓'; color: white; font-size: 11px; font-weight: 700; }
+  .shop-tabs {
+    display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 16px;
+  }
+  .shop-tab {
+    flex: 1; padding: 10px; font-size: 13px; font-weight: 600;
+    color: var(--soft); border: none; background: none; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; border-bottom: 2px solid transparent;
+    transition: all 0.15s; margin-bottom: -1px;
+  }
+  .shop-tab.active { color: var(--sage-dark); border-bottom-color: var(--sage-dark); }
+  .recipe-tabs {
+    display: flex; border-bottom: 1px solid var(--border); margin: 0 -20px;
+    padding: 0 20px; gap: 0;
+  }
+  .recipe-tab {
+    padding: 10px 16px; font-size: 13px; font-weight: 600;
+    color: var(--soft); border: none; background: none;
+    cursor: pointer; border-bottom: 2px solid transparent;
+    font-family: 'DM Sans', sans-serif; transition: all 0.15s;
+    margin-bottom: -1px;
+  }
+  .recipe-tab.active { color: var(--sage-dark); border-bottom-color: var(--sage-dark); }
+  .recipe-tab-count {
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--sage-dark); color: white;
+    border-radius: 10px; font-size: 10px; font-weight: 700;
+    padding: 1px 6px; margin-left: 5px;
+  }
+  .alt-card {
+    background: white; border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm); padding: 14px;
+    margin-bottom: 10px; cursor: pointer; transition: all 0.15s;
+  }
+  .alt-card:hover { border-color: var(--sage); background: rgba(122,158,126,0.04); }
+  .alt-card.current { border-color: var(--sage-dark); background: rgba(79,110,83,0.06); }
+  .alt-card-name { font-size: 14px; font-weight: 600; color: var(--charcoal); margin-bottom: 4px; }
+  .alt-card-macros { font-size: 11px; color: var(--soft); }
+  .alt-card-actions { display: flex; gap: 8px; margin-top: 10px; }
+  .alt-swap-btn {
+    font-size: 12px; font-weight: 600; padding: 6px 14px;
+    border-radius: 20px; border: 1.5px solid var(--sage);
+    background: white; color: var(--sage-dark); cursor: pointer;
+    font-family: 'DM Sans', sans-serif; transition: all 0.15s;
+  }
+  .alt-swap-btn:hover { background: var(--sage-dark); color: white; border-color: var(--sage-dark); }
+  .alt-view-btn {
+    font-size: 12px; font-weight: 600; padding: 6px 14px;
+    border-radius: 20px; border: 1.5px solid var(--border);
+    background: white; color: var(--mid); cursor: pointer;
+    font-family: 'DM Sans', sans-serif; transition: all 0.15s;
+  }
+  .alt-view-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .recipe-section-title {
+    font-size: 11px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; color: var(--soft); margin: 16px 0 8px;
+  }
+  .ingredient-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 0; border-bottom: 1px solid rgba(122,158,126,0.08);
+    font-size: 14px;
+  }
+  .ingredient-item:last-child { border-bottom: none; }
+  .ingredient-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--sage); flex-shrink: 0; }
+  .step-item {
+    display: flex; gap: 12px; margin-bottom: 12px;
+  }
+  .step-num {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--sage-dark); color: white;
+    font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .step-text { font-size: 14px; line-height: 1.5; color: var(--mid); }
+
+  /* COPY MEAL GRID */
+  .copy-day-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px;
+  }
+  .copy-day-btn {
+    padding: 12px; border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border); background: white;
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
+    color: var(--mid); cursor: pointer; text-align: left;
+    transition: all 0.15s;
+  }
+  .copy-day-btn:hover { border-color: var(--sage); background: rgba(122,158,126,0.06); color: var(--sage-dark); }
+  .copy-day-btn.current { opacity: 0.4; pointer-events: none; }
+  .copy-day-btn.selected { border-color: var(--sage-dark); background: rgba(79,110,83,0.1); color: var(--sage-dark); }
+  .copy-meal-type { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--soft); margin-bottom: 2px; }
+
+  /* SHOPPING LIST */
+  .shop-day-filter {
+    display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px;
+    scrollbar-width: none; margin-bottom: 16px;
+  }
+  .shop-day-filter::-webkit-scrollbar { display: none; }
+  .day-filter-btn {
+    flex-shrink: 0; padding: 6px 14px; border-radius: 20px;
+    border: 1.5px solid var(--border); background: white;
+    font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600;
+    color: var(--soft); cursor: pointer; transition: all 0.15s;
+  }
+  .day-filter-btn.active { background: var(--sage-dark); color: white; border-color: var(--sage-dark); }
+  .shop-category { margin-bottom: 16px; }
+  .shop-category-title {
+    font-size: 11px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; color: var(--soft); margin-bottom: 8px;
+  }
+  .shop-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 0; border-bottom: 1px solid rgba(122,158,126,0.08);
+    cursor: pointer;
+  }
+  .shop-item:last-child { border-bottom: none; }
+  .shop-checkbox {
+    width: 20px; height: 20px; border-radius: 6px;
+    border: 2px solid var(--sage); flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .shop-checkbox.checked { background: var(--sage-dark); border-color: var(--sage-dark); }
+  .shop-checkbox.checked::after { content: '✓'; color: white; font-size: 11px; font-weight: 700; }
+  .shop-item-text { font-size: 14px; font-weight: 500; color: var(--charcoal); flex: 1; }
+  .shop-item.checked .shop-item-text { text-decoration: line-through; color: var(--soft); }
+
+  /* ACTUALS LOG */
+  .log-date-group { margin-bottom: 20px; }
+  .log-date-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .log-date-label { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; }
+  .log-date-summary { font-size: 11px; color: var(--soft); font-weight: 500; text-align: right; line-height: 1.5; }
+  .log-vs { font-weight: 700; }
+  .log-vs.under { color: var(--sage-dark); }
+  .log-vs.over  { color: var(--danger); }
+  .log-entry {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 0; border-bottom: 1px solid rgba(122,158,126,0.08);
+  }
+  .log-entry:last-child { border-bottom: none; }
+  .log-entry-type {
+    flex-shrink: 0; font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
+    text-transform: uppercase; padding: 3px 8px; border-radius: 6px;
+    background: rgba(122,158,126,0.12); color: var(--sage-dark);
+  }
+  .log-entry-type.lunch  { background: rgba(201,125,78,0.12); color: var(--accent); }
+  .log-entry-type.dinner { background: rgba(79,110,83,0.12); color: var(--sage-dark); }
+  .log-entry-type.snack  { background: rgba(200,160,64,0.12); color: #8a6a20; }
+  .log-entry-type.custom { background: rgba(100,100,200,0.12); color: #5050b0; }
+  .log-entry-info { flex: 1; min-width: 0; }
+  .log-entry-name { font-size: 13px; font-weight: 600; color: var(--charcoal); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .log-entry-meta { font-size: 11px; color: var(--soft); margin-top: 2px; }
+  .log-entry-cals { font-size: 13px; font-weight: 700; color: var(--sage-dark); flex-shrink: 0; }
+  .log-del-btn { background: none; border: none; cursor: pointer; color: var(--soft); font-size: 15px; padding: 0 2px; flex-shrink: 0; }
+  .log-del-btn:hover { color: var(--danger); }
+  .log-macro-row { display: flex; gap: 6px; margin: 10px 0 4px; }
+  .log-macro-chip {
+    flex: 1; background: white; border: 1px solid var(--border);
+    border-radius: 8px; padding: 6px 4px; text-align: center;
+  }
+  .log-macro-chip .lmv { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; }
+  .log-macro-chip .lml { font-size: 9px; color: var(--soft); font-weight: 600; margin-top: 1px; }
+  .log-macro-chip.p .lmv { color: var(--sage-dark); }
+  .log-macro-chip.c .lmv { color: var(--accent); }
+  .log-macro-chip.f .lmv { color: #a07040; }
+</style>
+</head>
+<body>
+
+<!-- PAGES -->
+
+<!-- HOME / DASHBOARD -->
+<div class="page active" id="page-home">
+  <div class="page-header">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <div class="logo-badge" style="margin-bottom:0">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="white"><circle cx="5" cy="5" r="5"></circle></svg>
+        NourishAI
+      </div>
+      <button onclick="downloadApp()" title="Save app to PC" style="display: flex; align-items: center; gap: 6px; background: white; border: 1.5px solid var(--border); border-radius: 20px; padding: 6px 14px; font-family: &quot;DM Sans&quot;, sans-serif; font-size: 12px; font-weight: 600; color: var(--sage-dark); cursor: pointer; box-shadow: var(--shadow-sm); transition: 0.2s;" onmouseover="this.style.background='white'" onmouseout="this.style.background='rgba(255,255,255,0.85)'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="15" height="15" stroke-width="2.2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        Save to PC
+      </button>
+    </div>
+    <h1 id="greeting">Good morning.</h1>
+    <p id="home-subtitle">188lbs → 160lbs</p>
+  </div>
+
+  <div class="section" id="home-setup-prompt" style="display:none">
+    <div class="alert info">👤 Complete your profile to unlock your personalised meal plan.</div>
+    <button class="btn" onclick="goTo('profile')">Set Up Profile</button>
+  </div>
+
+  <div id="home-dashboard" style="display: block;">
+    <div class="section">
+      <div class="hero-stat">
+        <div class="hero-label">Daily Calorie Target</div>
+        <div class="hero-val" id="dash-calories">1000</div>
+        <div class="hero-sub" id="dash-deficit">Maintenance 1700 kcal — deficit 1100 kcal/day</div>
+      </div>
+    </div>
+
+    <div class="stats-bar" style="margin-bottom:16px">
+      <div class="stat-chip"><div class="stat-dot"></div><span>Protein <strong id="dash-protein">100g</strong></span></div>
+      <div class="stat-chip"><div class="stat-dot orange"></div><span>Carbs <strong id="dash-carbs">75g</strong></span></div>
+      <div class="stat-chip"><div class="stat-dot gold"></div><span>Fat <strong id="dash-fat">33g</strong></span></div>
+      <div class="stat-chip"><span>Goal: <strong id="dash-goal">28lbs to lose</strong></span></div>
+    </div>
+
+    <div class="section-title">Macro Breakdown</div>
+    <div class="section">
+      <div class="card">
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-label"><span>Protein (40%)</span><span id="pb-protein-val">100g</span></div>
+          <div class="progress-bar-track"><div class="progress-bar-fill" id="pb-protein" style="width:40%"></div></div>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-label"><span>Carbohydrates (30%)</span><span id="pb-carbs-val">75g</span></div>
+          <div class="progress-bar-track"><div class="progress-bar-fill orange" id="pb-carbs" style="width:30%"></div></div>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-label"><span>Fat (30%)</span><span id="pb-fat-val">33g</span></div>
+          <div class="progress-bar-track"><div class="progress-bar-fill gold" id="pb-fat" style="width:30%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">Quick Actions</div>
+    <div class="section">
+      <button class="btn" style="margin-bottom:10px" onclick="goTo('plan')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="18" height="18"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg>
+        View My Meal Plan
+      </button>
+      <button class="btn outline" onclick="goTo('weight')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="18" height="18"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+        Log My Weight
+      </button>
+    </div>
+
+    <div class="section-title">Add to iPhone Home Screen</div>
+    <div class="section">
+      <div class="card" id="install-card">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+          <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#1a1a2e,#24292f);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg viewBox="0 0 24 24" fill="white" width="26" height="26"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"></path></svg>
+          </div>
+          <div>
+            <div style="font-weight:700;font-size:15px">GitHub Pages</div>
+            <div style="font-size:12px;color:var(--soft)">Free, secure hosting by Microsoft — 5 min setup</div>
+          </div>
+        </div>
+
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--soft);margin-bottom:10px">Step 1 — Download &amp; prep the file</div>
+        <div style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:14px">
+          Tap <strong>"Save to PC"</strong> above. When the file downloads, <strong>rename it to <code style="background:rgba(122,158,126,0.12);padding:1px 6px;border-radius:4px;font-size:12px">index.html</code></strong> — GitHub Pages requires this exact name.
+        </div>
+
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--soft);margin-bottom:10px">Step 2 — Create a free GitHub account</div>
+        <div style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:6px">
+          Go to <a href="https://github.com/signup" target="_blank" rel="noopener" style="color:var(--sage-dark);font-weight:600">github.com/signup</a> and create a free account if you don't have one.
+        </div>
+        <div style="margin-bottom:14px">
+          <a href="https://github.com/signup" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:#24292f;color:white;border-radius:8px;text-decoration:none;font-size:12px;font-weight:600">
+            <svg viewBox="0 0 24 24" fill="white" width="14" height="14"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"></path></svg>
+            Sign up for GitHub (free)
+          </a>
+        </div>
+
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--soft);margin-bottom:10px">Step 3 — Create a repository</div>
+        <div style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:14px">
+          <div style="margin-bottom:5px">1. Click <strong>＋ New</strong> (top right on GitHub)</div>
+          <div style="margin-bottom:5px">2. Name it <code style="background:rgba(122,158,126,0.12);padding:1px 6px;border-radius:4px;font-size:12px">nourish-ai</code></div>
+          <div style="margin-bottom:5px">3. Set to <strong>Public</strong></div>
+          <div>4. Click <strong>Create repository</strong></div>
+        </div>
+
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--soft);margin-bottom:10px">Step 4 — Upload the file</div>
+        <div style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:14px">
+          <div style="margin-bottom:5px">1. Click <strong>uploading an existing file</strong></div>
+          <div style="margin-bottom:5px">2. Drag <code style="background:rgba(122,158,126,0.12);padding:1px 6px;border-radius:4px;font-size:12px">index.html</code> into the upload area</div>
+          <div>3. Click <strong>Commit changes</strong></div>
+        </div>
+
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--soft);margin-bottom:10px">Step 5 — Enable GitHub Pages</div>
+        <div style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:14px">
+          <div style="margin-bottom:5px">1. Go to <strong>Settings → Pages</strong> (left sidebar)</div>
+          <div style="margin-bottom:5px">2. Under <em>Branch</em>, select <strong>main</strong> → Click <strong>Save</strong></div>
+          <div>3. Wait ~60 seconds — your URL appears: <code style="background:rgba(122,158,126,0.12);padding:1px 6px;border-radius:4px;font-size:12px">https://yourusername.github.io/nourish-ai</code></div>
+        </div>
+
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--soft);margin-bottom:10px">Step 6 — Add to iPhone home screen</div>
+        <div style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:14px">
+          <div style="margin-bottom:5px">1. Open your GitHub Pages URL in <strong>Safari</strong> on iPhone</div>
+          <div style="margin-bottom:5px">2. Tap the <strong>Share ⎙</strong> button</div>
+          <div>3. Tap <strong>"Add to Home Screen"</strong> → <strong>Add</strong></div>
+        </div>
+
+        <div style="background:rgba(122,158,126,0.1);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--sage-dark);font-weight:500;line-height:1.6">
+          💡 <strong>To update the app later</strong> — just tap "Save to PC", rename to <code style="background:rgba(122,158,126,0.18);padding:1px 5px;border-radius:4px">index.html</code>, go to your GitHub repo, click the file → pencil icon → drag the new file in → Commit. Your URL stays the same. Your iPhone data is unaffected.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MEAL PLAN -->
+<div class="page" id="page-plan">
+  <div class="page-header">
+    <div class="logo-badge">🍽 Meal Plan</div>
+    <h1>Your Week</h1>
+    <p>AI-generated meals matched to your macros</p>
+  </div>
+
+  <div id="plan-no-profile" class="section" style="display:none">
+    <div class="alert info">Set up your profile first to generate a personalised plan.</div>
+    <button class="btn" onclick="goTo('profile')">Go to Profile</button>
+  </div>
+
+  <div id="plan-no-key" class="section" style="display:none">
+    <div class="alert info">Add your free Gemini API key in Profile to generate AI meal plans.</div>
+    <button class="btn" onclick="goTo('profile')">Go to Profile</button>
+  </div>
+
+  <div id="plan-content" style="display:none">
+    <div class="generate-area">
+      <button class="btn accent" id="generate-btn" onclick="generateMealPlan()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="18" height="18"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+        Generate 7-Day Plan
+      </button>
+    </div>
+
+    <div id="plan-loading" class="loading-state" style="display:none">
+      <div class="spinner"></div>
+      <p>Claude is building your personalised<br>7-day meal plan…</p>
+    </div>
+
+    <div id="plan-empty" class="empty-state">
+      <div class="icon">🥗</div>
+      <h3>No plan yet</h3>
+      <p>Hit "Generate 7-Day Plan" to get your personalised weekly meal schedule.</p>
+    </div>
+
+    <div id="plan-days" class="section" style="display:none"></div>
+  </div>
+</div>
+
+<!-- WEIGHT TRACKER -->
+<div class="page" id="page-weight">
+  <div class="page-header">
+    <div class="logo-badge">📊 Progress</div>
+    <h1>Weight Log</h1>
+    <p>Track your journey towards your goal</p>
+  </div>
+
+  <div class="section">
+    <div class="card" style="margin-bottom:14px">
+      <div class="form-row">
+        <div class="form-group" style="margin-bottom:0">
+          <label id="label-log-weight">Weight (lbs)</label>
+          <input type="number" id="log-weight" placeholder="e.g. 188" step="0.1">
+        </div>
+        <div class="form-group" style="margin-bottom:0">
+          <label>Date</label>
+          <input type="date" id="log-date">
+        </div>
+      </div>
+      <button class="btn" style="margin-top:14px" onclick="logWeight()">Log Weight</button>
+    </div>
+
+    <div id="weight-stats" style="display:none">
+      <div class="macro-grid" style="margin-bottom:14px">
+        <div class="macro-pill">
+          <div class="value" id="wstat-current">—</div>
+          <div class="label">Current</div>
+          <div class="sub" id="wstat-unit-current">kg</div>
+        </div>
+        <div class="macro-pill">
+          <div class="value" id="wstat-target">—</div>
+          <div class="label">Target</div>
+          <div class="sub" id="wstat-unit-target">kg</div>
+        </div>
+        <div class="macro-pill protein">
+          <div class="value" id="wstat-lost">—</div>
+          <div class="label">Lost</div>
+          <div class="sub" id="wstat-unit-lost">kg</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:14px">
+        <canvas id="weightChart"></canvas>
+      </div>
+    </div>
+
+    <div id="weight-empty" class="empty-state" style="padding: 20px 0px; display: block;">
+      <div class="icon">⚖️</div>
+      <h3>No entries yet</h3>
+      <p>Log your first weight to start tracking progress.</p>
+    </div>
+
+    <div id="weight-list"></div>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div class="page" id="page-profile">
+  <div class="page-header">
+    <div class="logo-badge">👤 Profile</div>
+    <h1>Your Profile</h1>
+    <p>Used to calculate your personal macro targets</p>
+  </div>
+
+  <div class="section">
+    <div class="card">
+      <!-- Unit toggle -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <span style="font-size:12px;font-weight:600;color:var(--mid);text-transform:uppercase;letter-spacing:0.3px">Weight Unit</span>
+        <div style="display:flex;background:rgba(122,158,126,0.1);border-radius:30px;padding:3px;gap:2px">
+          <button id="unit-kg" onclick="setUnit('kg')" style="padding: 6px 18px; border: none; border-radius: 24px; font-family: &quot;DM Sans&quot;, sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; background: transparent; color: var(--soft);">kg</button>
+          <button id="unit-lbs" onclick="setUnit('lbs')" style="padding: 6px 18px; border: none; border-radius: 24px; font-family: &quot;DM Sans&quot;, sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; background: var(--sage-dark); color: white;">lbs</button>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label id="label-p-weight">Current Weight (lbs)</label>
+          <input type="number" id="p-weight" placeholder="e.g. 187" step="0.1">
+        </div>
+        <div class="form-group">
+          <label id="label-p-target">Target Weight (lbs)</label>
+          <input type="number" id="p-target" placeholder="e.g. 165" step="0.1">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Real-World Maintenance Calories</label>
+        <input type="number" id="p-maintenance" placeholder="e.g. 1700">
+        <p style="font-size:11px;color:var(--soft);margin-top:5px;line-height:1.5">
+          This is the calorie level where your weight stays stable — based on your actual experience, not a formula. Your 1,700 kcal is a perfect example.
+        </p>
+      </div>
+
+      <div class="form-group">
+        <label>Weekly Loss Target</label>
+        <select id="p-weekly-loss">
+          <option value="0.25">Gentle — 0.25 kg/week (−275 kcal/day)</option>
+          <option value="0.5">Steady — 0.5 kg/week (−550 kcal/day)</option>
+          <option value="0.75">Brisk — 0.75 kg/week (−825 kcal/day)</option>
+          <option value="1" selected="">Strong — 1 kg/week (−1,100 kcal/day)</option>
+        </select>
+      </div>
+
+      <!-- Live preview -->
+      <div id="calorie-preview" style="display:none; margin-bottom:16px">
+        <div style="background:rgba(122,158,126,0.1); border:1px solid rgba(122,158,126,0.25); border-radius:12px; padding:14px 16px;">
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:var(--soft);margin-bottom:8px">Calculated Targets</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <div style="flex:1;min-width:80px;text-align:center;background:white;border-radius:10px;padding:10px 6px;">
+              <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--sage-dark)" id="prev-cals">—</div>
+              <div style="font-size:10px;color:var(--soft);margin-top:2px">kcal/day</div>
+            </div>
+            <div style="flex:1;min-width:80px;text-align:center;background:white;border-radius:10px;padding:10px 6px;">
+              <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--sage-dark)" id="prev-protein">—</div>
+              <div style="font-size:10px;color:var(--soft);margin-top:2px">protein g</div>
+            </div>
+            <div style="flex:1;min-width:80px;text-align:center;background:white;border-radius:10px;padding:10px 6px;">
+              <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--accent)" id="prev-carbs">—</div>
+              <div style="font-size:10px;color:var(--soft);margin-top:2px">carbs g</div>
+            </div>
+            <div style="flex:1;min-width:80px;text-align:center;background:white;border-radius:10px;padding:10px 6px;">
+              <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:#a07040" id="prev-fat">—</div>
+              <div style="font-size:10px;color:var(--soft);margin-top:2px">fat g</div>
+            </div>
+          </div>
+          <div style="font-size:11px;color:var(--soft);margin-top:10px;text-align:center" id="prev-note">—</div>
+        </div>
+      </div>
+
+      <button class="btn" onclick="saveProfile()">Save Profile &amp; Calculate Macros</button>
+    </div>
+
+    <div class="section-title" style="padding:0; margin-top:20px; margin-bottom:10px">Gemini API Key (Free)</div>
+    <div class="card">
+      <div class="form-group" style="margin-bottom:8px">
+        <label>API Key</label>
+        <div class="api-key-wrap">
+          <input type="password" id="p-apikey" placeholder="AIza…">
+          <button class="api-key-toggle" onclick="toggleKeyVisibility()">Show</button>
+        </div>
+      </div>
+      <p style="font-size:12px; color:var(--soft); margin-bottom:12px; line-height:1.5">
+        Your key is stored locally on your device only — never sent anywhere except directly to Google's Gemini API to generate your meal plans.
+        Get your free key (no card needed) at <strong>aistudio.google.com</strong> → "Get API Key".
+      </p>
+      <button class="btn outline" onclick="saveApiKey()">Save API Key</button>
+    </div>
+
+    <div id="profile-saved" class="alert success" style="display:none; margin-top:14px">✓ Profile saved! Your macro targets have been calculated.</div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <button class="nav-btn active" id="nav-home" onclick="goTo('home')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+    Home
+  </button>
+  <button class="nav-btn" id="nav-plan" onclick="goTo('plan')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg>
+    Plan
+  </button>
+  <button class="nav-btn" id="nav-log" onclick="goTo('log')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+    Log
+  </button>
+  <button class="nav-btn" id="nav-shop" onclick="goTo('shop')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 01-8 0"></path></svg>
+    Shop
+  </button>
+  <button class="nav-btn" id="nav-weight" onclick="goTo('weight')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+    Progress
+  </button>
+  <button class="nav-btn" id="nav-profile" onclick="goTo('profile')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+    Profile
+  </button>
+</nav>
+
+<!-- ACTUALS LOG PAGE -->
+<div class="page" id="page-log">
+  <div class="page-header">
+    <div class="logo-badge">📋 Food Log</div>
+    <h1>Actuals Log</h1>
+    <p>Track what you actually ate each day</p>
+  </div>
+  <div class="section">
+
+    <!-- Quick-add form -->
+    <div class="log-add-form">
+      <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--mid);margin-bottom:12px">Log a meal</div>
+      <div class="form-group" style="margin-bottom:10px">
+        <label>Meal name</label>
+        <input type="text" id="log-meal-name" placeholder="e.g. Grilled salmon with rice">
+      </div>
+      <div class="form-row" style="margin-bottom:10px">
+        <div class="form-group" style="margin-bottom:0">
+          <label>Type</label>
+          <select id="log-meal-type">
+            <option value="Breakfast">Breakfast</option>
+            <option value="Lunch">Lunch</option>
+            <option value="Dinner">Dinner</option>
+            <option value="Snack">Snack</option>
+            <option value="Custom">Other</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom:0">
+          <label>Date</label>
+          <input type="date" id="log-meal-date">
+        </div>
+      </div>
+      <div class="form-row" style="margin-bottom:12px">
+        <div class="form-group" style="margin-bottom:0">
+          <label>Calories</label>
+          <input type="number" id="log-meal-cals" placeholder="kcal">
+        </div>
+        <div class="form-group" style="margin-bottom:0">
+          <label>Protein (g)</label>
+          <input type="number" id="log-meal-protein" placeholder="g">
+        </div>
+      </div>
+      <div class="form-row" style="margin-bottom:12px">
+        <div class="form-group" style="margin-bottom:0">
+          <label>Carbs (g)</label>
+          <input type="number" id="log-meal-carbs" placeholder="g">
+        </div>
+        <div class="form-group" style="margin-bottom:0">
+          <label>Fat (g)</label>
+          <input type="number" id="log-meal-fat" placeholder="g">
+        </div>
+      </div>
+      <button class="btn" onclick="addLogEntry()">Add to Log</button>
+    </div>
+
+    <!-- Log entries -->
+    <div id="log-empty" class="empty-state" style="display:none;padding:20px 0">
+      <div class="icon">📋</div>
+      <h3>Nothing logged yet</h3>
+      <p>Mark meals as eaten in your plan, or add entries manually above.</p>
+    </div>
+    <div id="log-entries"></div>
+  </div>
+</div>
+
+<!-- SHOPPING LIST PAGE -->
+<div class="page" id="page-shop">
+  <div class="page-header">
+    <div class="logo-badge">🛒 Shopping</div>
+    <h1>Shopping List</h1>
+    <p>Ingredients for your meal plan</p>
+  </div>
+  <div class="section">
+    <div id="shop-no-plan" class="empty-state" style="display:none">
+      <div class="icon">🍽</div>
+      <h3>No plan yet</h3>
+      <p>Generate a 7-day meal plan first, then your shopping list will appear here.</p>
+    </div>
+    <div id="shop-content" style="display:none">
+      <div style="margin-bottom:12px">
+        <div style="font-size:12px;font-weight:600;color:var(--mid);text-transform:uppercase;letter-spacing:0.3px;margin-bottom:8px">Shopping for how many days?</div>
+        <div class="shop-day-filter" id="shop-day-filter"></div>
+      </div>
+      <div class="shop-tabs">
+        <button class="shop-tab active" id="shop-tab-list" onclick="switchShopTab('list')">Shopping list</button>
+        <button class="shop-tab" id="shop-tab-purchased" onclick="switchShopTab('purchased')">Purchased <span id="shop-purchased-count" style="font-size:10px;background:var(--sage-dark);color:white;border-radius:10px;padding:1px 6px;margin-left:4px">0</span></button>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div style="font-size:13px;color:var(--soft)" id="shop-summary"></div>
+        <button class="btn sm outline" onclick="clearShopState()" style="font-size:11px;padding:6px 12px" id="shop-clear-btn">Clear ticked</button>
+      </div>
+      <div id="shop-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- RECIPE MODAL -->
+<div class="modal-overlay" id="recipe-overlay" onclick="closeRecipeModal()"></div>
+<div class="modal-sheet" id="recipe-sheet">
+  <div class="modal-handle"></div>
+  <div class="modal-header">
+    <h2 id="recipe-title">Recipe</h2>
+    <button class="modal-close" onclick="closeRecipeModal()">✕</button>
+  </div>
+  <div style="padding: 0 20px">
+    <div class="recipe-tabs">
+      <button class="recipe-tab active" id="tab-recipe" onclick="switchRecipeTab('recipe')">Recipe</button>
+      <button class="recipe-tab" id="tab-alts" onclick="switchRecipeTab('alts')">Alternatives <span class="recipe-tab-count" id="alts-count">0</span></button>
+    </div>
+  </div>
+  <div class="modal-body" id="recipe-body">
+    <div class="loading-state"><div class="spinner"></div><p>Fetching recipe…</p></div>
+  </div>
+  <div class="modal-body" id="alts-body" style="display:none"></div>
+</div>
+
+<!-- COPY MEAL MODAL -->
+<div class="modal-overlay" id="copy-overlay" onclick="closeCopyModal()"></div>
+<div class="modal-sheet" id="copy-sheet">
+  <div class="modal-handle"></div>
+  <div class="modal-header">
+    <h2>Copy Meal To…</h2>
+    <button class="modal-close" onclick="closeCopyModal()">✕</button>
+  </div>
+  <div class="modal-body">
+    <div id="copy-meal-info" style="background:rgba(122,158,126,0.08);border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:var(--mid)"></div>
+    <div style="font-size:12px;font-weight:600;color:var(--mid);text-transform:uppercase;letter-spacing:0.3px;margin-bottom:10px">Select destination day &amp; meal slot</div>
+    <div class="copy-day-grid" id="copy-day-grid"></div>
+    <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn outline" style="flex:0 0 auto;width:auto;padding:12px 16px;font-size:13px" onclick="selectAllDaysSameSlot()">All same slot</button>
+      <button class="btn outline" style="flex:0 0 auto;width:auto;padding:12px 16px;font-size:13px;border-color:var(--accent);color:var(--accent)" onclick="copyToAllDays()">Copy to all days</button>
+      <button class="btn" id="copy-apply-btn" style="flex:1;min-width:120px" disabled="" onclick="applyMultiCopy()">Select days above</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── STATE ─────────────────────────────────────────────────────
+let state = {
+  profile: null,
+  apiKey: null,
+  mealPlan: null,
+  weightLog: [],
+  unit: 'kg',
+  eatenMeals: {},    // "dayIndex|mealIndex" → true
+  purchasedItems: {}, // "itemKey" → true
+  foodLog: []        // [ { id, date, time, name, type, calories, protein, carbs, fat, source } ]
+};
+
+// ── UNIT HELPERS ──────────────────────────────────────────────
+const KG_TO_LBS = 2.20462;
+function toDisplay(kg)  { return state.unit === 'lbs' ? +(kg * KG_TO_LBS).toFixed(1) : +kg.toFixed(1); }
+function toKg(val)      { return state.unit === 'lbs' ? val / KG_TO_LBS : val; }
+function unitLabel()    { return state.unit; }
+
+function setUnit(u) {
+  state.unit = u;
+  save();
+  // Toggle button styles
+  document.getElementById('unit-kg').style.background  = u === 'kg'  ? 'var(--sage-dark)' : 'transparent';
+  document.getElementById('unit-kg').style.color       = u === 'kg'  ? 'white' : 'var(--soft)';
+  document.getElementById('unit-lbs').style.background = u === 'lbs' ? 'var(--sage-dark)' : 'transparent';
+  document.getElementById('unit-lbs').style.color      = u === 'lbs' ? 'white' : 'var(--soft)';
+  // Update labels
+  const ul = unitLabel();
+  document.getElementById('label-p-weight').textContent  = `Current Weight (${ul})`;
+  document.getElementById('label-p-target').textContent  = `Target Weight (${ul})`;
+  document.getElementById('label-log-weight').textContent = `Weight (${ul})`;
+  document.getElementById('log-weight').placeholder = u === 'kg' ? 'e.g. 85.5' : 'e.g. 188';
+  document.getElementById('p-weight').placeholder   = u === 'kg' ? 'e.g. 85'   : 'e.g. 187';
+  document.getElementById('p-target').placeholder   = u === 'kg' ? 'e.g. 75'   : 'e.g. 165';
+  // Re-populate profile inputs in display unit if profile exists
+  if (state.profile) {
+    document.getElementById('p-weight').value = toDisplay(state.profile.weight);
+    document.getElementById('p-target').value = toDisplay(state.profile.target);
+  }
+  // Refresh pages
+  renderHome();
+  renderWeightPage();
+  livePreview();
+}
+
+// ── PERSIST ───────────────────────────────────────────────────
+function save() {
+  localStorage.setItem('nourish_state', JSON.stringify(state));
+  try {
+    localStorage.setItem('nourish_recipe_cache', JSON.stringify(recipeCache));
+    localStorage.setItem('nourish_type_cache', JSON.stringify(typeCache));
+  } catch(e) {} // storage full — non-fatal
+}
+function load() {
+  try {
+    const s = localStorage.getItem('nourish_state');
+    if (s) state = { ...state, ...JSON.parse(s) };
+  } catch(e) {}
+}
+
+// ── NAV ───────────────────────────────────────────────────────
+function goTo(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.getElementById('nav-' + page).classList.add('active');
+  if (page === 'home') renderHome();
+  if (page === 'plan') renderPlanPage();
+  if (page === 'log') renderLogPage();
+  if (page === 'shop') renderShopPage();
+  if (page === 'weight') renderWeightPage();
+  if (page === 'profile') renderProfilePage();
+  window.scrollTo(0, 0);
+}
+
+// ── CALCULATIONS ─────────────────────────────────────────────
+function calcMacros(profile) {
+  const maintenance = parseFloat(profile.maintenance);
+  const weeklyLoss = parseFloat(profile.weeklyLoss); // kg/week
+  // 1kg fat ≈ 7,700 kcal; daily deficit = (weeklyLoss * 7700) / 7
+  const dailyDeficit = Math.round((weeklyLoss * 7700) / 7);
+  const calories = Math.max(1000, Math.round(maintenance - dailyDeficit));
+  const protein = Math.round((calories * 0.40) / 4);
+  const carbs   = Math.round((calories * 0.30) / 4);
+  const fat     = Math.round((calories * 0.30) / 9);
+  return { calories, protein, carbs, fat, maintenance, dailyDeficit };
+}
+
+function livePreview() {
+  const maintenance = parseFloat(document.getElementById('p-maintenance').value);
+  const weeklyLoss  = parseFloat(document.getElementById('p-weekly-loss').value);
+  if (!maintenance || !weeklyLoss) return;
+  const dailyDeficit = Math.round((weeklyLoss * 7700) / 7);
+  const calories = Math.max(1000, Math.round(maintenance - dailyDeficit));
+  const protein  = Math.round((calories * 0.40) / 4);
+  const carbs    = Math.round((calories * 0.30) / 4);
+  const fat      = Math.round((calories * 0.30) / 9);
+  document.getElementById('prev-cals').textContent    = calories;
+  document.getElementById('prev-protein').textContent = protein;
+  document.getElementById('prev-carbs').textContent   = carbs;
+  document.getElementById('prev-fat').textContent     = fat;
+  document.getElementById('prev-note').textContent    = `${maintenance} maintenance − ${dailyDeficit} kcal/day deficit = ${calories} kcal target`;
+  document.getElementById('calorie-preview').style.display = 'block';
+}
+
+// ── PROFILE ───────────────────────────────────────────────────
+function saveProfile() {
+  const weightDisplay = parseFloat(document.getElementById('p-weight').value);
+  const targetDisplay = parseFloat(document.getElementById('p-target').value);
+  const maintenance   = parseFloat(document.getElementById('p-maintenance').value);
+  const weeklyLoss    = document.getElementById('p-weekly-loss').value;
+
+  if (!weightDisplay || !targetDisplay || !maintenance) { showToast('Please fill in all fields'); return; }
+  if (maintenance < 800 || maintenance > 5000) { showToast('Maintenance calories seem off — check the value'); return; }
+
+  // Always store weights in kg internally
+  const weight = +toKg(weightDisplay).toFixed(2);
+  const target = +toKg(targetDisplay).toFixed(2);
+
+  state.profile = { weight, target, maintenance, weeklyLoss };
+  save();
+  document.getElementById('profile-saved').style.display = 'block';
+  setTimeout(() => document.getElementById('profile-saved').style.display = 'none', 3000);
+  showToast('Profile saved ✓');
+}
+
+function saveApiKey() {
+  const key = document.getElementById('p-apikey').value.trim();
+  if (!key) { showToast('Enter a valid API key'); return; }
+  state.apiKey = key;
+  save();
+  showToast('API key saved ✓');
+}
+
+function toggleKeyVisibility() {
+  const inp = document.getElementById('p-apikey');
+  const btn = document.querySelector('.api-key-toggle');
+  if (inp.type === 'password') { inp.type = 'text'; btn.textContent = 'Hide'; }
+  else { inp.type = 'password'; btn.textContent = 'Show'; }
+}
+
+function renderProfilePage() {
+  // Apply saved unit to toggle UI
+  setUnit(state.unit || 'kg');
+  if (!state.profile) return;
+  const p = state.profile;
+  document.getElementById('p-weight').value      = toDisplay(p.weight);
+  document.getElementById('p-target').value      = toDisplay(p.target);
+  document.getElementById('p-maintenance').value = p.maintenance || '';
+  document.getElementById('p-weekly-loss').value = p.weeklyLoss || '1';
+  if (state.apiKey) document.getElementById('p-apikey').value = state.apiKey;
+  livePreview();
+}
+
+// Wire live preview on input changes — run after DOM ready
+function attachPreviewListeners() {
+  ['p-maintenance','p-weekly-loss'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', livePreview);
+    if (el) el.addEventListener('change', livePreview);
+  });
+}
+
+// ── HOME ──────────────────────────────────────────────────────
+function renderHome() {
+  const hour = new Date().getHours();
+  const greet = hour < 12 ? 'Good morning.' : hour < 17 ? 'Good afternoon.' : 'Good evening.';
+  document.getElementById('greeting').textContent = greet;
+
+  if (!state.profile) {
+    document.getElementById('home-setup-prompt').style.display = 'block';
+    document.getElementById('home-dashboard').style.display = 'none';
+    document.getElementById('home-subtitle').textContent = 'Set up your profile to get started.';
+    return;
+  }
+
+  document.getElementById('home-setup-prompt').style.display = 'none';
+  document.getElementById('home-dashboard').style.display = 'block';
+
+  const m = calcMacros(state.profile);
+  const ul = unitLabel();
+  document.getElementById('home-subtitle').textContent = `${toDisplay(state.profile.weight)}${ul} → ${toDisplay(state.profile.target)}${ul}`;
+  document.getElementById('dash-calories').textContent = m.calories;
+  document.getElementById('dash-deficit').textContent = `Maintenance ${m.maintenance} kcal — deficit ${m.dailyDeficit} kcal/day`;
+  document.getElementById('dash-protein').textContent = m.protein + 'g';
+  document.getElementById('dash-carbs').textContent = m.carbs + 'g';
+  document.getElementById('dash-fat').textContent = m.fat + 'g';
+  const diffKg = parseFloat(state.profile.weight) - parseFloat(state.profile.target);
+  const diffDisplay = toDisplay(diffKg > 0 ? diffKg : 0);
+  document.getElementById('dash-goal').textContent = diffKg > 0 ? `${diffDisplay}${ul} to lose` : 'Goal reached!';
+
+  document.getElementById('pb-protein-val').textContent = m.protein + 'g';
+  document.getElementById('pb-carbs-val').textContent = m.carbs + 'g';
+  document.getElementById('pb-fat-val').textContent = m.fat + 'g';
+}
+
+// ── MEAL PLAN ─────────────────────────────────────────────────
+function renderPlanPage() {
+  const hasProfile = !!state.profile;
+  const hasKey = !!state.apiKey;
+
+  document.getElementById('plan-no-profile').style.display = !hasProfile ? 'block' : 'none';
+  document.getElementById('plan-no-key').style.display = (hasProfile && !hasKey) ? 'block' : 'none';
+  document.getElementById('plan-content').style.display = (hasProfile && hasKey) ? 'block' : 'none';
+
+  if (state.mealPlan) renderDays(state.mealPlan);
+}
+
+async function generateMealPlan() {
+  if (!state.profile || !state.apiKey) return;
+  const m = calcMacros(state.profile);
+  const btn = document.getElementById('generate-btn');
+  btn.disabled = true;
+  document.getElementById('plan-loading').style.display = 'flex';
+  document.getElementById('plan-empty').style.display = 'none';
+  document.getElementById('plan-days').style.display = 'none';
+
+  const prompt = `You are a professional nutritionist. Create a 7-day meal plan for weight loss.
+
+User stats:
+- Daily calorie target: ${m.calories} kcal
+- Protein: ${m.protein}g (40% of calories)
+- Carbohydrates: ${m.carbs}g (30% of calories)  
+- Fat: ${m.fat}g (30% of calories)
+- No dietary restrictions
+
+For each of the 7 days, provide 4 meals: Breakfast, Lunch, Dinner, and Snack.
+
+Return ONLY a valid JSON object in this exact structure, no markdown, no commentary:
+{
+  "days": [
+    {
+      "day": "Monday",
+      "totalCalories": 1850,
+      "meals": [
+        { "type": "Breakfast", "name": "Meal name here", "calories": 450, "protein": 35, "carbs": 40, "fat": 15 },
+        { "type": "Lunch", "name": "Meal name here", "calories": 550, "protein": 45, "carbs": 50, "fat": 18 },
+        { "type": "Dinner", "name": "Meal name here", "calories": 650, "protein": 50, "carbs": 55, "fat": 22 },
+        { "type": "Snack", "name": "Meal name here", "calories": 200, "protein": 15, "carbs": 20, "fat": 8 }
+      ]
+    }
+  ]
+}
+
+Make meals practical, varied, and delicious. Aim for totals close to the daily targets.`;
+
+  try {
+    const text = await callGemini(prompt);
+
+    // Extract the JSON object — find first { and last }
+    const start = text.indexOf('{');
+    const end = text.lastIndexOf('}');
+    if (start === -1 || end === -1) throw new Error('No JSON found in response');
+    const clean = text.slice(start, end + 1);
+    const plan = JSON.parse(clean);
+
+    state.mealPlan = plan;
+    save();
+    renderDays(plan);
+    showToast('7-day plan generated ✓');
+  } catch(e) {
+    showToast('Error: ' + e.message);
+    document.getElementById('plan-empty').style.display = 'block';
+  } finally {
+    document.getElementById('plan-loading').style.display = 'none';
+    btn.disabled = false;
+  }
+}
+
+function renderDays(plan) {
+  seedTypeCache();
+  const container = document.getElementById('plan-days');
+  container.innerHTML = '';
+  container.style.display = 'block';
+  document.getElementById('plan-empty').style.display = 'none';
+
+  const target = state.profile ? calcMacros(state.profile).calories : null;
+
+  plan.days.forEach((day, di) => {
+    // Calorie progress
+    const eatenCals = day.meals.reduce((sum, meal, mi) => {
+      return sum + (state.eatenMeals[`${di}|${mi}`] ? meal.calories : 0);
+    }, 0);
+    const pct = target ? Math.min(100, Math.round(eatenCals / target * 100)) : 0;
+    const deficit = target ? target - day.totalCalories : 0;
+    const snacks = day.meals.filter(m => m.type === 'Snack');
+
+    const div = document.createElement('div');
+    div.className = 'day-card';
+    div.innerHTML = `
+      <div class="day-header" onclick="toggleDay(${di})">
+        <h3>${day.day}</h3>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="day-cals" id="day-cals-${di}">${day.totalCalories} kcal${target ? ` / ${target}` : ''}</div>
+          <svg class="chevron ${di===0?'open':''}" id="chev-${di}" viewBox="0 0 24 24" fill="none" stroke="currentColor" width="18" height="18"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="day-cal-bar"><div class="day-cal-fill ${pct>=100?'over':''}" style="width:${pct}%"></div></div>
+      <div class="collapsible ${di===0?'open':''}" id="day-body-${di}">
+        <div class="day-meals">
+          ${day.meals.map((meal, mi) => {
+            const eaten = !!state.eatenMeals[`${di}|${mi}`];
+            return `
+            <div class="meal-item ${eaten?'eaten':''}" id="meal-item-${di}-${mi}">
+              <div class="meal-type-badge ${meal.type.toLowerCase()}">${meal.type}</div>
+              <div class="meal-info">
+                <div class="meal-name">${meal.name}</div>
+                <div class="meal-macros">P: ${meal.protein}g · C: ${meal.carbs}g · F: ${meal.fat}g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn ${eaten?'eaten':''}" onclick="toggleEaten(${di},${mi})">
+                    ${eaten ? '✓ Eaten' : 'Mark eaten'}
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(${di},${mi})">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(${di},${mi})">📋 Copy</button>
+                  ${meal.type === 'Snack' ? `<button class="meal-action-btn" style="color:var(--danger);border-color:rgba(201,107,107,0.3)" onclick="deleteMeal(${di},${mi})">🗑 Delete</button>` : ''}
+                </div>
+              </div>
+              <div class="meal-cals">${meal.calories}</div>
+            </div>
+          `}).join('')}
+        </div>
+        ${deficit > 150 ? `
+          <div class="deficit-banner">
+            <div class="deficit-banner-text">⚡ ${deficit} kcal below your target today</div>
+            <button class="deficit-banner-btn" onclick="addExtraSnack(${di})">+ Add snack</button>
+          </div>
+        ` : ''}
+        <div style="padding:8px 18px 12px">
+          <button onclick="addExtraSnack(${di})" style="width:100%;padding:8px;border-radius:10px;border:1.5px dashed var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--soft);cursor:pointer">+ Add extra snack</button>
+        </div>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function toggleEaten(di, mi) {
+  const key = `${di}|${mi}`;
+  const meal = state.mealPlan.days[di].meals[mi];
+  const today = new Date().toISOString().split('T')[0];
+
+  if (state.eatenMeals[key]) {
+    // Un-mark — remove from food log
+    delete state.eatenMeals[key];
+    state.foodLog = state.foodLog.filter(e => e.source !== key);
+  } else {
+    // Mark eaten — add to food log
+    state.eatenMeals[key] = true;
+    const now = new Date();
+    state.foodLog.push({
+      id: Date.now(),
+      date: today,
+      time: now.toTimeString().slice(0,5),
+      name: meal.name,
+      type: meal.type,
+      calories: meal.calories,
+      protein: meal.protein,
+      carbs: meal.carbs,
+      fat: meal.fat,
+      source: key  // links back to plan meal so un-marking removes it
+    });
+  }
+  save();
+  renderDays(state.mealPlan);
+}
+
+function deleteMeal(di, mi) {
+  const day = state.mealPlan.days[di];
+  const meal = day.meals[mi];
+  day.totalCalories -= meal.calories;
+  day.meals.splice(mi, 1);
+  // Clean up eaten state keys — shift indices above mi down by 1
+  const newEaten = {};
+  Object.keys(state.eatenMeals).forEach(key => {
+    const [kdi, kmi] = key.split('|').map(Number);
+    if (kdi === di && kmi === mi) return; // remove deleted
+    if (kdi === di && kmi > mi) newEaten[`${kdi}|${kmi - 1}`] = true;
+    else newEaten[key] = state.eatenMeals[key];
+  });
+  state.eatenMeals = newEaten;
+  save();
+  renderDays(state.mealPlan);
+  showToast(`${meal.name} removed ✓`);
+}
+
+async function addExtraSnack(di) {
+  if (!state.apiKey) { showToast('Add API key to generate snacks'); return; }
+  const m = calcMacros(state.profile);
+  const day = state.mealPlan.days[di];
+  const gap = m.calories - day.totalCalories;
+  const snackTarget = Math.max(100, Math.min(350, gap));
+
+  showToast('Generating snack suggestion…');
+
+  const prompt = `Suggest ONE healthy snack for weight loss with approximately ${snackTarget} calories.
+Return ONLY valid JSON, no markdown:
+{ "name": "Snack name", "calories": ${snackTarget}, "protein": 10, "carbs": 15, "fat": 5 }`;
+
+  try {
+    const text = await callGemini(prompt);
+    const start = text.indexOf('{'); const end = text.lastIndexOf('}');
+    const snack = JSON.parse(text.slice(start, end + 1));
+    snack.type = 'Snack';
+    day.meals.push(snack);
+    day.totalCalories += snack.calories;
+    // Add to type cache
+    if (!typeCache['Snack']) typeCache['Snack'] = [];
+    if (!typeCache['Snack'].some(e => e.name === snack.name))
+      typeCache['Snack'].push({ name: snack.name, calories: snack.calories, protein: snack.protein, carbs: snack.carbs, fat: snack.fat });
+    save();
+    renderDays(state.mealPlan);
+    showToast(`Added: ${snack.name} ✓`);
+    // Open copy modal pre-loaded for this new snack so user can copy to all days from there
+    const newMi = state.mealPlan.days[di].meals.length - 1;
+    openCopy(di, newMi);
+  } catch(e) {
+    showToast('Could not generate snack: ' + e.message);
+  }
+}
+
+function toggleDay(i) {
+  const body = document.getElementById('day-body-' + i);
+  const chev = document.getElementById('chev-' + i);
+  body.classList.toggle('open');
+  chev.classList.toggle('open');
+}
+
+// ── WEIGHT LOG ────────────────────────────────────────────────
+function logWeight() {
+  const wDisplay = parseFloat(document.getElementById('log-weight').value);
+  const d = document.getElementById('log-date').value;
+  if (!wDisplay || !d) { showToast('Enter weight and date'); return; }
+
+  const wKg = +toKg(wDisplay).toFixed(2); // always store in kg
+
+  state.weightLog = state.weightLog.filter(e => e.date !== d);
+  state.weightLog.push({ date: d, weight: wKg });
+  state.weightLog.sort((a, b) => a.date.localeCompare(b.date));
+
+  document.getElementById('log-weight').value = '';
+  save();
+  renderWeightPage();
+  showToast('Weight logged ✓');
+}
+
+function renderWeightPage() {
+  // Set today's date default
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('log-date').value = today;
+
+  const log = state.weightLog;
+  const hasPro = !!state.profile;
+
+  if (log.length === 0) {
+    document.getElementById('weight-empty').style.display = 'block';
+    document.getElementById('weight-stats').style.display = 'none';
+    document.getElementById('weight-list').innerHTML = '';
+    return;
+  }
+
+  document.getElementById('weight-empty').style.display = 'none';
+  document.getElementById('weight-stats').style.display = 'block';
+
+  const first   = log[0].weight;        // stored in kg
+  const current = log[log.length - 1].weight;
+  const target  = hasPro ? state.profile.target : null;
+  const lostKg  = first - current;
+  const ul = unitLabel();
+
+  document.getElementById('wstat-current').textContent = toDisplay(current);
+  document.getElementById('wstat-target').textContent  = target !== null ? toDisplay(target) : '—';
+  document.getElementById('wstat-lost').textContent    = toDisplay(lostKg > 0 ? lostKg : 0);
+  ['wstat-unit-current','wstat-unit-target','wstat-unit-lost'].forEach(id => {
+    document.getElementById(id).textContent = ul;
+  });
+
+  renderWeightChart(log);
+
+  // List
+  const list = document.getElementById('weight-list');
+  list.innerHTML = '';
+  [...log].reverse().forEach((entry, i, arr) => {
+    const prev = arr[i + 1];
+    const changeKg = prev ? (entry.weight - prev.weight) : null;
+    const ul = unitLabel();
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.style.marginBottom = '8px';
+    div.innerHTML = `
+      <div class="weight-entry">
+        <div>
+          <div class="weight-val">${toDisplay(entry.weight)} ${ul}</div>
+          <div class="date">${formatDate(entry.date)}</div>
+        </div>
+        ${changeKg !== null
+          ? `<div class="change ${changeKg <= 0 ? 'down' : 'up'}">${changeKg <= 0 ? '▼' : '▲'} ${toDisplay(Math.abs(changeKg))}${ul}</div>`
+          : '<div class="tag green">First entry</div>'}
+      </div>
+    `;
+    list.appendChild(div);
+  });
+}
+
+function renderWeightChart(log) {
+  const canvas = document.getElementById('weightChart');
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = (rect.width - 40) * dpr;
+  canvas.height = 180 * dpr;
+  canvas.style.width = (rect.width - 40) + 'px';
+  canvas.style.height = '180px';
+  ctx.scale(dpr, dpr);
+
+  const W = rect.width - 40;
+  const H = 180;
+  const pad = { t: 16, r: 16, b: 32, l: 44 };
+  const iW = W - pad.l - pad.r;
+  const iH = H - pad.t - pad.b;
+
+  const weights = log.map(e => e.weight); // stored in kg
+  const minW = Math.min(...weights) - (state.unit === 'lbs' ? 2.2 : 1);
+  const maxW = Math.max(...weights) + (state.unit === 'lbs' ? 2.2 : 1);
+
+  ctx.clearRect(0, 0, W, H);
+
+  // Grid lines
+  for (let i = 0; i <= 4; i++) {
+    const y = pad.t + (iH / 4) * i;
+    const val = maxW - ((maxW - minW) / 4) * i;
+    ctx.strokeStyle = 'rgba(122,158,126,0.12)';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(pad.l + iW, y); ctx.stroke();
+    ctx.fillStyle = '#8a9490'; ctx.font = '10px DM Sans'; ctx.textAlign = 'right';
+    ctx.fillText(toDisplay(val), pad.l - 6, y + 4);
+  }
+
+  if (log.length < 2) return;
+
+  // Gradient fill
+  const grad = ctx.createLinearGradient(0, pad.t, 0, pad.t + iH);
+  grad.addColorStop(0, 'rgba(122,158,126,0.25)');
+  grad.addColorStop(1, 'rgba(122,158,126,0)');
+
+  const pts = log.map((e, i) => ({
+    x: pad.l + (i / (log.length - 1)) * iW,
+    y: pad.t + ((maxW - e.weight) / (maxW - minW)) * iH
+  }));
+
+  ctx.beginPath();
+  ctx.moveTo(pts[0].x, pad.t + iH);
+  ctx.lineTo(pts[0].x, pts[0].y);
+  for (let i = 1; i < pts.length; i++) {
+    const cp = (pts[i].x + pts[i-1].x) / 2;
+    ctx.bezierCurveTo(cp, pts[i-1].y, cp, pts[i].y, pts[i].x, pts[i].y);
+  }
+  ctx.lineTo(pts[pts.length-1].x, pad.t + iH);
+  ctx.closePath();
+  ctx.fillStyle = grad; ctx.fill();
+
+  // Line
+  ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y);
+  for (let i = 1; i < pts.length; i++) {
+    const cp = (pts[i].x + pts[i-1].x) / 2;
+    ctx.bezierCurveTo(cp, pts[i-1].y, cp, pts[i].y, pts[i].x, pts[i].y);
+  }
+  ctx.strokeStyle = '#4f6e53'; ctx.lineWidth = 2.5; ctx.stroke();
+
+  // Dots
+  pts.forEach(pt => {
+    ctx.beginPath(); ctx.arc(pt.x, pt.y, 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#fff'; ctx.fill();
+    ctx.strokeStyle = '#4f6e53'; ctx.lineWidth = 2; ctx.stroke();
+  });
+
+  // X labels
+  const step = Math.max(1, Math.floor(log.length / 4));
+  ctx.fillStyle = '#8a9490'; ctx.font = '10px DM Sans'; ctx.textAlign = 'center';
+  pts.forEach((pt, i) => {
+    if (i % step === 0 || i === pts.length - 1) {
+      ctx.fillText(log[i].date.slice(5), pt.x, H - 8);
+    }
+  });
+}
+
+// ── UTILS ─────────────────────────────────────────────────────
+function formatDate(d) {
+  return new Date(d + 'T12:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ── RECIPE CACHE ──────────────────────────────────────────────
+// recipeCache[mealName] = { recipe object }
+// typeCache[mealType]   = [ { name, calories, protein, carbs, fat, recipe? } ]
+let recipeCache = {};
+let typeCache   = { Breakfast: [], Lunch: [], Dinner: [], Snack: [] };
+
+function loadCaches() {
+  try {
+    const rc = localStorage.getItem('nourish_recipe_cache');
+    if (rc) recipeCache = JSON.parse(rc);
+  } catch(e) {}
+  try {
+    const tc = localStorage.getItem('nourish_type_cache');
+    if (tc) typeCache = { Breakfast: [], Lunch: [], Dinner: [], Snack: [], ...JSON.parse(tc) };
+  } catch(e) {}
+}
+
+// Current recipe modal context
+let activeRecipeCtx = null; // { di, mi, meal, tab }
+
+function seedTypeCache() {
+  // Pre-populate typeCache with all meals in the current plan (no recipe yet)
+  if (!state.mealPlan) return;
+  state.mealPlan.days.forEach(day => {
+    day.meals.forEach(meal => {
+      const type = meal.type;
+      if (!typeCache[type]) typeCache[type] = [];
+      const exists = typeCache[type].some(e => e.name === meal.name);
+      if (!exists) typeCache[type].push({ name: meal.name, calories: meal.calories, protein: meal.protein, carbs: meal.carbs, fat: meal.fat });
+    });
+  });
+}
+
+function openRecipe(di, mi) {
+  const meal = state.mealPlan.days[di].meals[mi];
+  activeRecipeCtx = { di, mi, meal, tab: 'recipe' };
+
+  document.getElementById('recipe-title').textContent = meal.name;
+  document.getElementById('recipe-body').innerHTML = '<div class="loading-state"><div class="spinner"></div><p>Fetching recipe…</p></div>';
+  document.getElementById('alts-body').style.display = 'none';
+  document.getElementById('recipe-body').style.display = 'block';
+  switchRecipeTab('recipe');
+  updateAltsCount(meal.type);
+
+  document.getElementById('recipe-overlay').classList.add('open');
+  document.getElementById('recipe-sheet').classList.add('open');
+
+  if (recipeCache[meal.name]) { renderRecipe(recipeCache[meal.name]); return; }
+  fetchRecipe(meal);
+}
+
+function fetchRecipe(meal) {
+  const prompt = `You are a professional chef and nutritionist. Provide a detailed recipe for "${meal.name}".
+It should have approximately ${meal.calories} calories, ${meal.protein}g protein, ${meal.carbs}g carbs, ${meal.fat}g fat.
+
+Return ONLY valid JSON, no markdown:
+{
+  "servings": 1,
+  "prepTime": "10 mins",
+  "cookTime": "20 mins",
+  "ingredients": [
+    { "amount": "150g", "item": "chicken breast" }
+  ],
+  "steps": [
+    "Step one instruction here.",
+    "Step two instruction here."
+  ],
+  "tip": "Optional chef tip here.",
+  "sources": [
+    { "name": "MyFitnessPal", "url": "https://www.myfitnesspal.com/food/search?search=${encodeURIComponent(meal.name)}" },
+    { "name": "Nutritionix", "url": "https://www.nutritionix.com/food/${encodeURIComponent(meal.name.toLowerCase().replace(/ /g,'-'))}" },
+    { "name": "USDA FoodData Central", "url": "https://fdc.nal.usda.gov/food-search?query=${encodeURIComponent(meal.name)}" }
+  ]
+}`;
+
+  callGemini(prompt).then(text => {
+    const start = text.indexOf('{'); const end = text.lastIndexOf('}');
+    const recipe = JSON.parse(text.slice(start, end + 1));
+    // Store in name cache
+    recipeCache[meal.name] = recipe;
+    // Also attach recipe to typeCache entry
+    const type = meal.type;
+    if (!typeCache[type]) typeCache[type] = [];
+    const entry = typeCache[type].find(e => e.name === meal.name);
+    if (entry) entry.recipe = recipe;
+    else typeCache[type].push({ name: meal.name, calories: meal.calories, protein: meal.protein, carbs: meal.carbs, fat: meal.fat, recipe });
+    updateAltsCount(type);
+    renderRecipe(recipe);
+  }).catch(e => {
+    document.getElementById('recipe-body').innerHTML = `<p style="color:var(--danger);text-align:center;padding:20px">Could not load recipe: ${e.message}</p>`;
+  });
+}
+
+function switchRecipeTab(tab) {
+  activeRecipeCtx.tab = tab;
+  document.getElementById('tab-recipe').classList.toggle('active', tab === 'recipe');
+  document.getElementById('tab-alts').classList.toggle('active', tab === 'alts');
+  document.getElementById('recipe-body').style.display = tab === 'recipe' ? 'block' : 'none';
+  document.getElementById('alts-body').style.display = tab === 'alts' ? 'block' : 'none';
+  if (tab === 'alts') renderAlternatives();
+}
+
+function updateAltsCount(type) {
+  const count = (typeCache[type] || []).length;
+  document.getElementById('alts-count').textContent = count;
+}
+
+function renderAlternatives() {
+  const { di, mi, meal } = activeRecipeCtx;
+  const type = meal.type;
+  const alts = typeCache[type] || [];
+  const body = document.getElementById('alts-body');
+
+  if (alts.length === 0) {
+    body.innerHTML = `<div class="empty-state"><div class="icon">📭</div><h3>No alternatives yet</h3><p>View recipes for other ${type.toLowerCase()} meals to build up your library here.</p></div>`;
+    return;
+  }
+
+  body.innerHTML = `
+    <p style="font-size:12px;color:var(--soft);margin-bottom:14px;line-height:1.5">
+      ${alts.length} cached ${type.toLowerCase()} option${alts.length>1?'s':''} — tap <strong>Swap</strong> to replace your current meal, or <strong>View</strong> to see the recipe.
+    </p>
+    ${alts.map(alt => {
+      const isCurrent = alt.name === meal.name;
+      return `
+        <div class="alt-card ${isCurrent ? 'current' : ''}">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div style="flex:1">
+              <div class="alt-card-name">${alt.name} ${isCurrent ? '<span style="font-size:10px;color:var(--sage-dark);font-weight:700">● Current</span>' : ''}</div>
+              <div class="alt-card-macros">${alt.calories} kcal · P: ${alt.protein}g · C: ${alt.carbs}g · F: ${alt.fat}g</div>
+            </div>
+          </div>
+          <div class="alt-card-actions">
+            ${!isCurrent ? `<button class="alt-swap-btn" onclick="swapMealFromAlt('${alt.name.replace(/'/g,"\\'")}', ${di}, ${mi})">⇄ Swap</button>` : ''}
+            ${alt.recipe ? `<button class="alt-view-btn" onclick="viewAltRecipe('${alt.name.replace(/'/g,"\\'")}')">📖 View recipe</button>` : `<span style="font-size:11px;color:var(--soft);align-self:center">Recipe not yet loaded</span>`}
+          </div>
+        </div>
+      `;
+    }).join('')}
+  `;
+}
+
+function swapMealFromAlt(altName, di, mi) {
+  const type = activeRecipeCtx.meal.type;
+  const altEntry = typeCache[type].find(e => e.name === altName);
+  if (!altEntry) return;
+  const day = state.mealPlan.days[di];
+  const oldMeal = day.meals[mi];
+  const newMeal = { type: oldMeal.type, name: altEntry.name, calories: altEntry.calories, protein: altEntry.protein, carbs: altEntry.carbs, fat: altEntry.fat };
+  day.totalCalories = day.totalCalories - oldMeal.calories + newMeal.calories;
+  day.meals[mi] = newMeal;
+  save();
+  renderDays(state.mealPlan);
+  // Update modal context to reflect swap
+  activeRecipeCtx.meal = newMeal;
+  activeRecipeCtx.mi = mi;
+  document.getElementById('recipe-title').textContent = newMeal.name;
+  renderAlternatives();
+  showToast(`Swapped to ${altName} ✓`);
+}
+
+function viewAltRecipe(altName) {
+  const type = activeRecipeCtx.meal.type;
+  const entry = typeCache[type].find(e => e.name === altName);
+  if (!entry || !entry.recipe) return;
+  document.getElementById('recipe-title').textContent = altName;
+  switchRecipeTab('recipe');
+  renderRecipe(entry.recipe);
+}
+
+function renderRecipe(r) {
+  document.getElementById('recipe-body').innerHTML = `
+    <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+      <div class="tag green">🍽 ${r.servings} serving${r.servings>1?'s':''}</div>
+      <div class="tag green">⏱ Prep: ${r.prepTime}</div>
+      <div class="tag orange">🔥 Cook: ${r.cookTime}</div>
+    </div>
+    <div class="recipe-section-title">Ingredients</div>
+    <div>
+      ${r.ingredients.map(ing => `
+        <div class="ingredient-item">
+          <div class="ingredient-dot"></div>
+          <span><strong>${ing.amount}</strong> ${ing.item}</span>
+        </div>
+      `).join('')}
+    </div>
+    <div class="recipe-section-title">Method</div>
+    <div>
+      ${r.steps.map((step, i) => `
+        <div class="step-item">
+          <div class="step-num">${i+1}</div>
+          <div class="step-text">${step}</div>
+        </div>
+      `).join('')}
+    </div>
+    ${r.tip ? `<div style="background:rgba(201,125,78,0.08);border-radius:12px;padding:12px;margin-top:16px;font-size:13px;color:var(--accent)">💡 <strong>Chef's tip:</strong> ${r.tip}</div>` : ''}
+    ${r.sources && r.sources.length ? `
+      <div class="recipe-section-title" style="margin-top:20px">Verify Macros</div>
+      <div style="background:rgba(122,158,126,0.06);border:1px solid var(--border);border-radius:12px;padding:12px">
+        <div style="font-size:11px;color:var(--soft);margin-bottom:10px;line-height:1.5">Cross-reference nutrition data on these sites to validate the macro estimates:</div>
+        ${r.sources.map(s => `
+          <a href="${s.url}" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(122,158,126,0.1);text-decoration:none;color:var(--charcoal)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--sage-dark)" width="16" height="16" style="flex-shrink:0"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            <span style="font-size:13px;font-weight:500">${s.name}</span>
+          </a>
+        `).join('')}
+      </div>
+    ` : ''}
+  `;
+}
+
+function closeRecipeModal() {
+  document.getElementById('recipe-overlay').classList.remove('open');
+  document.getElementById('recipe-sheet').classList.remove('open');
+}
+
+// ── COPY MEAL MODAL ───────────────────────────────────────────
+let copySource = null;
+let copySelections = new Set(); // "dayIndex|slot" strings
+
+function openCopy(di, mi) {
+  copySource = { di, mi };
+  copySelections.clear();
+  const meal = state.mealPlan.days[di].meals[mi];
+  document.getElementById('copy-meal-info').innerHTML = `<strong>${meal.type}:</strong> ${meal.name} <span style="color:var(--sage-dark);font-weight:700">${meal.calories} kcal</span>`;
+  renderCopyGrid();
+  document.getElementById('copy-overlay').classList.add('open');
+  document.getElementById('copy-sheet').classList.add('open');
+}
+
+function renderCopyGrid() {
+  const { di, mi } = copySource;
+  const meal = state.mealPlan.days[di].meals[mi];
+  const grid = document.getElementById('copy-day-grid');
+  grid.innerHTML = '';
+
+  state.mealPlan.days.forEach((day, tdi) => {
+    ['Breakfast','Lunch','Dinner','Snack'].forEach(slot => {
+      const isCurrent = tdi === di && slot === meal.type;
+      const key = `${tdi}|${slot}`;
+      const isSelected = copySelections.has(key);
+      const btn = document.createElement('button');
+      btn.className = 'copy-day-btn' + (isCurrent ? ' current' : '') + (isSelected ? ' selected' : '');
+      btn.style.cssText = isSelected
+        ? 'border-color:var(--sage-dark);background:rgba(79,110,83,0.1);color:var(--sage-dark)'
+        : '';
+      btn.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div>
+            <div class="copy-meal-type">${slot}</div>
+            ${day.day}
+          </div>
+          ${isSelected ? '<div style="color:var(--sage-dark);font-size:16px">✓</div>' : ''}
+        </div>
+      `;
+      if (!isCurrent) {
+        btn.onclick = () => {
+          if (copySelections.has(key)) copySelections.delete(key);
+          else copySelections.add(key);
+          renderCopyGrid();
+          updateCopyApplyBtn();
+        };
+      }
+      grid.appendChild(btn);
+    });
+  });
+}
+
+function updateCopyApplyBtn() {
+  const btn = document.getElementById('copy-apply-btn');
+  const count = copySelections.size;
+  btn.textContent = count === 0 ? 'Select days above' : `Copy to ${count} slot${count>1?'s':''}`;
+  btn.disabled = count === 0;
+}
+
+function copyToAllDays() {
+  const { di, mi } = copySource;
+  const sourceMeal = state.mealPlan.days[di].meals[mi];
+  let count = 0;
+  state.mealPlan.days.forEach((otherDay, otherDi) => {
+    if (otherDi === di) return;
+    const newMeal = { ...sourceMeal };
+    // For Snacks: always append rather than replace, so multiple snacks are allowed
+    if (sourceMeal.type === 'Snack') {
+      otherDay.meals.push(newMeal);
+      otherDay.totalCalories += newMeal.calories;
+    } else {
+      const idx = otherDay.meals.findIndex(m => m.type === sourceMeal.type);
+      if (idx >= 0) {
+        otherDay.totalCalories = otherDay.totalCalories - otherDay.meals[idx].calories + newMeal.calories;
+        otherDay.meals[idx] = newMeal;
+      } else {
+        otherDay.meals.push(newMeal);
+        otherDay.totalCalories += newMeal.calories;
+      }
+    }
+    count++;
+  });
+  save();
+  renderDays(state.mealPlan);
+  closeCopyModal();
+  showToast(`Copied to all ${count} other days ✓`);
+}
+
+function selectAllDaysSameSlot() {
+  const { di, mi } = copySource;
+  const meal = state.mealPlan.days[di].meals[mi];
+  state.mealPlan.days.forEach((_, tdi) => {
+    const key = `${tdi}|${meal.type}`;
+    if (!(tdi === di)) copySelections.add(key);
+  });
+  renderCopyGrid();
+  updateCopyApplyBtn();
+}
+
+function applyMultiCopy() {
+  const { di, mi } = copySource;
+  const sourceMeal = state.mealPlan.days[di].meals[mi];
+  let count = 0;
+  copySelections.forEach(key => {
+    const [tdi, slot] = key.split('|');
+    const targetDay = state.mealPlan.days[parseInt(tdi)];
+    const newMeal = { ...sourceMeal, type: slot };
+    const targetIdx = targetDay.meals.findIndex(m => m.type === slot);
+    if (targetIdx >= 0) {
+      targetDay.totalCalories = targetDay.totalCalories - targetDay.meals[targetIdx].calories + newMeal.calories;
+      targetDay.meals[targetIdx] = newMeal;
+    } else {
+      targetDay.meals.push(newMeal);
+      targetDay.totalCalories += newMeal.calories;
+    }
+    count++;
+  });
+  save();
+  renderDays(state.mealPlan);
+  closeCopyModal();
+  showToast(`Copied to ${count} slot${count>1?'s':''} ✓`);
+}
+
+function closeCopyModal() {
+  copySelections.clear();
+  document.getElementById('copy-overlay').classList.remove('open');
+  document.getElementById('copy-sheet').classList.remove('open');
+}
+
+// ── SHOPPING LIST ─────────────────────────────────────────────
+let shopDays = 7;
+let shopChecked = new Set();   // items in basket (ticked while shopping)
+let shopTab = 'list';
+let lastShopData = null;
+
+function switchShopTab(tab) {
+  shopTab = tab;
+  document.getElementById('shop-tab-list').classList.toggle('active', tab === 'list');
+  document.getElementById('shop-tab-purchased').classList.toggle('active', tab === 'purchased');
+  const clearBtn = document.getElementById('shop-clear-btn');
+  clearBtn.textContent = tab === 'list' ? 'Clear ticked' : 'Clear all purchased';
+  if (lastShopData) renderShopList(lastShopData);
+}
+
+function renderShopPage() {
+  if (!state.mealPlan) {
+    document.getElementById('shop-no-plan').style.display = 'block';
+    document.getElementById('shop-content').style.display = 'none';
+    return;
+  }
+  document.getElementById('shop-no-plan').style.display = 'none';
+  document.getElementById('shop-content').style.display = 'block';
+
+  const filter = document.getElementById('shop-day-filter');
+  filter.innerHTML = '';
+  [1,2,3,4,5,6,7].forEach(d => {
+    const btn = document.createElement('button');
+    btn.className = 'day-filter-btn' + (d === shopDays ? ' active' : '');
+    btn.textContent = d === 1 ? '1 day' : `${d} days`;
+    btn.onclick = () => { shopDays = d; shopChecked.clear(); renderShopPage(); };
+    filter.appendChild(btn);
+  });
+
+  generateShoppingList(shopDays);
+}
+
+function generateShoppingList(numDays) {
+  const days = state.mealPlan.days.slice(0, numDays);
+  const mealNames = [];
+  days.forEach(day => day.meals.forEach(meal => mealNames.push(meal.name)));
+
+  const listEl = document.getElementById('shop-list');
+  const summary = document.getElementById('shop-summary');
+  summary.textContent = `${mealNames.length} meals across ${numDays} day${numDays>1?'s':''}`;
+
+  const cacheKey = 'shop_' + numDays + '_' + mealNames.join('|').replace(/\s+/g,'_').slice(0, 150);
+  if (recipeCache[cacheKey]) { lastShopData = recipeCache[cacheKey]; renderShopList(recipeCache[cacheKey]); return; }
+
+  listEl.innerHTML = '<div class="loading-state"><div class="spinner"></div><p>Building your shopping list…</p></div>';
+
+  const prompt = `You are a nutritionist. Generate a consolidated grocery shopping list for these meals:
+${mealNames.map((n,i) => `${i+1}. ${n}`).join('\n')}
+
+Consolidate duplicate ingredients. Group by category.
+Return ONLY valid JSON, no markdown:
+{
+  "categories": [
+    { "name": "Meat & Fish", "items": ["500g chicken breast", "2 salmon fillets"] },
+    { "name": "Vegetables", "items": ["1 bag spinach", "3 bell peppers"] }
+  ]
+}
+Categories should be: Meat & Fish, Dairy & Eggs, Vegetables, Fruit, Grains & Carbs, Pantry & Condiments, Other.
+Only include categories that have items.`;
+
+  callGemini(prompt).then(text => {
+    const start = text.indexOf('{'); const end = text.lastIndexOf('}');
+    const data = JSON.parse(text.slice(start, end + 1));
+    recipeCache[cacheKey] = data;
+    lastShopData = data;
+    save(); // persist shopping list cache to localStorage
+    renderShopList(data);
+  }).catch(e => {
+    listEl.innerHTML = `<p style="color:var(--danger);text-align:center;padding:20px">Could not generate list: ${e.message}</p>`;
+  });
+}
+
+function renderShopList(data) {
+  const listEl = document.getElementById('shop-list');
+  listEl.innerHTML = '';
+
+  // Count purchased
+  let purchasedCount = Object.values(state.purchasedItems).filter(Boolean).length;
+  document.getElementById('shop-purchased-count').textContent = purchasedCount;
+
+  if (shopTab === 'purchased') {
+    // Show only purchased items grouped by category
+    let hasPurchased = false;
+    data.categories.forEach(cat => {
+      const purchasedItems = cat.items.filter(item => state.purchasedItems[item]);
+      if (purchasedItems.length === 0) return;
+      hasPurchased = true;
+      const section = document.createElement('div');
+      section.className = 'shop-category';
+      section.innerHTML = `<div class="shop-category-title">${cat.name}</div>`;
+      const itemsDiv = document.createElement('div');
+      itemsDiv.className = 'card'; itemsDiv.style.padding = '4px 16px';
+      purchasedItems.forEach(item => {
+        const row = document.createElement('div');
+        row.className = 'shop-item';
+        row.innerHTML = `
+          <div class="shop-checkbox checked" style="background:#c8a040;border-color:#c8a040"></div>
+          <div class="shop-item-text" style="color:var(--soft);text-decoration:line-through">${item}</div>
+          <button onclick="unpurchaseItem('${item.replace(/'/g,"\\'")}', event)" style="font-size:11px;background:none;border:none;color:var(--danger);cursor:pointer;padding:2px 6px;font-family:'DM Sans',sans-serif;font-weight:600">↩</button>
+        `;
+        itemsDiv.appendChild(row);
+      });
+      section.appendChild(itemsDiv);
+      listEl.appendChild(section);
+    });
+    if (!hasPurchased) {
+      listEl.innerHTML = '<div class="empty-state"><div class="icon">🛍</div><h3>Nothing purchased yet</h3><p>Tick items on the shopping list then mark them as purchased.</p></div>';
+    }
+    return;
+  }
+
+  // Shopping list tab — show unpurchased, allow in-basket ticking then mark purchased
+  data.categories.forEach(cat => {
+    const unpurchased = cat.items.filter(item => !state.purchasedItems[item]);
+    if (unpurchased.length === 0) return;
+    const section = document.createElement('div');
+    section.className = 'shop-category';
+    section.innerHTML = `<div class="shop-category-title">${cat.name}</div>`;
+    const itemsDiv = document.createElement('div');
+    itemsDiv.className = 'card'; itemsDiv.style.padding = '4px 16px';
+    unpurchased.forEach(item => {
+      const inBasket = shopChecked.has(item);
+      const row = document.createElement('div');
+      row.className = 'shop-item' + (inBasket ? ' checked' : '');
+      row.innerHTML = `
+        <div class="shop-checkbox ${inBasket?'checked':''}" onclick="toggleBasket('${item.replace(/'/g,"\\'")}', event)"></div>
+        <div class="shop-item-text" onclick="toggleBasket('${item.replace(/'/g,"\\'")}', event)">${item}</div>
+        ${inBasket ? `<button onclick="markPurchased('${item.replace(/'/g,"\\'")}', event)" style="font-size:11px;background:var(--sage-dark);color:white;border:none;border-radius:12px;padding:3px 10px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;flex-shrink:0">Bought</button>` : ''}
+      `;
+      itemsDiv.appendChild(row);
+    });
+    section.appendChild(itemsDiv);
+    listEl.appendChild(section);
+  });
+
+  // If everything is purchased
+  const allItems = data.categories.flatMap(c => c.items);
+  const allPurchased = allItems.every(i => state.purchasedItems[i]);
+  if (allPurchased && allItems.length > 0) {
+    listEl.innerHTML = '<div class="empty-state"><div class="icon">✅</div><h3>All purchased!</h3><p>Everything on your list has been bought. Great shopping!</p></div>';
+  }
+
+  // Basket ticked summary
+  if (shopChecked.size > 0 && shopTab === 'list') {
+    const bar = document.createElement('div');
+    bar.style.cssText = 'position:sticky;bottom:90px;margin:12px 0;padding:10px 14px;background:var(--sage-dark);color:white;border-radius:12px;display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:600';
+    bar.innerHTML = `<span>🛒 ${shopChecked.size} in basket</span><button onclick="markAllBasketPurchased()" style="background:white;color:var(--sage-dark);border:none;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">Mark all bought</button>`;
+    listEl.appendChild(bar);
+  }
+}
+
+function toggleBasket(item, e) {
+  e.stopPropagation();
+  if (shopChecked.has(item)) shopChecked.delete(item);
+  else shopChecked.add(item);
+  if (lastShopData) renderShopList(lastShopData);
+}
+
+function markPurchased(item, e) {
+  e.stopPropagation();
+  shopChecked.delete(item);
+  state.purchasedItems[item] = true;
+  save();
+  if (lastShopData) renderShopList(lastShopData);
+  showToast('Marked as purchased ✓');
+}
+
+function markAllBasketPurchased() {
+  shopChecked.forEach(item => { state.purchasedItems[item] = true; });
+  shopChecked.clear();
+  save();
+  if (lastShopData) renderShopList(lastShopData);
+  showToast('All basket items marked purchased ✓');
+}
+
+function unpurchaseItem(item, e) {
+  e.stopPropagation();
+  delete state.purchasedItems[item];
+  save();
+  if (lastShopData) renderShopList(lastShopData);
+}
+
+function clearShopState() {
+  if (shopTab === 'list') {
+    shopChecked.clear();
+  } else {
+    state.purchasedItems = {};
+    save();
+  }
+  if (lastShopData) renderShopList(lastShopData);
+  showToast('Cleared ✓');
+}
+
+// ── DOWNLOAD APP ──────────────────────────────────────────────
+function downloadApp() {
+  const html = document.documentElement.outerHTML;
+  const blob = new Blob([html], { type: 'text/html' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = 'NourishAI.html';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('NourishAI.html downloaded ✓');
+}
+function renderLogPage() {
+  // Set today's date as default
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('log-meal-date').value = today;
+
+  const log = state.foodLog || [];
+  const container = document.getElementById('log-entries');
+  const empty = document.getElementById('log-empty');
+
+  if (log.length === 0) {
+    empty.style.display = 'block';
+    container.innerHTML = '';
+    return;
+  }
+  empty.style.display = 'none';
+
+  // Group by date descending
+  const byDate = {};
+  [...log].reverse().forEach(entry => {
+    if (!byDate[entry.date]) byDate[entry.date] = [];
+    byDate[entry.date].push(entry);
+  });
+
+  const target = state.profile ? calcMacros(state.profile) : null;
+  container.innerHTML = '';
+
+  Object.entries(byDate).forEach(([date, entries]) => {
+    const totalCals    = entries.reduce((s, e) => s + (e.calories || 0), 0);
+    const totalProtein = entries.reduce((s, e) => s + (e.protein  || 0), 0);
+    const totalCarbs   = entries.reduce((s, e) => s + (e.carbs    || 0), 0);
+    const totalFat     = entries.reduce((s, e) => s + (e.fat      || 0), 0);
+    const diff = target ? totalCals - target.calories : null;
+    const diffLabel = diff !== null
+      ? `<span class="log-vs ${diff <= 0 ? 'under' : 'over'}">${diff <= 0 ? diff : '+' + diff} kcal vs target</span>`
+      : '';
+
+    const group = document.createElement('div');
+    group.className = 'log-date-group';
+    group.innerHTML = `
+      <div class="log-date-header">
+        <div class="log-date-label">${formatDate(date)}</div>
+        <div class="log-date-summary">${totalCals} kcal eaten<br>${diffLabel}</div>
+      </div>
+      <div class="card" style="padding:4px 16px 12px">
+        ${entries.map(entry => `
+          <div class="log-entry">
+            <div class="log-entry-type ${(entry.type||'').toLowerCase()}">${entry.type || 'Meal'}</div>
+            <div class="log-entry-info">
+              <div class="log-entry-name">${entry.name}</div>
+              <div class="log-entry-meta">P: ${entry.protein||0}g · C: ${entry.carbs||0}g · F: ${entry.fat||0}g · ${entry.time || ''}</div>
+            </div>
+            <div class="log-entry-cals">${entry.calories || 0}</div>
+            <button class="log-del-btn" onclick="deleteLogEntry(${entry.id})">✕</button>
+          </div>
+        `).join('')}
+        <div class="log-macro-row">
+          <div class="log-macro-chip p"><div class="lmv">${totalProtein}g</div><div class="lml">Protein</div></div>
+          <div class="log-macro-chip c"><div class="lmv">${totalCarbs}g</div><div class="lml">Carbs</div></div>
+          <div class="log-macro-chip f"><div class="lmv">${totalFat}g</div><div class="lml">Fat</div></div>
+          <div class="log-macro-chip"><div class="lmv">${totalCals}</div><div class="lml">kcal</div></div>
+        </div>
+      </div>
+    `;
+    container.appendChild(group);
+  });
+}
+
+function addLogEntry() {
+  const name    = document.getElementById('log-meal-name').value.trim();
+  const type    = document.getElementById('log-meal-type').value;
+  const date    = document.getElementById('log-meal-date').value;
+  const cals    = parseInt(document.getElementById('log-meal-cals').value) || 0;
+  const protein = parseInt(document.getElementById('log-meal-protein').value) || 0;
+  const carbs   = parseInt(document.getElementById('log-meal-carbs').value) || 0;
+  const fat     = parseInt(document.getElementById('log-meal-fat').value) || 0;
+
+  if (!name || !date) { showToast('Enter a meal name and date'); return; }
+
+  const now = new Date();
+  state.foodLog = state.foodLog || [];
+  state.foodLog.push({
+    id: Date.now(),
+    date,
+    time: now.toTimeString().slice(0,5),
+    name, type, calories: cals, protein, carbs, fat,
+    source: 'manual'
+  });
+  save();
+
+  // Clear form
+  document.getElementById('log-meal-name').value = '';
+  document.getElementById('log-meal-cals').value = '';
+  document.getElementById('log-meal-protein').value = '';
+  document.getElementById('log-meal-carbs').value = '';
+  document.getElementById('log-meal-fat').value = '';
+
+  renderLogPage();
+  showToast('Logged ✓');
+}
+
+function deleteLogEntry(id) {
+  const entry = (state.foodLog || []).find(e => e.id === id);
+  // If it came from a plan meal, also un-mark it as eaten
+  if (entry && entry.source && entry.source !== 'manual') {
+    delete state.eatenMeals[entry.source];
+    if (state.mealPlan) renderDays(state.mealPlan);
+  }
+  state.foodLog = (state.foodLog || []).filter(e => e.id !== id);
+  save();
+  renderLogPage();
+  showToast('Entry removed ✓');
+}
+async function callGemini(prompt) {
+  const resp = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${state.apiKey}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { temperature: 1, maxOutputTokens: 8192 }
+      })
+    }
+  );
+  if (!resp.ok) { const e = await resp.json(); throw new Error(e.error?.message || 'API error'); }
+  const data = await resp.json();
+  const parts = data.candidates?.[0]?.content?.parts || [];
+  const text = parts.map(p => p.text || '').join('').trim();
+  if (!text) throw new Error('Empty response');
+  return text;
+}
+load();
+loadCaches();
+setUnit(state.unit || 'kg');
+renderHome();
+attachPreviewListeners();
+</script>
+
+
+</body></html>
