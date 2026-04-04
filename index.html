@@ -708,13 +708,22 @@
         <svg width="10" height="10" viewBox="0 0 10 10" fill="white"><circle cx="5" cy="5" r="5"></circle></svg>
         NourishAI
       </div>
-      <button onclick="downloadApp()" title="Save app to PC" style="display: flex; align-items: center; gap: 6px; background: white; border: 1.5px solid var(--border); border-radius: 20px; padding: 6px 14px; font-family: &quot;DM Sans&quot;, sans-serif; font-size: 12px; font-weight: 600; color: var(--sage-dark); cursor: pointer; box-shadow: var(--shadow-sm); transition: 0.2s;" onmouseover="this.style.background='white'" onmouseout="this.style.background='rgba(255,255,255,0.85)'">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="15" height="15" stroke-width="2.2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-        Save to PC
-      </button>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div id="sync-home-badge" style="display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; color: var(--sage-dark); background: rgba(79, 110, 83, 0.1); border: 1px solid rgba(79, 110, 83, 0.2); padding: 4px 10px; border-radius: 20px; cursor: pointer;" onclick="syncNow()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="12" height="12" stroke-width="2.5"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"></path></svg>
+          <span id="sync-home-label">Sync</span>
+        </div>
+        <button onclick="downloadApp()" title="Save app to PC" style="display: flex; align-items: center; gap: 6px; background: white; border: 1.5px solid var(--border); border-radius: 20px; padding: 6px 14px; font-family: &quot;DM Sans&quot;, sans-serif; font-size: 12px; font-weight: 600; color: var(--sage-dark); cursor: pointer; box-shadow: var(--shadow-sm); transition: 0.2s;" onmouseover="this.style.background='white'" onmouseout="this.style.background='rgba(255,255,255,0.85)'">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="15" height="15" stroke-width="2.2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          Save to PC
+        </button>
+      </div>
     </div>
     <h1 id="greeting">Good morning.</h1>
     <p id="home-subtitle">188lbs → 160lbs</p>
+    <div id="home-user-chip" style="margin-top: 6px; display: inline-flex; align-items: center; gap: 6px; background: rgba(79, 110, 83, 0.1); border: 1px solid rgba(79, 110, 83, 0.2); border-radius: 20px; padding: 4px 12px; font-size: 12px; font-weight: 600; color: var(--sage-dark);">
+      <span>👤</span><span id="home-user-name">TaonaJ</span>
+    </div>
   </div>
 
   <div class="section" id="home-setup-prompt" style="display:none">
@@ -827,7 +836,7 @@
         </div>
 
         <div style="background:rgba(122,158,126,0.1);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--sage-dark);font-weight:500;line-height:1.6">
-          💡 <strong>To update the app later</strong> — just tap "Save to PC", rename to <code style="background:rgba(122,158,126,0.18);padding:1px 5px;border-radius:4px">index.html</code>, go to your GitHub repo, click the file → pencil icon → drag the new file in → Commit. Your URL stays the same. Your iPhone data is unaffected.
+          💡 <strong>Updating the app:</strong> When Claude gives you a new version on your PC, upload it to GitHub Pages (rename to <code style="background:rgba(122,158,126,0.18);padding:1px 5px;border-radius:4px">index.html</code> → commit). Then on your iPhone, go to <strong>Profile → App Update → Pull Latest from GitHub</strong> to get the new version on mobile. Your data is never affected.
         </div>
       </div>
     </div>
@@ -852,7 +861,7 @@
     <button class="btn" onclick="goTo('profile')">Go to Profile</button>
   </div>
 
-  <div id="plan-content" style="display:none">
+  <div id="plan-content" style="display: block;">
     <div class="generate-area">
       <button class="btn accent" id="generate-btn" onclick="generateMealPlan()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="18" height="18"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
@@ -865,13 +874,734 @@
       <p>Claude is building your personalised<br>7-day meal plan…</p>
     </div>
 
-    <div id="plan-empty" class="empty-state">
+    <div id="plan-empty" class="empty-state" style="display: none;">
       <div class="icon">🥗</div>
       <h3>No plan yet</h3>
       <p>Hit "Generate 7-Day Plan" to get your personalised weekly meal schedule.</p>
     </div>
 
-    <div id="plan-days" class="section" style="display:none"></div>
+    <div id="plan-days" class="section" style="display: block;"><div class="day-card">
+      <div class="day-header" onclick="toggleDay(0)">
+        <h3>Monday</h3>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="day-cals" id="day-cals-0">1000 kcal / 1000</div>
+          <svg class="chevron open" id="chev-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" width="18" height="18"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+      </div>
+      <div class="day-cal-bar"><div class="day-cal-fill " style="width:0%"></div></div>
+      <div class="collapsible open" id="day-body-0">
+        <div class="day-meals">
+          
+            <div class="meal-item " id="meal-item-0-0">
+              <div class="meal-type-badge breakfast">Breakfast</div>
+              <div class="meal-info">
+                <div class="meal-name">Cottage Cheese with Peach Slices</div>
+                <div class="meal-macros">P: 20g · C: 25g · F: 5g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(0,0)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(0,0)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(0,0)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">200</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-0-1">
+              <div class="meal-type-badge lunch">Lunch</div>
+              <div class="meal-info">
+                <div class="meal-name">Tuna Salad (light mayo) on Lettuce Wraps</div>
+                <div class="meal-macros">P: 35g · C: 10g · F: 15g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(0,1)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(0,1)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(0,1)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">300</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-0-2">
+              <div class="meal-type-badge dinner">Dinner</div>
+              <div class="meal-info">
+                <div class="meal-name">Lean Beef Stir-fry with Mixed Vegetables</div>
+                <div class="meal-macros">P: 40g · C: 15g · F: 10g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(0,2)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(0,2)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(0,2)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">300</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-0-3">
+              <div class="meal-type-badge snack">Snack</div>
+              <div class="meal-info">
+                <div class="meal-name">Apple Slices with Peanut Butter</div>
+                <div class="meal-macros">P: 15g · C: 15g · F: 5g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(0,3)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(0,3)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(0,3)">📋 Copy</button>
+                  <button class="meal-action-btn" style="color:var(--danger);border-color:rgba(201,107,107,0.3)" onclick="deleteMeal(0,3)">🗑 Delete</button>
+                </div>
+              </div>
+              <div class="meal-cals">100</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-0-4">
+              <div class="meal-type-badge snack">Snack</div>
+              <div class="meal-info">
+                <div class="meal-name">Steamed Edamame (shelled)</div>
+                <div class="meal-macros">P: 10g · C: 8g · F: 4g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(0,4)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(0,4)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(0,4)">📋 Copy</button>
+                  <button class="meal-action-btn" style="color:var(--danger);border-color:rgba(201,107,107,0.3)" onclick="deleteMeal(0,4)">🗑 Delete</button>
+                </div>
+              </div>
+              <div class="meal-cals">100</div>
+            </div>
+          
+        </div>
+        
+        <div style="padding:8px 18px 12px">
+          <button onclick="addExtraSnack(0)" style="width:100%;padding:8px;border-radius:10px;border:1.5px dashed var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--soft);cursor:pointer">+ Add extra snack</button>
+        </div>
+      </div>
+    </div><div class="day-card">
+      <div class="day-header" onclick="toggleDay(1)">
+        <h3>Tuesday</h3>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="day-cals" id="day-cals-1">1000 kcal / 1000</div>
+          <svg class="chevron " id="chev-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" width="18" height="18"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+      </div>
+      <div class="day-cal-bar"><div class="day-cal-fill " style="width:0%"></div></div>
+      <div class="collapsible " id="day-body-1">
+        <div class="day-meals">
+          
+            <div class="meal-item " id="meal-item-1-0">
+              <div class="meal-type-badge breakfast">Breakfast</div>
+              <div class="meal-info">
+                <div class="meal-name">Cottage Cheese with Peach Slices</div>
+                <div class="meal-macros">P: 20g · C: 25g · F: 5g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(1,0)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(1,0)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(1,0)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">200</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-1-1">
+              <div class="meal-type-badge lunch">Lunch</div>
+              <div class="meal-info">
+                <div class="meal-name">Tuna Salad (light mayo) on Lettuce Wraps</div>
+                <div class="meal-macros">P: 35g · C: 10g · F: 15g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(1,1)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(1,1)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(1,1)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">300</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-1-2">
+              <div class="meal-type-badge dinner">Dinner</div>
+              <div class="meal-info">
+                <div class="meal-name">Lean Beef Stir-fry with Mixed Vegetables</div>
+                <div class="meal-macros">P: 40g · C: 15g · F: 10g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(1,2)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(1,2)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(1,2)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">300</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-1-3">
+              <div class="meal-type-badge snack">Snack</div>
+              <div class="meal-info">
+                <div class="meal-name">Apple Slices with Peanut Butter</div>
+                <div class="meal-macros">P: 15g · C: 15g · F: 5g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(1,3)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(1,3)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(1,3)">📋 Copy</button>
+                  <button class="meal-action-btn" style="color:var(--danger);border-color:rgba(201,107,107,0.3)" onclick="deleteMeal(1,3)">🗑 Delete</button>
+                </div>
+              </div>
+              <div class="meal-cals">100</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-1-4">
+              <div class="meal-type-badge snack">Snack</div>
+              <div class="meal-info">
+                <div class="meal-name">Steamed Edamame (shelled)</div>
+                <div class="meal-macros">P: 10g · C: 8g · F: 4g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(1,4)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(1,4)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(1,4)">📋 Copy</button>
+                  <button class="meal-action-btn" style="color:var(--danger);border-color:rgba(201,107,107,0.3)" onclick="deleteMeal(1,4)">🗑 Delete</button>
+                </div>
+              </div>
+              <div class="meal-cals">100</div>
+            </div>
+          
+        </div>
+        
+        <div style="padding:8px 18px 12px">
+          <button onclick="addExtraSnack(1)" style="width:100%;padding:8px;border-radius:10px;border:1.5px dashed var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--soft);cursor:pointer">+ Add extra snack</button>
+        </div>
+      </div>
+    </div><div class="day-card">
+      <div class="day-header" onclick="toggleDay(2)">
+        <h3>Wednesday</h3>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="day-cals" id="day-cals-2">1000 kcal / 1000</div>
+          <svg class="chevron " id="chev-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" width="18" height="18"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+      </div>
+      <div class="day-cal-bar"><div class="day-cal-fill " style="width:0%"></div></div>
+      <div class="collapsible " id="day-body-2">
+        <div class="day-meals">
+          
+            <div class="meal-item " id="meal-item-2-0">
+              <div class="meal-type-badge breakfast">Breakfast</div>
+              <div class="meal-info">
+                <div class="meal-name">Cottage Cheese with Peach Slices</div>
+                <div class="meal-macros">P: 20g · C: 25g · F: 5g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(2,0)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(2,0)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(2,0)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">200</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-2-1">
+              <div class="meal-type-badge lunch">Lunch</div>
+              <div class="meal-info">
+                <div class="meal-name">Tuna Salad (light mayo) on Lettuce Wraps</div>
+                <div class="meal-macros">P: 35g · C: 10g · F: 15g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(2,1)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(2,1)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(2,1)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">300</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-2-2">
+              <div class="meal-type-badge dinner">Dinner</div>
+              <div class="meal-info">
+                <div class="meal-name">Lean Beef Stir-fry with Mixed Vegetables</div>
+                <div class="meal-macros">P: 40g · C: 15g · F: 10g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(2,2)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(2,2)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(2,2)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">300</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-2-3">
+              <div class="meal-type-badge snack">Snack</div>
+              <div class="meal-info">
+                <div class="meal-name">Apple Slices with Peanut Butter</div>
+                <div class="meal-macros">P: 15g · C: 15g · F: 5g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(2,3)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(2,3)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(2,3)">📋 Copy</button>
+                  <button class="meal-action-btn" style="color:var(--danger);border-color:rgba(201,107,107,0.3)" onclick="deleteMeal(2,3)">🗑 Delete</button>
+                </div>
+              </div>
+              <div class="meal-cals">100</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-2-4">
+              <div class="meal-type-badge snack">Snack</div>
+              <div class="meal-info">
+                <div class="meal-name">Steamed Edamame (shelled)</div>
+                <div class="meal-macros">P: 10g · C: 8g · F: 4g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(2,4)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(2,4)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(2,4)">📋 Copy</button>
+                  <button class="meal-action-btn" style="color:var(--danger);border-color:rgba(201,107,107,0.3)" onclick="deleteMeal(2,4)">🗑 Delete</button>
+                </div>
+              </div>
+              <div class="meal-cals">100</div>
+            </div>
+          
+        </div>
+        
+        <div style="padding:8px 18px 12px">
+          <button onclick="addExtraSnack(2)" style="width:100%;padding:8px;border-radius:10px;border:1.5px dashed var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--soft);cursor:pointer">+ Add extra snack</button>
+        </div>
+      </div>
+    </div><div class="day-card">
+      <div class="day-header" onclick="toggleDay(3)">
+        <h3>Thursday</h3>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="day-cals" id="day-cals-3">1000 kcal / 1000</div>
+          <svg class="chevron " id="chev-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" width="18" height="18"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+      </div>
+      <div class="day-cal-bar"><div class="day-cal-fill " style="width:0%"></div></div>
+      <div class="collapsible " id="day-body-3">
+        <div class="day-meals">
+          
+            <div class="meal-item " id="meal-item-3-0">
+              <div class="meal-type-badge breakfast">Breakfast</div>
+              <div class="meal-info">
+                <div class="meal-name">Cottage Cheese with Peach Slices</div>
+                <div class="meal-macros">P: 20g · C: 25g · F: 5g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(3,0)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(3,0)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(3,0)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">200</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-3-1">
+              <div class="meal-type-badge lunch">Lunch</div>
+              <div class="meal-info">
+                <div class="meal-name">Tuna Salad (light mayo) on Lettuce Wraps</div>
+                <div class="meal-macros">P: 35g · C: 10g · F: 15g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(3,1)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(3,1)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(3,1)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">300</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-3-2">
+              <div class="meal-type-badge dinner">Dinner</div>
+              <div class="meal-info">
+                <div class="meal-name">Lean Beef Stir-fry with Mixed Vegetables</div>
+                <div class="meal-macros">P: 40g · C: 15g · F: 10g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(3,2)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(3,2)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(3,2)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">300</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-3-3">
+              <div class="meal-type-badge snack">Snack</div>
+              <div class="meal-info">
+                <div class="meal-name">Apple Slices with Peanut Butter</div>
+                <div class="meal-macros">P: 15g · C: 15g · F: 5g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(3,3)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(3,3)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(3,3)">📋 Copy</button>
+                  <button class="meal-action-btn" style="color:var(--danger);border-color:rgba(201,107,107,0.3)" onclick="deleteMeal(3,3)">🗑 Delete</button>
+                </div>
+              </div>
+              <div class="meal-cals">100</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-3-4">
+              <div class="meal-type-badge snack">Snack</div>
+              <div class="meal-info">
+                <div class="meal-name">Steamed Edamame (shelled)</div>
+                <div class="meal-macros">P: 10g · C: 8g · F: 4g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(3,4)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(3,4)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(3,4)">📋 Copy</button>
+                  <button class="meal-action-btn" style="color:var(--danger);border-color:rgba(201,107,107,0.3)" onclick="deleteMeal(3,4)">🗑 Delete</button>
+                </div>
+              </div>
+              <div class="meal-cals">100</div>
+            </div>
+          
+        </div>
+        
+        <div style="padding:8px 18px 12px">
+          <button onclick="addExtraSnack(3)" style="width:100%;padding:8px;border-radius:10px;border:1.5px dashed var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--soft);cursor:pointer">+ Add extra snack</button>
+        </div>
+      </div>
+    </div><div class="day-card">
+      <div class="day-header" onclick="toggleDay(4)">
+        <h3>Friday</h3>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="day-cals" id="day-cals-4">1000 kcal / 1000</div>
+          <svg class="chevron " id="chev-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" width="18" height="18"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+      </div>
+      <div class="day-cal-bar"><div class="day-cal-fill " style="width:0%"></div></div>
+      <div class="collapsible " id="day-body-4">
+        <div class="day-meals">
+          
+            <div class="meal-item " id="meal-item-4-0">
+              <div class="meal-type-badge breakfast">Breakfast</div>
+              <div class="meal-info">
+                <div class="meal-name">Cottage Cheese with Peach Slices</div>
+                <div class="meal-macros">P: 20g · C: 25g · F: 5g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(4,0)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(4,0)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(4,0)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">200</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-4-1">
+              <div class="meal-type-badge lunch">Lunch</div>
+              <div class="meal-info">
+                <div class="meal-name">Tuna Salad (light mayo) on Lettuce Wraps</div>
+                <div class="meal-macros">P: 35g · C: 10g · F: 15g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(4,1)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(4,1)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(4,1)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">300</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-4-2">
+              <div class="meal-type-badge dinner">Dinner</div>
+              <div class="meal-info">
+                <div class="meal-name">Lean Beef Stir-fry with Mixed Vegetables</div>
+                <div class="meal-macros">P: 40g · C: 15g · F: 10g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(4,2)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(4,2)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(4,2)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">300</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-4-3">
+              <div class="meal-type-badge snack">Snack</div>
+              <div class="meal-info">
+                <div class="meal-name">Apple Slices with Peanut Butter</div>
+                <div class="meal-macros">P: 15g · C: 15g · F: 5g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(4,3)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(4,3)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(4,3)">📋 Copy</button>
+                  <button class="meal-action-btn" style="color:var(--danger);border-color:rgba(201,107,107,0.3)" onclick="deleteMeal(4,3)">🗑 Delete</button>
+                </div>
+              </div>
+              <div class="meal-cals">100</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-4-4">
+              <div class="meal-type-badge snack">Snack</div>
+              <div class="meal-info">
+                <div class="meal-name">Steamed Edamame (shelled)</div>
+                <div class="meal-macros">P: 10g · C: 8g · F: 4g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(4,4)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(4,4)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(4,4)">📋 Copy</button>
+                  <button class="meal-action-btn" style="color:var(--danger);border-color:rgba(201,107,107,0.3)" onclick="deleteMeal(4,4)">🗑 Delete</button>
+                </div>
+              </div>
+              <div class="meal-cals">100</div>
+            </div>
+          
+        </div>
+        
+        <div style="padding:8px 18px 12px">
+          <button onclick="addExtraSnack(4)" style="width:100%;padding:8px;border-radius:10px;border:1.5px dashed var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--soft);cursor:pointer">+ Add extra snack</button>
+        </div>
+      </div>
+    </div><div class="day-card">
+      <div class="day-header" onclick="toggleDay(5)">
+        <h3>Saturday</h3>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="day-cals" id="day-cals-5">1000 kcal / 1000</div>
+          <svg class="chevron " id="chev-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" width="18" height="18"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+      </div>
+      <div class="day-cal-bar"><div class="day-cal-fill " style="width:0%"></div></div>
+      <div class="collapsible " id="day-body-5">
+        <div class="day-meals">
+          
+            <div class="meal-item " id="meal-item-5-0">
+              <div class="meal-type-badge breakfast">Breakfast</div>
+              <div class="meal-info">
+                <div class="meal-name">Cottage Cheese with Peach Slices</div>
+                <div class="meal-macros">P: 20g · C: 25g · F: 5g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(5,0)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(5,0)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(5,0)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">200</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-5-1">
+              <div class="meal-type-badge lunch">Lunch</div>
+              <div class="meal-info">
+                <div class="meal-name">Tuna Salad (light mayo) on Lettuce Wraps</div>
+                <div class="meal-macros">P: 35g · C: 10g · F: 15g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(5,1)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(5,1)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(5,1)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">300</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-5-2">
+              <div class="meal-type-badge dinner">Dinner</div>
+              <div class="meal-info">
+                <div class="meal-name">Lean Beef Stir-fry with Mixed Vegetables</div>
+                <div class="meal-macros">P: 40g · C: 15g · F: 10g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(5,2)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(5,2)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(5,2)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">300</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-5-3">
+              <div class="meal-type-badge snack">Snack</div>
+              <div class="meal-info">
+                <div class="meal-name">Apple Slices with Peanut Butter</div>
+                <div class="meal-macros">P: 15g · C: 15g · F: 5g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(5,3)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(5,3)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(5,3)">📋 Copy</button>
+                  <button class="meal-action-btn" style="color:var(--danger);border-color:rgba(201,107,107,0.3)" onclick="deleteMeal(5,3)">🗑 Delete</button>
+                </div>
+              </div>
+              <div class="meal-cals">100</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-5-4">
+              <div class="meal-type-badge snack">Snack</div>
+              <div class="meal-info">
+                <div class="meal-name">Steamed Edamame (shelled)</div>
+                <div class="meal-macros">P: 10g · C: 8g · F: 4g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(5,4)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(5,4)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(5,4)">📋 Copy</button>
+                  <button class="meal-action-btn" style="color:var(--danger);border-color:rgba(201,107,107,0.3)" onclick="deleteMeal(5,4)">🗑 Delete</button>
+                </div>
+              </div>
+              <div class="meal-cals">100</div>
+            </div>
+          
+        </div>
+        
+        <div style="padding:8px 18px 12px">
+          <button onclick="addExtraSnack(5)" style="width:100%;padding:8px;border-radius:10px;border:1.5px dashed var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--soft);cursor:pointer">+ Add extra snack</button>
+        </div>
+      </div>
+    </div><div class="day-card">
+      <div class="day-header" onclick="toggleDay(6)">
+        <h3>Sunday</h3>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="day-cals" id="day-cals-6">1000 kcal / 1000</div>
+          <svg class="chevron " id="chev-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" width="18" height="18"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+      </div>
+      <div class="day-cal-bar"><div class="day-cal-fill " style="width:0%"></div></div>
+      <div class="collapsible " id="day-body-6">
+        <div class="day-meals">
+          
+            <div class="meal-item " id="meal-item-6-0">
+              <div class="meal-type-badge breakfast">Breakfast</div>
+              <div class="meal-info">
+                <div class="meal-name">Cottage Cheese with Peach Slices</div>
+                <div class="meal-macros">P: 20g · C: 25g · F: 5g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(6,0)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(6,0)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(6,0)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">200</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-6-1">
+              <div class="meal-type-badge lunch">Lunch</div>
+              <div class="meal-info">
+                <div class="meal-name">Tuna Salad (light mayo) on Lettuce Wraps</div>
+                <div class="meal-macros">P: 35g · C: 10g · F: 15g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(6,1)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(6,1)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(6,1)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">300</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-6-2">
+              <div class="meal-type-badge dinner">Dinner</div>
+              <div class="meal-info">
+                <div class="meal-name">Lean Beef Stir-fry with Mixed Vegetables</div>
+                <div class="meal-macros">P: 40g · C: 15g · F: 10g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(6,2)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(6,2)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(6,2)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">300</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-6-3">
+              <div class="meal-type-badge snack">Snack</div>
+              <div class="meal-info">
+                <div class="meal-name">Apple Slices with Peanut Butter</div>
+                <div class="meal-macros">P: 15g · C: 15g · F: 5g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(6,3)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(6,3)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(6,3)">📋 Copy</button>
+                  <button class="meal-action-btn" style="color:var(--danger);border-color:rgba(201,107,107,0.3)" onclick="deleteMeal(6,3)">🗑 Delete</button>
+                </div>
+              </div>
+              <div class="meal-cals">100</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-6-4">
+              <div class="meal-type-badge snack">Snack</div>
+              <div class="meal-info">
+                <div class="meal-name">Steamed Edamame (shelled)</div>
+                <div class="meal-macros">P: 10g · C: 8g · F: 4g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(6,4)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(6,4)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(6,4)">📋 Copy</button>
+                  <button class="meal-action-btn" style="color:var(--danger);border-color:rgba(201,107,107,0.3)" onclick="deleteMeal(6,4)">🗑 Delete</button>
+                </div>
+              </div>
+              <div class="meal-cals">100</div>
+            </div>
+          
+        </div>
+        
+        <div style="padding:8px 18px 12px">
+          <button onclick="addExtraSnack(6)" style="width:100%;padding:8px;border-radius:10px;border:1.5px dashed var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--soft);cursor:pointer">+ Add extra snack</button>
+        </div>
+      </div>
+    </div></div>
   </div>
 </div>
 
@@ -937,10 +1667,56 @@
   <div class="page-header">
     <div class="logo-badge">👤 Profile</div>
     <h1>Your Profile</h1>
-    <p>Used to calculate your personal macro targets</p>
+    <p id="profile-signed-in-label">Signed in as TaonaJ</p>
   </div>
 
   <div class="section">
+
+    <!-- ── USER IDENTITY ──────────────────────────────────── -->
+    <div class="card" style="margin-bottom:14px" id="identity-card">
+      <div id="identity-signed-in" style="display: block;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--sage-dark),var(--sage));display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <span id="identity-avatar" style="font-size:18px;font-weight:700;color:white">T</span>
+          </div>
+          <div>
+            <div id="identity-name" style="font-weight:700;font-size:16px;color:var(--charcoal)">TaonaJ</div>
+            <div style="font-size:12px;color:var(--soft)">Signed in on this device</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn outline" style="flex:1;font-size:13px" onclick="exportCredentials()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="14" height="14" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            Export credentials
+          </button>
+          <button class="btn outline" style="flex:1;font-size:13px;border-color:var(--danger);color:var(--danger)" onclick="signOut()">Sign out</button>
+        </div>
+      </div>
+
+      <div id="identity-setup" style="display: none;">
+        <div style="font-size:13px;font-weight:600;color:var(--mid);margin-bottom:12px">Create your profile account</div>
+        <div class="form-group" style="margin-bottom:10px">
+          <label>Display Name</label>
+          <input type="text" id="id-name" placeholder="e.g. Jane Doe">
+        </div>
+        <div class="form-group" style="margin-bottom:10px">
+          <label>Password</label>
+          <input type="password" id="id-password" placeholder="Choose a strong password">
+        </div>
+        <div class="form-group" style="margin-bottom:12px">
+          <label>Confirm Password</label>
+          <input type="password" id="id-password2" placeholder="Repeat password">
+        </div>
+        <button class="btn" onclick="createIdentity()">Create Account</button>
+        <div style="text-align:center;margin-top:10px;font-size:12px;color:var(--soft)">
+          Already have a credentials file?
+          <label style="color:var(--sage-dark);font-weight:600;cursor:pointer">
+            Import it <input type="file" id="import-creds-file" accept=".json" style="display:none" onchange="importCredentials(this)">
+          </label>
+        </div>
+      </div>
+    </div>
+
     <div class="card">
       <!-- Unit toggle -->
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
@@ -980,36 +1756,47 @@
       </div>
 
       <!-- Live preview -->
-      <div id="calorie-preview" style="display:none; margin-bottom:16px">
+      <div id="calorie-preview" style="display: block; margin-bottom: 16px;">
         <div style="background:rgba(122,158,126,0.1); border:1px solid rgba(122,158,126,0.25); border-radius:12px; padding:14px 16px;">
           <div style="font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:var(--soft);margin-bottom:8px">Calculated Targets</div>
           <div style="display:flex;gap:6px;flex-wrap:wrap">
             <div style="flex:1;min-width:80px;text-align:center;background:white;border-radius:10px;padding:10px 6px;">
-              <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--sage-dark)" id="prev-cals">—</div>
+              <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--sage-dark)" id="prev-cals">1000</div>
               <div style="font-size:10px;color:var(--soft);margin-top:2px">kcal/day</div>
             </div>
             <div style="flex:1;min-width:80px;text-align:center;background:white;border-radius:10px;padding:10px 6px;">
-              <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--sage-dark)" id="prev-protein">—</div>
+              <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--sage-dark)" id="prev-protein">100</div>
               <div style="font-size:10px;color:var(--soft);margin-top:2px">protein g</div>
             </div>
             <div style="flex:1;min-width:80px;text-align:center;background:white;border-radius:10px;padding:10px 6px;">
-              <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--accent)" id="prev-carbs">—</div>
+              <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--accent)" id="prev-carbs">75</div>
               <div style="font-size:10px;color:var(--soft);margin-top:2px">carbs g</div>
             </div>
             <div style="flex:1;min-width:80px;text-align:center;background:white;border-radius:10px;padding:10px 6px;">
-              <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:#a07040" id="prev-fat">—</div>
+              <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:#a07040" id="prev-fat">33</div>
               <div style="font-size:10px;color:var(--soft);margin-top:2px">fat g</div>
             </div>
           </div>
-          <div style="font-size:11px;color:var(--soft);margin-top:10px;text-align:center" id="prev-note">—</div>
+          <div style="font-size:11px;color:var(--soft);margin-top:10px;text-align:center" id="prev-note">1700 maintenance − 1100 kcal/day deficit = 1000 kcal target</div>
         </div>
       </div>
 
       <button class="btn" onclick="saveProfile()">Save Profile &amp; Calculate Macros</button>
     </div>
 
-    <div class="section-title" style="padding:0; margin-top:20px; margin-bottom:10px">Gemini API Key (Free)</div>
-    <div class="card">
+    <div id="profile-saved" class="alert success" style="display:none; margin-top:14px">✓ Profile saved! Your macro targets have been calculated.</div>
+
+    <!-- ── DANGER ZONE ─────────────────────────────────────── -->
+    <div style="margin-top:28px;margin-bottom:12px;display:flex;align-items:center;gap:10px">
+      <div style="flex:1;height:1px;background:rgba(201,107,107,0.3)"></div>
+      <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--danger);white-space:nowrap">⚠ Danger Zone</div>
+      <div style="flex:1;height:1px;background:rgba(201,107,107,0.3)"></div>
+    </div>
+    <p style="font-size:12px;color:var(--soft);margin-bottom:14px;line-height:1.5">API keys, tokens and integration settings. Keep these private — never share them.</p>
+
+    <!-- 1. Gemini API Key -->
+    <div class="card" style="border-color:rgba(201,107,107,0.2);margin-bottom:12px">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--danger);margin-bottom:10px">🔑 Gemini API Key</div>
       <div class="form-group" style="margin-bottom:8px">
         <label>API Key</label>
         <div class="api-key-wrap">
@@ -1017,14 +1804,60 @@
           <button class="api-key-toggle" onclick="toggleKeyVisibility()">Show</button>
         </div>
       </div>
-      <p style="font-size:12px; color:var(--soft); margin-bottom:12px; line-height:1.5">
-        Your key is stored locally on your device only — never sent anywhere except directly to Google's Gemini API to generate your meal plans.
-        Get your free key (no card needed) at <strong>aistudio.google.com</strong> → "Get API Key".
-      </p>
-      <button class="btn outline" onclick="saveApiKey()">Save API Key</button>
+      <p style="font-size:11px;color:var(--soft);margin-bottom:10px;line-height:1.5">Powers AI meal plan generation. Free at <a href="https://aistudio.google.com" target="_blank" rel="noopener" style="color:var(--sage-dark);font-weight:600">aistudio.google.com</a> — no card needed.</p>
+      <button class="btn outline" style="border-color:rgba(201,107,107,0.3);color:var(--danger)" onclick="saveApiKey()">Save Gemini Key</button>
     </div>
 
-    <div id="profile-saved" class="alert success" style="display:none; margin-top:14px">✓ Profile saved! Your macro targets have been calculated.</div>
+    <!-- 2. GitHub Gist Sync -->
+    <div class="card" style="border-color:rgba(201,107,107,0.2);margin-bottom:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--danger)">🔄 GitHub Gist — Data Sync</div>
+        <div style="font-size:11px;color:var(--soft)" id="sync-status-profile">Connected — tap ↻ to sync</div>
+      </div>
+      <p style="font-size:11px;color:var(--soft);margin-bottom:10px;line-height:1.5">Syncs your meal plan, weight, food log and profile across all devices. Token needs <strong>Gists: read &amp; write</strong> only — no other GitHub access. <a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener" style="color:var(--sage-dark);font-weight:600">Create token →</a></p>
+      <div class="form-group" style="margin-bottom:8px">
+        <label>Gist ID</label>
+        <input type="text" id="p-gist-id" placeholder="e.g. a1b2c3d4e5f6…">
+      </div>
+      <div class="form-group" style="margin-bottom:12px">
+        <label>GitHub Token (Gists scope only)</label>
+        <div class="api-key-wrap">
+          <input type="password" id="p-gist-token" placeholder="github_pat_…">
+          <button class="api-key-toggle" onclick="toggleGistVisibility()">Show</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn outline" style="flex:1;border-color:rgba(201,107,107,0.3);color:var(--danger)" onclick="saveGistConfig()">Save &amp; Connect</button>
+        <button class="btn outline" style="flex:0 0 auto;width:auto;padding:13px 16px" onclick="syncNow()" title="Force sync now">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="16" height="16" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"></path></svg>
+        </button>
+      </div>
+      <div id="gist-sync-msg" style="display:none;margin-top:10px;font-size:12px;padding:8px 12px;border-radius:8px"></div>
+    </div>
+
+    <!-- 3. Mobile app update pull -->
+    <div class="card" style="border-color:rgba(201,107,107,0.2);margin-bottom:12px">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--danger);margin-bottom:6px">📲 Pull App Update (Mobile only)</div>
+      <p style="font-size:11px;color:var(--soft);margin-bottom:10px;line-height:1.5">After a new version is uploaded to GitHub Pages from PC, tap below to pull it to this device. App code only — your Gist data is never touched.</p>
+      <div class="form-group" style="margin-bottom:10px">
+        <label>GitHub Pages URL</label>
+        <input type="url" id="p-github-url" placeholder="https://yourusername.github.io/nourish-ai">
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn outline" style="flex:1;border-color:rgba(201,107,107,0.3);color:var(--danger)" onclick="saveGithubUrl()">Save URL</button>
+        <button class="btn" style="flex:1" id="update-app-btn" onclick="updateApp()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="15" height="15" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"></path></svg>
+          Pull Latest from GitHub
+        </button>
+      </div>
+    </div>
+
+    <!-- 4. Clear local data -->
+    <div class="card" style="border-color:rgba(201,107,107,0.2);margin-bottom:12px">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--danger);margin-bottom:6px">🗑 Clear Local Data</div>
+      <p style="font-size:11px;color:var(--soft);margin-bottom:10px;line-height:1.5">Wipes all data from this device only. Your GitHub Gist is unaffected — re-sync to restore everything.</p>
+      <button class="btn" style="background:var(--danger)" onclick="clearAllData()">Clear All Local Data</button>
+    </div>
   </div>
 </div>
 
@@ -1192,7 +2025,7 @@
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast">Credentials exported ✓ — save this file safely</div>
 
 <script>
 // ── STATE ─────────────────────────────────────────────────────
@@ -1202,9 +2035,11 @@ let state = {
   mealPlan: null,
   weightLog: [],
   unit: 'kg',
-  eatenMeals: {},    // "dayIndex|mealIndex" → true
-  purchasedItems: {}, // "itemKey" → true
-  foodLog: []        // [ { id, date, time, name, type, calories, protein, carbs, fat, source } ]
+  eatenMeals: {},
+  purchasedItems: {},
+  foodLog: [],
+  githubPagesUrl: '',
+  userIdentity: null  // { name, createdAt }
 };
 
 // ── UNIT HELPERS ──────────────────────────────────────────────
@@ -1246,7 +2081,12 @@ function save() {
   try {
     localStorage.setItem('nourish_recipe_cache', JSON.stringify(recipeCache));
     localStorage.setItem('nourish_type_cache', JSON.stringify(typeCache));
-  } catch(e) {} // storage full — non-fatal
+  } catch(e) {}
+  // Debounced auto-push to Gist (3s after last change)
+  if (typeof isGistConfigured === 'function' && isGistConfigured()) {
+    clearTimeout(window._syncTimer);
+    window._syncTimer = setTimeout(() => pushToGist(), 3000);
+  }
 }
 function load() {
   try {
@@ -1321,6 +2161,27 @@ function saveProfile() {
   showToast('Profile saved ✓');
 }
 
+function saveGithubUrl() {
+  const url = document.getElementById('p-github-url').value.trim().replace(/\/$/, '');
+  if (!url) { showToast('Enter your GitHub Pages URL'); return; }
+  state.githubPagesUrl = url;
+  save();
+  showToast('URL saved ✓');
+}
+
+function clearAllData() {
+  if (!confirm('Clear all local data on this device? Your GitHub Gist is unaffected.')) return;
+  const gist = localStorage.getItem('nourish_gist'); // preserve gist config
+  localStorage.clear();
+  if (gist) localStorage.setItem('nourish_gist', gist);
+  state = { profile:null, apiKey:null, mealPlan:null, weightLog:[], unit:'kg', eatenMeals:{}, purchasedItems:{}, foodLog:[], githubPagesUrl:'' };
+  recipeCache = {}; typeCache = { Breakfast:[], Lunch:[], Dinner:[], Snack:[] };
+  setUnit('kg');
+  renderHome();
+  goTo('home');
+  showToast('Local data cleared ✓');
+}
+
 function saveApiKey() {
   const key = document.getElementById('p-apikey').value.trim();
   if (!key) { showToast('Enter a valid API key'); return; }
@@ -1337,15 +2198,17 @@ function toggleKeyVisibility() {
 }
 
 function renderProfilePage() {
-  // Apply saved unit to toggle UI
   setUnit(state.unit || 'kg');
+  renderIdentityUI();
+  if (state.apiKey) document.getElementById('p-apikey').value = state.apiKey;
+  if (state.githubPagesUrl) document.getElementById('p-github-url').value = state.githubPagesUrl;
+  updateSyncUI();
   if (!state.profile) return;
   const p = state.profile;
   document.getElementById('p-weight').value      = toDisplay(p.weight);
   document.getElementById('p-target').value      = toDisplay(p.target);
   document.getElementById('p-maintenance').value = p.maintenance || '';
   document.getElementById('p-weekly-loss').value = p.weeklyLoss || '1';
-  if (state.apiKey) document.getElementById('p-apikey').value = state.apiKey;
   livePreview();
 }
 
@@ -1360,6 +2223,7 @@ function attachPreviewListeners() {
 
 // ── HOME ──────────────────────────────────────────────────────
 function renderHome() {
+  renderIdentityUI();
   const hour = new Date().getHours();
   const greet = hour < 12 ? 'Good morning.' : hour < 17 ? 'Good afternoon.' : 'Good evening.';
   document.getElementById('greeting').textContent = greet;
@@ -2335,7 +3199,7 @@ function clearShopState() {
   showToast('Cleared ✓');
 }
 
-// ── DOWNLOAD APP ──────────────────────────────────────────────
+// ── DOWNLOAD / UPDATE APP ─────────────────────────────────────
 function downloadApp() {
   const html = document.documentElement.outerHTML;
   const blob = new Blob([html], { type: 'text/html' });
@@ -2346,6 +3210,56 @@ function downloadApp() {
   a.click();
   URL.revokeObjectURL(url);
   showToast('NourishAI.html downloaded ✓');
+}
+
+// Fetch latest app code from GitHub Pages and download it locally.
+// Local data is NOT involved — this only updates the app code on this device.
+// Gist is never touched, so other devices are unaffected.
+async function updateApp() {
+  const githubUrl = state.githubPagesUrl && state.githubPagesUrl.trim();
+  if (!githubUrl) {
+    const url = prompt('Enter your GitHub Pages URL to fetch the latest version:\n(e.g. https://yourusername.github.io/nourish-ai)');
+    if (!url) return;
+    state.githubPagesUrl = url.replace(/\/$/, '');
+    save();
+  }
+
+  const fetchUrl = (state.githubPagesUrl || githubUrl).replace(/\/$/, '') + '/index.html';
+  const btn = document.getElementById('update-app-btn');
+  if (btn) { btn.textContent = 'Checking for update…'; btn.disabled = true; }
+
+  try {
+    const resp = await fetch(fetchUrl + '?bust=' + Date.now());
+    if (!resp.ok) throw new Error(`Could not reach ${fetchUrl} (${resp.status})`);
+    const remoteHtml = await resp.text();
+
+    // Check it looks like NourishAI
+    if (!remoteHtml.includes('NourishAI')) throw new Error('The fetched file does not look like NourishAI — check your URL');
+
+    // Check if it's actually newer (simple: compare length as proxy)
+    const localLen  = document.documentElement.outerHTML.length;
+    const remoteLen = remoteHtml.length;
+    if (remoteLen === localLen) {
+      showToast('Already up to date ✓');
+      if (btn) { btn.textContent = 'Check for Update'; btn.disabled = false; }
+      return;
+    }
+
+    // Download the new version locally — data stays in localStorage/Gist untouched
+    const blob = new Blob([remoteHtml], { type: 'text/html' });
+    const dlUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = dlUrl; a.download = 'NourishAI.html'; a.click();
+    URL.revokeObjectURL(dlUrl);
+
+    showToast('Latest version downloaded ✓ — replace your local file');
+    if (btn) { btn.textContent = 'Downloaded ✓'; }
+    setTimeout(() => { if (btn) { btn.textContent = 'Check for Update'; btn.disabled = false; } }, 4000);
+
+  } catch(e) {
+    showToast('Update failed: ' + e.message);
+    if (btn) { btn.textContent = 'Check for Update'; btn.disabled = false; }
+  }
 }
 function renderLogPage() {
   // Set today's date as default
@@ -2478,11 +3392,301 @@ async function callGemini(prompt) {
   if (!text) throw new Error('Empty response');
   return text;
 }
+
+// ── USER IDENTITY & CREDENTIALS ──────────────────────────────
+
+function renderIdentityUI() {
+  const identity = state.userIdentity;
+  const signedin = document.getElementById('identity-signed-in');
+  const setup    = document.getElementById('identity-setup');
+  const chip     = document.getElementById('home-user-chip');
+  const nameEl   = document.getElementById('home-user-name');
+  const label    = document.getElementById('profile-signed-in-label');
+
+  if (identity && identity.name) {
+    if (signedin) signedin.style.display = 'block';
+    if (setup)    setup.style.display    = 'none';
+    const nameDisplay = document.getElementById('identity-name');
+    const avatar      = document.getElementById('identity-avatar');
+    if (nameDisplay) nameDisplay.textContent = identity.name;
+    if (avatar)      avatar.textContent      = identity.name.charAt(0).toUpperCase();
+    if (chip)  { chip.style.display = 'inline-flex'; }
+    if (nameEl) nameEl.textContent = identity.name;
+    if (label)  label.textContent  = `Signed in as ${identity.name}`;
+  } else {
+    if (signedin) signedin.style.display = 'none';
+    if (setup)    setup.style.display    = 'block';
+    if (chip)     chip.style.display     = 'none';
+    if (label)    label.textContent      = 'Set up your account below';
+  }
+}
+
+function createIdentity() {
+  const name  = document.getElementById('id-name').value.trim();
+  const pw    = document.getElementById('id-password').value;
+  const pw2   = document.getElementById('id-password2').value;
+  if (!name)       { showToast('Enter a display name'); return; }
+  if (pw.length < 6) { showToast('Password must be at least 6 characters'); return; }
+  if (pw !== pw2)  { showToast('Passwords do not match'); return; }
+  state.userIdentity = { name, createdAt: new Date().toISOString() };
+  save();
+  renderIdentityUI();
+  showToast(`Account created for ${name} ✓`);
+  // Clear fields
+  document.getElementById('id-name').value = '';
+  document.getElementById('id-password').value = '';
+  document.getElementById('id-password2').value = '';
+}
+
+function signOut() {
+  if (!confirm('Sign out? Your data stays on this device and in the Gist.')) return;
+  state.userIdentity = null;
+  save();
+  renderIdentityUI();
+  showToast('Signed out ✓');
+}
+
+// ── WEB CRYPTO HELPERS ────────────────────────────────────────
+async function deriveKey(password, salt) {
+  const enc = new TextEncoder();
+  const keyMaterial = await crypto.subtle.importKey('raw', enc.encode(password), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey(
+    { name: 'PBKDF2', salt, iterations: 100000, hash: 'SHA-256' },
+    keyMaterial,
+    { name: 'AES-GCM', length: 256 },
+    false, ['encrypt', 'decrypt']
+  );
+}
+
+async function encryptData(data, password) {
+  const salt = crypto.getRandomValues(new Uint8Array(16));
+  const iv   = crypto.getRandomValues(new Uint8Array(12));
+  const key  = await deriveKey(password, salt);
+  const enc  = new TextEncoder();
+  const ciphertext = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, enc.encode(JSON.stringify(data)));
+  return {
+    salt:       Array.from(salt),
+    iv:         Array.from(iv),
+    ciphertext: Array.from(new Uint8Array(ciphertext))
+  };
+}
+
+async function decryptData(encrypted, password) {
+  const salt       = new Uint8Array(encrypted.salt);
+  const iv         = new Uint8Array(encrypted.iv);
+  const ciphertext = new Uint8Array(encrypted.ciphertext);
+  const key        = await deriveKey(password, salt);
+  const dec        = new TextDecoder();
+  const plain      = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, ciphertext);
+  return JSON.parse(dec.decode(plain));
+}
+
+// ── EXPORT CREDENTIALS ────────────────────────────────────────
+async function exportCredentials() {
+  if (!isGistConfigured()) {
+    showToast('Set up Gist sync first before exporting'); return;
+  }
+  const pw = prompt('Enter your password to encrypt the credentials file:');
+  if (!pw) return;
+
+  const payload = {
+    name:      state.userIdentity?.name || 'NourishAI User',
+    gistId:    gistConfig.gistId,
+    token:     gistConfig.token,
+    createdAt: new Date().toISOString()
+  };
+
+  try {
+    const encrypted = await encryptData(payload, pw);
+    const blob = new Blob([JSON.stringify(encrypted)], { type: 'application/json' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = 'nourish-credentials.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('Credentials exported ✓ — save this file safely');
+  } catch(e) {
+    showToast('Export failed: ' + e.message);
+  }
+}
+
+// ── IMPORT CREDENTIALS ────────────────────────────────────────
+async function importCredentials(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const text = await file.text();
+  const pw   = prompt('Enter your password to unlock the credentials file:');
+  if (!pw) return;
+
+  try {
+    const encrypted = JSON.parse(text);
+    const payload   = await decryptData(encrypted, pw);
+
+    // Apply
+    gistConfig = { gistId: payload.gistId, token: payload.token };
+    localStorage.setItem('nourish_gist', JSON.stringify(gistConfig));
+    state.userIdentity = { name: payload.name, createdAt: payload.createdAt };
+    save();
+    updateSyncUI();
+    renderIdentityUI();
+    showToast(`Signed in as ${payload.name} — syncing data…`);
+
+    // Immediately pull data from Gist
+    setTimeout(() => pullFromGist(true), 500);
+
+  } catch(e) {
+    showToast('Import failed — wrong password or invalid file');
+  }
+  input.value = ''; // reset file input
+}
+let gistConfig = { gistId: '', token: '' };
+
+function loadGistConfig() {
+  try {
+    const g = localStorage.getItem('nourish_gist');
+    if (g) gistConfig = JSON.parse(g);
+  } catch(e) {}
+}
+
+function saveGistConfig() {
+  const gistId = document.getElementById('p-gist-id').value.trim();
+  const token  = document.getElementById('p-gist-token').value.trim();
+  if (!gistId || !token) { showToast('Enter both Gist ID and token'); return; }
+  gistConfig = { gistId, token };
+  localStorage.setItem('nourish_gist', JSON.stringify(gistConfig));
+  updateSyncUI();
+  showGistMsg('Connecting…', 'info');
+  pullFromGist(true);
+}
+
+function toggleGistVisibility() {
+  const inp = document.getElementById('p-gist-token');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+}
+
+function isGistConfigured() {
+  return !!(gistConfig.gistId && gistConfig.token);
+}
+
+function updateSyncUI() {
+  const configured = isGistConfigured();
+  const badge = document.getElementById('sync-home-badge');
+  if (badge) badge.style.display = configured ? 'flex' : 'none';
+  const statusEl = document.getElementById('sync-status-profile');
+  if (statusEl) statusEl.textContent = configured ? 'Connected — tap ↻ to sync' : 'Not configured';
+  if (configured) {
+    const gi = document.getElementById('p-gist-id');
+    const gt = document.getElementById('p-gist-token');
+    if (gi && !gi.value) gi.value = gistConfig.gistId;
+    if (gt && !gt.value) gt.value = gistConfig.token;
+  }
+}
+
+function showGistMsg(msg, type) {
+  const el = document.getElementById('gist-sync-msg');
+  if (!el) return;
+  el.style.display = 'block';
+  el.textContent = msg;
+  el.style.background = type === 'success' ? 'rgba(122,158,126,0.12)' : type === 'error' ? 'rgba(201,107,107,0.1)' : 'rgba(201,125,78,0.1)';
+  el.style.color = type === 'success' ? 'var(--sage-dark)' : type === 'error' ? 'var(--danger)' : 'var(--accent)';
+  if (type === 'success') setTimeout(() => { if (el) el.style.display = 'none'; }, 3000);
+}
+
+function buildSyncPayload() {
+  return {
+    profile:        state.profile,
+    mealPlan:       state.mealPlan,
+    weightLog:      state.weightLog,
+    eatenMeals:     state.eatenMeals,
+    purchasedItems: state.purchasedItems,
+    foodLog:        state.foodLog,
+    unit:           state.unit,
+    recipeCache:    recipeCache,
+    typeCache:      typeCache,
+    syncedAt:       new Date().toISOString()
+  };
+}
+
+async function pushToGist() {
+  if (!isGistConfigured()) return;
+  try {
+    const resp = await fetch(`https://api.github.com/gists/${gistConfig.gistId}`, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `Bearer ${gistConfig.token}`,
+        'Accept': 'application/vnd.github+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        files: { 'nourish-data.json': { content: JSON.stringify(buildSyncPayload(), null, 2) } }
+      })
+    });
+    if (!resp.ok) throw new Error(`GitHub ${resp.status}`);
+    const label = document.getElementById('sync-home-label');
+    if (label) { label.textContent = 'Synced ✓'; setTimeout(() => { label.textContent = 'Sync'; }, 3000); }
+    return true;
+  } catch(e) {
+    showToast('Sync push failed: ' + e.message);
+    return false;
+  }
+}
+
+async function pullFromGist(isSetup = false) {
+  if (!isGistConfigured()) return;
+  try {
+    const resp = await fetch(`https://api.github.com/gists/${gistConfig.gistId}`, {
+      headers: { 'Authorization': `Bearer ${gistConfig.token}`, 'Accept': 'application/vnd.github+json' }
+    });
+    if (!resp.ok) throw new Error(`GitHub ${resp.status} — check your Gist ID and token`);
+    const data    = await resp.json();
+    const content = data.files?.['nourish-data.json']?.content;
+    if (!content || content.trim() === '{}') {
+      await pushToGist();
+      if (isSetup) showGistMsg('✓ Connected! Local data pushed to GitHub.', 'success');
+      return;
+    }
+    const remote = JSON.parse(content);
+    const apiKey = state.apiKey; // never overwrite local apiKey from remote
+    if (remote.profile)        state.profile        = remote.profile;
+    if (remote.mealPlan)       state.mealPlan       = remote.mealPlan;
+    if (remote.weightLog)      state.weightLog      = remote.weightLog;
+    if (remote.eatenMeals)     state.eatenMeals     = remote.eatenMeals;
+    if (remote.purchasedItems) state.purchasedItems = remote.purchasedItems;
+    if (remote.foodLog)        state.foodLog        = remote.foodLog;
+    if (remote.unit)           state.unit           = remote.unit;
+    if (remote.recipeCache)    recipeCache          = remote.recipeCache;
+    if (remote.typeCache)      typeCache            = { Breakfast:[], Lunch:[], Dinner:[], Snack:[], ...remote.typeCache };
+    state.apiKey = apiKey;
+    save();
+    setUnit(state.unit || 'kg');
+    renderHome();
+    const activePage = document.querySelector('.page.active')?.id?.replace('page-', '');
+    if (activePage && activePage !== 'home') goTo(activePage);
+    if (isSetup) showGistMsg('✓ Connected and synced! Data loaded from GitHub.', 'success');
+    else showToast('Pulled from GitHub ✓');
+  } catch(e) {
+    if (isSetup) showGistMsg('✗ ' + e.message, 'error');
+    else showToast('Sync pull failed: ' + e.message);
+  }
+}
+
+async function syncNow() {
+  if (!isGistConfigured()) { goTo('profile'); showToast('Set up GitHub Gist sync in Profile first'); return; }
+  const label = document.getElementById('sync-home-label');
+  if (label) label.textContent = 'Syncing…';
+  await pushToGist();
+}
+
 load();
 loadCaches();
+loadGistConfig();
 setUnit(state.unit || 'kg');
+updateSyncUI();
+renderIdentityUI();
 renderHome();
 attachPreviewListeners();
+if (isGistConfigured()) setTimeout(() => pullFromGist(false), 1500);
 </script>
 
 
