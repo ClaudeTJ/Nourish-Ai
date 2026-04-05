@@ -711,10 +711,6 @@
         NourishAI
       </div>
       <div style="display:flex;align-items:center;gap:8px">
-        <div id="sync-home-badge" style="display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; color: var(--sage-dark); background: rgba(79, 110, 83, 0.1); border: 1px solid rgba(79, 110, 83, 0.2); padding: 4px 10px; border-radius: 20px; cursor: pointer;" onclick="syncNow()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="12" height="12" stroke-width="2.5"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"></path></svg>
-          <span id="sync-home-label">Sync</span>
-        </div>
         <button onclick="downloadApp()" title="Save app to PC" style="display: flex; align-items: center; gap: 6px; background: white; border: 1.5px solid var(--border); border-radius: 20px; padding: 6px 14px; font-family: &quot;DM Sans&quot;, sans-serif; font-size: 12px; font-weight: 600; color: var(--sage-dark); cursor: pointer; box-shadow: var(--shadow-sm); transition: 0.2s;" onmouseover="this.style.background='white'" onmouseout="this.style.background='rgba(255,255,255,0.85)'">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="15" height="15" stroke-width="2.2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
           Save to PC
@@ -991,15 +987,36 @@
       </div>
 
       <!-- Sync -->
-      <div class="section-title" style="padding:0;margin-bottom:10px">🔄 Optional — Sync Across Devices</div>
+      <div class="section-title" style="padding:0;margin-bottom:10px">🔄 Sync Across Devices (Optional)</div>
       <div class="card" style="margin-bottom:14px">
-        <div style="font-size:12px;color:var(--soft);margin-bottom:10px;line-height:1.5">Only needed if you want your data on multiple devices. Requires a free GitHub account.</div>
-        <button class="btn outline" style="width:100%" onclick="showGistSetup()">Show Gist Sync Setup</button>
+        <div style="font-size:12px;color:var(--soft);margin-bottom:12px;line-height:1.5">Only needed if you want your meal plan and progress on multiple devices. Requires a free GitHub account.</div>
+        <button class="btn outline" style="width:100%;margin-bottom:0" onclick="showGistSetup()">I want to sync across devices ▾</button>
         <div id="gist-setup-detail" style="display:none;margin-top:14px">
-          <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Create a Secret Gist</strong><br>Go to <a href="https://gist.github.com" target="_blank" rel="noopener" style="color:var(--sage-dark);font-weight:600">gist.github.com</a> → filename: <code>nourish-data.json</code> → content: <code>{}</code> → click <strong>Create secret gist</strong>.</div></div>
-          <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Copy the Gist ID</strong><br>From the URL: <code>gist.github.com/username/<strong>THIS_PART</strong></code></div></div>
-          <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Create a token</strong><br><a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener" style="color:var(--sage-dark);font-weight:600">GitHub → Fine-grained tokens</a> → name: <code>NourishAI</code> → Gists: <strong>Read &amp; write</strong> → Generate.</div></div>
-          <div style="display:flex;gap:10px;padding:10px 0"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Connect in app</strong><br><strong>Profile → Danger Zone → GitHub Gist Sync</strong> → paste ID and token → tap <strong>Save &amp; Connect</strong>.</div></div>
+          <div style="font-size:12px;font-weight:600;color:var(--mid);margin-bottom:12px;line-height:1.6">
+            <div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><div style="font-size:13px;color:var(--mid);line-height:1.5;font-weight:400"><strong>Create a Secret Gist</strong><br>Go to <a href="https://gist.github.com" target="_blank" rel="noopener" style="color:var(--sage-dark);font-weight:600">gist.github.com</a> → filename: <code>nourish-data.json</code> → content: <code>{}</code> → click <strong>Create secret gist</strong>.</div></div>
+            <div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><div style="font-size:13px;color:var(--mid);line-height:1.5;font-weight:400"><strong>Copy the Gist ID</strong><br>From the URL: <code>gist.github.com/username/<strong>THIS_PART</strong></code></div></div>
+            <div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><div style="font-size:13px;color:var(--mid);line-height:1.5;font-weight:400"><strong>Create a token</strong><br><a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener" style="color:var(--sage-dark);font-weight:600">GitHub → Fine-grained tokens</a> → name: <code>NourishAI</code> → Gists: <strong>Read &amp; write</strong> → Generate.</div></div>
+            <div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div><div style="font-size:13px;color:var(--mid);line-height:1.5;font-weight:400"><strong>Enter your details below and connect</strong></div></div>
+          </div>
+          <div class="form-group" style="margin-bottom:8px">
+            <label>Gist ID</label>
+            <input type="text" id="p-gist-id" placeholder="e.g. a1b2c3d4e5f6…">
+          </div>
+          <div class="form-group" style="margin-bottom:12px">
+            <label>GitHub Token (Gists scope only)</label>
+            <div class="api-key-wrap">
+              <input type="password" id="p-gist-token" placeholder="github_pat_…">
+              <button class="api-key-toggle" onclick="toggleGistVisibility()">Show</button>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:stretch">
+            <button class="btn" style="flex:1" onclick="saveGistConfig()">Save &amp; Connect</button>
+            <button class="btn outline" style="flex:0 0 44px;width:44px;padding:0;display:flex;align-items:center;justify-content:center" onclick="syncNow()" title="Sync now">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="16" height="16" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"></path></svg>
+            </button>
+          </div>
+          <div id="gist-sync-msg" style="display:none;margin-top:10px;font-size:12px;padding:8px 12px;border-radius:8px"></div>
+          <div style="font-size:11px;color:var(--soft);margin-top:10px;line-height:1.5" id="sync-status-profile">Connected — tap ↻ to sync</div>
         </div>
       </div>
 
@@ -1139,54 +1156,10 @@
       <button class="btn outline" style="border-color:rgba(201,107,107,0.3);color:var(--danger)" onclick="saveApiKey()">Save Gemini Key</button>
     </div>
 
-    <!-- 2. GitHub Gist Sync -->
-    <div class="card" style="border-color:rgba(201,107,107,0.2);margin-bottom:12px">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--danger)">🔄 GitHub Gist — Data Sync</div>
-        <div style="font-size:11px;color:var(--soft)" id="sync-status-profile">Connected — tap ↻ to sync</div>
-      </div>
-      <p style="font-size:11px;color:var(--soft);margin-bottom:10px;line-height:1.5">Syncs your meal plan, weight, food log and profile across all devices. Token needs <strong>Gists: read &amp; write</strong> only — no other GitHub access. <a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener" style="color:var(--sage-dark);font-weight:600">Create token →</a></p>
-      <div class="form-group" style="margin-bottom:8px">
-        <label>Gist ID</label>
-        <input type="text" id="p-gist-id" placeholder="e.g. a1b2c3d4e5f6…">
-      </div>
-      <div class="form-group" style="margin-bottom:12px">
-        <label>GitHub Token (Gists scope only)</label>
-        <div class="api-key-wrap">
-          <input type="password" id="p-gist-token" placeholder="github_pat_…">
-          <button class="api-key-toggle" onclick="toggleGistVisibility()">Show</button>
-        </div>
-      </div>
-      <div style="display:flex;gap:8px">
-        <button class="btn outline" style="flex:1;border-color:rgba(201,107,107,0.3);color:var(--danger)" onclick="saveGistConfig()">Save &amp; Connect</button>
-        <button class="btn outline" style="flex:0 0 auto;width:auto;padding:13px 16px" onclick="syncNow()" title="Force sync now">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="16" height="16" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"></path></svg>
-        </button>
-      </div>
-      <div id="gist-sync-msg" style="display:none;margin-top:10px;font-size:12px;padding:8px 12px;border-radius:8px"></div>
-    </div>
-
-    <!-- 3. Mobile app update pull -->
-    <div class="card" style="border-color:rgba(201,107,107,0.2);margin-bottom:12px">
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--danger);margin-bottom:6px">📲 Pull App Update (Mobile only)</div>
-      <p style="font-size:11px;color:var(--soft);margin-bottom:10px;line-height:1.5">After a new version is uploaded to GitHub Pages from PC, tap below to pull it to this device. App code only — your Gist data is never touched.</p>
-      <div class="form-group" style="margin-bottom:10px">
-        <label>GitHub Pages URL</label>
-        <input type="url" id="p-github-url" placeholder="https://yourusername.github.io/nourish-ai">
-      </div>
-      <div style="display:flex;gap:8px">
-        <button class="btn outline" style="flex:1;border-color:rgba(201,107,107,0.3);color:var(--danger)" onclick="saveGithubUrl()">Save URL</button>
-        <button class="btn" style="flex:1" id="update-app-btn" onclick="updateApp()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="15" height="15" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"></path></svg>
-          Pull Latest from GitHub
-        </button>
-      </div>
-    </div>
-
-    <!-- 4. Clear local data -->
+    <!-- 2. Clear local data -->
     <div class="card" style="border-color:rgba(201,107,107,0.2);margin-bottom:12px">
       <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--danger);margin-bottom:6px">🗑 Clear Local Data</div>
-      <p style="font-size:11px;color:var(--soft);margin-bottom:10px;line-height:1.5">Wipes all data from this device only. Your GitHub Gist is unaffected — re-sync to restore everything.</p>
+      <p style="font-size:11px;color:var(--soft);margin-bottom:10px;line-height:1.5">Wipes all data from this device only. Your GitHub Gist is unaffected — re-sync to restore.</p>
       <button class="btn" style="background:var(--danger)" onclick="clearAllData()">Clear All Local Data</button>
     </div>
   </div>
@@ -1369,8 +1342,7 @@ let state = {
   eatenMeals: {},
   purchasedItems: {},
   foodLog: [],
-  githubPagesUrl: '',
-  userIdentity: null  // { name, createdAt }
+  userIdentity: null
 };
 
 // ── UNIT HELPERS ──────────────────────────────────────────────
@@ -1412,7 +1384,6 @@ function save() {
   // Persist critical credentials separately so they survive iOS PWA storage clears
   try { if (state.apiKey)         localStorage.setItem('nourish_apikey',    state.apiKey); } catch(e) {}
   try { if (state.userIdentity)   localStorage.setItem('nourish_identity',  JSON.stringify(state.userIdentity)); } catch(e) {}
-  try { if (state.githubPagesUrl) localStorage.setItem('nourish_ghurl',     state.githubPagesUrl); } catch(e) {}
   try {
     localStorage.setItem('nourish_recipe_cache', JSON.stringify(recipeCache));
     localStorage.setItem('nourish_type_cache',   JSON.stringify(typeCache));
@@ -1431,7 +1402,6 @@ function load() {
   // Always restore critical credentials from their own keys — survive iOS storage clears
   try { const v = localStorage.getItem('nourish_apikey');    if (v) state.apiKey         = v; } catch(e) {}
   try { const v = localStorage.getItem('nourish_identity');  if (v) state.userIdentity   = JSON.parse(v); } catch(e) {}
-  try { const v = localStorage.getItem('nourish_ghurl');     if (v) state.githubPagesUrl = v; } catch(e) {}
 }
 
 // ── NAV ───────────────────────────────────────────────────────
@@ -1530,25 +1500,16 @@ function switchInstall(platform) {
   andBtn.style.color      = isIos ? 'var(--soft)'  : 'white';
 }
 
-function saveGithubUrl() {
-  if (!url) { showToast('Enter your GitHub Pages URL'); return; }
-  state.githubPagesUrl = url;
-  save();
-  showToast('URL saved ✓');
-}
-
 function clearAllData() {
   if (!confirm('Clear all local data on this device? Your GitHub Gist is unaffected.')) return;
   const gist     = localStorage.getItem('nourish_gist');
   const apikey   = localStorage.getItem('nourish_apikey');
   const identity = localStorage.getItem('nourish_identity');
-  const ghurl    = localStorage.getItem('nourish_ghurl');
   localStorage.clear();
   if (gist)     localStorage.setItem('nourish_gist',     gist);
   if (apikey)   localStorage.setItem('nourish_apikey',   apikey);
   if (identity) localStorage.setItem('nourish_identity', identity);
-  if (ghurl)    localStorage.setItem('nourish_ghurl',    ghurl);
-  state = { profile:null, apiKey:null, mealPlan:null, weightLog:[], unit:'kg', eatenMeals:{}, purchasedItems:{}, foodLog:[], githubPagesUrl:'' };
+  state = { profile:null, apiKey:null, mealPlan:null, weightLog:[], unit:'kg', eatenMeals:{}, purchasedItems:{}, foodLog:[], };
   recipeCache = {}; typeCache = { Breakfast:[], Lunch:[], Dinner:[], Snack:[] };
   load(); // restore credentials immediately
   setUnit('kg');
@@ -1576,7 +1537,6 @@ function renderProfilePage() {
   setUnit(state.unit || 'kg');
   renderIdentityUI();
   if (state.apiKey) document.getElementById('p-apikey').value = state.apiKey;
-  if (state.githubPagesUrl) document.getElementById('p-github-url').value = state.githubPagesUrl;
   updateSyncUI();
   if (!state.profile) return;
   const p = state.profile;
@@ -2670,17 +2630,9 @@ function downloadApp() {
 // Local data is NOT involved — this only updates the app code on this device.
 // Gist is never touched, so other devices are unaffected.
 async function updateApp() {
-  const githubUrl = state.githubPagesUrl && state.githubPagesUrl.trim();
-  if (!githubUrl) {
-    const url = prompt('Enter your GitHub Pages URL to fetch the latest version:\n(e.g. https://yourusername.github.io/nourish-ai)');
-    if (!url) return;
-    state.githubPagesUrl = url.replace(/\/$/, '');
-    save();
-  }
-
-  const fetchUrl = (state.githubPagesUrl || githubUrl).replace(/\/$/, '') + '/index.html';
+  const fetchUrl = 'https://claudetj.github.io/Nourish-Ai/index.html';
   const btn = document.getElementById('update-app-btn');
-  if (btn) { btn.textContent = 'Checking for update…'; btn.disabled = true; }
+  if (btn) { btn.textContent = 'Fetching…'; btn.disabled = true; }
 
   try {
     const resp = await fetch(fetchUrl + '?bust=' + Date.now());
