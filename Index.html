@@ -1026,28 +1026,28 @@
       </div>
 
       <!-- Live preview -->
-      <div id="calorie-preview" style="display: block; margin-bottom: 16px;">
+      <div id="calorie-preview" style="display:none; margin-bottom:16px">
         <div style="background:rgba(122,158,126,0.1); border:1px solid rgba(122,158,126,0.25); border-radius:12px; padding:14px 16px;">
           <div style="font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:var(--soft);margin-bottom:8px">Calculated Targets</div>
           <div style="display:flex;gap:6px;flex-wrap:wrap">
             <div style="flex:1;min-width:80px;text-align:center;background:white;border-radius:10px;padding:10px 6px;">
-              <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--sage-dark)" id="prev-cals">1000</div>
+              <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--sage-dark)" id="prev-cals">—</div>
               <div style="font-size:10px;color:var(--soft);margin-top:2px">kcal/day</div>
             </div>
             <div style="flex:1;min-width:80px;text-align:center;background:white;border-radius:10px;padding:10px 6px;">
-              <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--sage-dark)" id="prev-protein">100</div>
+              <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--sage-dark)" id="prev-protein">—</div>
               <div style="font-size:10px;color:var(--soft);margin-top:2px">protein g</div>
             </div>
             <div style="flex:1;min-width:80px;text-align:center;background:white;border-radius:10px;padding:10px 6px;">
-              <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--accent)" id="prev-carbs">75</div>
+              <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--accent)" id="prev-carbs">—</div>
               <div style="font-size:10px;color:var(--soft);margin-top:2px">carbs g</div>
             </div>
             <div style="flex:1;min-width:80px;text-align:center;background:white;border-radius:10px;padding:10px 6px;">
-              <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:#a07040" id="prev-fat">33</div>
+              <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:#a07040" id="prev-fat">—</div>
               <div style="font-size:10px;color:var(--soft);margin-top:2px">fat g</div>
             </div>
           </div>
-          <div style="font-size:11px;color:var(--soft);margin-top:10px;text-align:center" id="prev-note">1700 maintenance − 1100 kcal/day deficit = 1000 kcal target</div>
+          <div style="font-size:11px;color:var(--soft);margin-top:10px;text-align:center" id="prev-note">—</div>
         </div>
       </div>
 
@@ -1369,7 +1369,7 @@
   </div>
 </div>
 
-<div class="toast" id="toast">Pulled from GitHub ✓</div>
+<div class="toast show" id="toast">Pulled from GitHub ✓</div>
 
 <script>
 // ── STATE ─────────────────────────────────────────────────────
@@ -1422,9 +1422,13 @@ function setUnit(u) {
 // ── PERSIST ───────────────────────────────────────────────────
 function save() {
   localStorage.setItem('nourish_state', JSON.stringify(state));
+  // Persist critical credentials separately so they survive iOS PWA storage clears
+  try { if (state.apiKey)         localStorage.setItem('nourish_apikey',    state.apiKey); } catch(e) {}
+  try { if (state.userIdentity)   localStorage.setItem('nourish_identity',  JSON.stringify(state.userIdentity)); } catch(e) {}
+  try { if (state.githubPagesUrl) localStorage.setItem('nourish_ghurl',     state.githubPagesUrl); } catch(e) {}
   try {
     localStorage.setItem('nourish_recipe_cache', JSON.stringify(recipeCache));
-    localStorage.setItem('nourish_type_cache', JSON.stringify(typeCache));
+    localStorage.setItem('nourish_type_cache',   JSON.stringify(typeCache));
   } catch(e) {}
   // Debounced auto-push to Gist (3s after last change)
   if (typeof isGistConfigured === 'function' && isGistConfigured()) {
@@ -1437,6 +1441,10 @@ function load() {
     const s = localStorage.getItem('nourish_state');
     if (s) state = { ...state, ...JSON.parse(s) };
   } catch(e) {}
+  // Always restore critical credentials from their own keys — survive iOS storage clears
+  try { const v = localStorage.getItem('nourish_apikey');    if (v) state.apiKey         = v; } catch(e) {}
+  try { const v = localStorage.getItem('nourish_identity');  if (v) state.userIdentity   = JSON.parse(v); } catch(e) {}
+  try { const v = localStorage.getItem('nourish_ghurl');     if (v) state.githubPagesUrl = v; } catch(e) {}
 }
 
 // ── NAV ───────────────────────────────────────────────────────
@@ -1536,11 +1544,18 @@ function saveGithubUrl() {
 
 function clearAllData() {
   if (!confirm('Clear all local data on this device? Your GitHub Gist is unaffected.')) return;
-  const gist = localStorage.getItem('nourish_gist'); // preserve gist config
+  const gist     = localStorage.getItem('nourish_gist');
+  const apikey   = localStorage.getItem('nourish_apikey');
+  const identity = localStorage.getItem('nourish_identity');
+  const ghurl    = localStorage.getItem('nourish_ghurl');
   localStorage.clear();
-  if (gist) localStorage.setItem('nourish_gist', gist);
+  if (gist)     localStorage.setItem('nourish_gist',     gist);
+  if (apikey)   localStorage.setItem('nourish_apikey',   apikey);
+  if (identity) localStorage.setItem('nourish_identity', identity);
+  if (ghurl)    localStorage.setItem('nourish_ghurl',    ghurl);
   state = { profile:null, apiKey:null, mealPlan:null, weightLog:[], unit:'kg', eatenMeals:{}, purchasedItems:{}, foodLog:[], githubPagesUrl:'' };
   recipeCache = {}; typeCache = { Breakfast:[], Lunch:[], Dinner:[], Snack:[] };
+  load(); // restore credentials immediately
   setUnit('kg');
   renderHome();
   goTo('home');
