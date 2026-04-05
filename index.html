@@ -717,8 +717,8 @@
         </button>
       </div>
     </div>
-    <h1 id="greeting">Good morning.</h1>
-    <p id="home-subtitle">188lbs → 160lbs</p>
+    <h1 id="greeting">Good afternoon.</h1>
+    <p id="home-subtitle">188.1lbs → 132.3lbs</p>
     <div id="home-user-chip" style="display:none;margin-top:6px;display:inline-flex;align-items:center;gap:6px;background:rgba(79,110,83,0.1);border:1px solid rgba(79,110,83,0.2);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600;color:var(--sage-dark)">
       <span>👤</span><span id="home-user-name">TaonaJ</span>
     </div>
@@ -742,7 +742,7 @@
       <div class="stat-chip"><div class="stat-dot"></div><span>Protein <strong id="dash-protein">100g</strong></span></div>
       <div class="stat-chip"><div class="stat-dot orange"></div><span>Carbs <strong id="dash-carbs">75g</strong></span></div>
       <div class="stat-chip"><div class="stat-dot gold"></div><span>Fat <strong id="dash-fat">33g</strong></span></div>
-      <div class="stat-chip"><span>Goal: <strong id="dash-goal">28lbs to lose</strong></span></div>
+      <div class="stat-chip"><span>Goal: <strong id="dash-goal">55.8lbs to lose</strong></span></div>
     </div>
 
     <div class="section-title">Macro Breakdown</div>
@@ -795,7 +795,7 @@
     <button class="btn" onclick="goTo('profile')">Go to Profile</button>
   </div>
 
-  <div id="plan-content" style="display:none">
+  <div id="plan-content" style="display: block;">
     <div id="plan-no-key-soft" class="section" style="display:none">
       <div class="alert info">📖 Viewing synced plan. Add your Gemini key in Profile → Danger Zone to generate a new one.</div>
     </div>
@@ -803,32 +803,32 @@
     <!-- Mode toggle -->
     <div class="section" style="padding-bottom:0">
       <div style="display:flex;background:rgba(122,158,126,0.1);border-radius:30px;padding:3px;gap:2px;margin-bottom:14px">
-        <button id="mode-generate-btn" onclick="switchPlanMode('generate')" style="flex:1;padding:9px;border:none;border-radius:24px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;background:var(--sage-dark);color:white;transition:all 0.2s">
+        <button id="mode-generate-btn" onclick="switchPlanMode('generate')" style="flex: 1 1 0%; padding: 9px; border: none; border-radius: 24px; font-family: &quot;DM Sans&quot;, sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; background: transparent; color: var(--soft); transition: 0.2s;">
           ✨ Generate for me
         </button>
-        <button id="mode-describe-btn" onclick="switchPlanMode('describe')" style="flex:1;padding:9px;border:none;border-radius:24px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;background:transparent;color:var(--soft);transition:all 0.2s">
+        <button id="mode-describe-btn" onclick="switchPlanMode('describe')" style="flex: 1 1 0%; padding: 9px; border: none; border-radius: 24px; font-family: &quot;DM Sans&quot;, sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; background: var(--sage-dark); color: white; transition: 0.2s;">
           🥕 Describe what I want
         </button>
       </div>
 
       <!-- Generate mode -->
-      <div id="mode-generate" class="generate-area" style="margin:0 0 14px">
-        <button class="btn accent" id="generate-btn" onclick="generateMealPlan()">
+      <div id="mode-generate" class="generate-area" style="margin: 0px 0px 14px; display: none;">
+        <button class="btn accent" id="generate-btn" onclick="generateMealPlan()" style="display: flex;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="18" height="18"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
           Generate 7-Day Plan
         </button>
       </div>
 
       <!-- Describe mode -->
-      <div id="mode-describe" style="display:none;margin-bottom:14px">
+      <div id="mode-describe" style="display: block; margin-bottom: 14px;">
         <div class="card" style="padding:14px">
           <div style="font-size:12px;font-weight:600;color:var(--mid);margin-bottom:8px">Describe ingredients or a meal idea</div>
           <textarea id="meal-describe-input" placeholder="e.g. something with sweet potato and chicken… or a high protein lunch… or just leave blank for a surprise 🎲" style="width:100%;min-height:80px;border:1.5px solid var(--border);border-radius:12px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--charcoal);background:white;resize:none;box-sizing:border-box;line-height:1.5;outline:none" onfocus="this.style.borderColor='var(--sage-dark)'" onblur="this.style.borderColor='var(--border)'"></textarea>
-          <div style="display:flex;gap:8px;margin-top:10px">
-            <button class="btn outline" style="flex:0 0 auto" onclick="document.getElementById('meal-describe-input').value='';suggestMeal(true)" title="Random suggestion">
+          <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+            <button class="btn outline" style="flex:0 0 auto;font-size:13px;padding:12px 14px" onclick="document.getElementById('meal-describe-input').value='';suggestMeal(true)" title="Random suggestion">
               🎲 Surprise me
             </button>
-            <button class="btn accent" style="flex:1" id="suggest-btn" onclick="suggestMeal(false)">
+            <button class="btn accent" style="flex:1;min-width:120px" id="suggest-btn" onclick="suggestMeal(false)">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="16" height="16"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
               Suggest a Meal
             </button>
@@ -843,9 +843,9 @@
             <div id="suggestion-macros" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px"></div>
             <div id="suggestion-desc" style="font-size:13px;color:var(--mid);line-height:1.6;margin-bottom:12px"></div>
             <div style="font-size:12px;color:var(--soft);font-style:italic">This is a suggestion — generate a new plan or use it as inspiration for your next meal.</div>
-            <div style="display:flex;gap:8px;margin-top:12px">
-              <button class="btn outline" style="flex:1;font-size:13px" onclick="suggestMeal(false)">Try another</button>
-              <button class="btn outline" style="flex:1;font-size:13px" onclick="switchPlanMode('generate')">Back to plan</button>
+            <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+              <button class="btn outline" style="flex:1;min-width:120px;font-size:13px" onclick="suggestMeal(false)">Try another</button>
+              <button class="btn outline" style="flex:1;min-width:120px;font-size:13px" onclick="switchPlanMode('generate')">Back to plan</button>
             </div>
           </div>
         </div>
@@ -863,13 +863,734 @@
       <p>Gemini is building your personalised<br>7-day meal plan…</p>
     </div>
 
-    <div id="plan-empty" class="empty-state">
+    <div id="plan-empty" class="empty-state" style="display: none;">
       <div class="icon">🥗</div>
       <h3>No plan yet</h3>
       <p>Hit "Generate 7-Day Plan" to get your personalised weekly meal schedule.</p>
     </div>
 
-    <div id="plan-days" class="section" style="display:none"></div>
+    <div id="plan-days" class="section" style="display: block;"><div class="day-card">
+      <div class="day-header" onclick="toggleDay(0)">
+        <h3>Monday</h3>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="day-cals" id="day-cals-0">1000 kcal / 1000</div>
+          <svg class="chevron open" id="chev-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" width="18" height="18"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+      </div>
+      <div class="day-cal-bar"><div class="day-cal-fill " style="width:0%"></div></div>
+      <div class="collapsible open" id="day-body-0">
+        <div class="day-meals">
+          
+            <div class="meal-item " id="meal-item-0-0">
+              <div class="meal-type-badge breakfast">Breakfast</div>
+              <div class="meal-info">
+                <div class="meal-name">Cottage Cheese with Peach Slices</div>
+                <div class="meal-macros">P: 20g · C: 25g · F: 5g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(0,0)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(0,0)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(0,0)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">200</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-0-1">
+              <div class="meal-type-badge lunch">Lunch</div>
+              <div class="meal-info">
+                <div class="meal-name">Tuna Salad (light mayo) on Lettuce Wraps</div>
+                <div class="meal-macros">P: 35g · C: 10g · F: 15g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(0,1)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(0,1)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(0,1)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">300</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-0-2">
+              <div class="meal-type-badge dinner">Dinner</div>
+              <div class="meal-info">
+                <div class="meal-name">Lean Beef Stir-fry with Mixed Vegetables</div>
+                <div class="meal-macros">P: 40g · C: 15g · F: 10g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(0,2)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(0,2)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(0,2)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">300</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-0-3">
+              <div class="meal-type-badge snack">Snack</div>
+              <div class="meal-info">
+                <div class="meal-name">Apple Slices with Peanut Butter</div>
+                <div class="meal-macros">P: 15g · C: 15g · F: 5g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(0,3)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(0,3)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(0,3)">📋 Copy</button>
+                  <button class="meal-action-btn" style="color:var(--danger);border-color:rgba(201,107,107,0.3)" onclick="deleteMeal(0,3)">🗑 Delete</button>
+                </div>
+              </div>
+              <div class="meal-cals">100</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-0-4">
+              <div class="meal-type-badge snack">Snack</div>
+              <div class="meal-info">
+                <div class="meal-name">Steamed Edamame (shelled)</div>
+                <div class="meal-macros">P: 10g · C: 8g · F: 4g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(0,4)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(0,4)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(0,4)">📋 Copy</button>
+                  <button class="meal-action-btn" style="color:var(--danger);border-color:rgba(201,107,107,0.3)" onclick="deleteMeal(0,4)">🗑 Delete</button>
+                </div>
+              </div>
+              <div class="meal-cals">100</div>
+            </div>
+          
+        </div>
+        
+        <div style="padding:8px 18px 12px">
+          <button onclick="addExtraSnack(0)" style="width:100%;padding:8px;border-radius:10px;border:1.5px dashed var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--soft);cursor:pointer">+ Add extra snack</button>
+        </div>
+      </div>
+    </div><div class="day-card">
+      <div class="day-header" onclick="toggleDay(1)">
+        <h3>Tuesday</h3>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="day-cals" id="day-cals-1">1000 kcal / 1000</div>
+          <svg class="chevron " id="chev-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" width="18" height="18"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+      </div>
+      <div class="day-cal-bar"><div class="day-cal-fill " style="width:0%"></div></div>
+      <div class="collapsible " id="day-body-1">
+        <div class="day-meals">
+          
+            <div class="meal-item " id="meal-item-1-0">
+              <div class="meal-type-badge breakfast">Breakfast</div>
+              <div class="meal-info">
+                <div class="meal-name">Cottage Cheese with Peach Slices</div>
+                <div class="meal-macros">P: 20g · C: 25g · F: 5g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(1,0)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(1,0)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(1,0)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">200</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-1-1">
+              <div class="meal-type-badge lunch">Lunch</div>
+              <div class="meal-info">
+                <div class="meal-name">Tuna Salad (light mayo) on Lettuce Wraps</div>
+                <div class="meal-macros">P: 35g · C: 10g · F: 15g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(1,1)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(1,1)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(1,1)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">300</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-1-2">
+              <div class="meal-type-badge dinner">Dinner</div>
+              <div class="meal-info">
+                <div class="meal-name">Lean Beef Stir-fry with Mixed Vegetables</div>
+                <div class="meal-macros">P: 40g · C: 15g · F: 10g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(1,2)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(1,2)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(1,2)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">300</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-1-3">
+              <div class="meal-type-badge snack">Snack</div>
+              <div class="meal-info">
+                <div class="meal-name">Apple Slices with Peanut Butter</div>
+                <div class="meal-macros">P: 15g · C: 15g · F: 5g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(1,3)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(1,3)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(1,3)">📋 Copy</button>
+                  <button class="meal-action-btn" style="color:var(--danger);border-color:rgba(201,107,107,0.3)" onclick="deleteMeal(1,3)">🗑 Delete</button>
+                </div>
+              </div>
+              <div class="meal-cals">100</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-1-4">
+              <div class="meal-type-badge snack">Snack</div>
+              <div class="meal-info">
+                <div class="meal-name">Steamed Edamame (shelled)</div>
+                <div class="meal-macros">P: 10g · C: 8g · F: 4g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(1,4)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(1,4)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(1,4)">📋 Copy</button>
+                  <button class="meal-action-btn" style="color:var(--danger);border-color:rgba(201,107,107,0.3)" onclick="deleteMeal(1,4)">🗑 Delete</button>
+                </div>
+              </div>
+              <div class="meal-cals">100</div>
+            </div>
+          
+        </div>
+        
+        <div style="padding:8px 18px 12px">
+          <button onclick="addExtraSnack(1)" style="width:100%;padding:8px;border-radius:10px;border:1.5px dashed var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--soft);cursor:pointer">+ Add extra snack</button>
+        </div>
+      </div>
+    </div><div class="day-card">
+      <div class="day-header" onclick="toggleDay(2)">
+        <h3>Wednesday</h3>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="day-cals" id="day-cals-2">1000 kcal / 1000</div>
+          <svg class="chevron " id="chev-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" width="18" height="18"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+      </div>
+      <div class="day-cal-bar"><div class="day-cal-fill " style="width:0%"></div></div>
+      <div class="collapsible " id="day-body-2">
+        <div class="day-meals">
+          
+            <div class="meal-item " id="meal-item-2-0">
+              <div class="meal-type-badge breakfast">Breakfast</div>
+              <div class="meal-info">
+                <div class="meal-name">Cottage Cheese with Peach Slices</div>
+                <div class="meal-macros">P: 20g · C: 25g · F: 5g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(2,0)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(2,0)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(2,0)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">200</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-2-1">
+              <div class="meal-type-badge lunch">Lunch</div>
+              <div class="meal-info">
+                <div class="meal-name">Tuna Salad (light mayo) on Lettuce Wraps</div>
+                <div class="meal-macros">P: 35g · C: 10g · F: 15g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(2,1)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(2,1)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(2,1)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">300</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-2-2">
+              <div class="meal-type-badge dinner">Dinner</div>
+              <div class="meal-info">
+                <div class="meal-name">Lean Beef Stir-fry with Mixed Vegetables</div>
+                <div class="meal-macros">P: 40g · C: 15g · F: 10g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(2,2)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(2,2)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(2,2)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">300</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-2-3">
+              <div class="meal-type-badge snack">Snack</div>
+              <div class="meal-info">
+                <div class="meal-name">Apple Slices with Peanut Butter</div>
+                <div class="meal-macros">P: 15g · C: 15g · F: 5g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(2,3)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(2,3)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(2,3)">📋 Copy</button>
+                  <button class="meal-action-btn" style="color:var(--danger);border-color:rgba(201,107,107,0.3)" onclick="deleteMeal(2,3)">🗑 Delete</button>
+                </div>
+              </div>
+              <div class="meal-cals">100</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-2-4">
+              <div class="meal-type-badge snack">Snack</div>
+              <div class="meal-info">
+                <div class="meal-name">Steamed Edamame (shelled)</div>
+                <div class="meal-macros">P: 10g · C: 8g · F: 4g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(2,4)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(2,4)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(2,4)">📋 Copy</button>
+                  <button class="meal-action-btn" style="color:var(--danger);border-color:rgba(201,107,107,0.3)" onclick="deleteMeal(2,4)">🗑 Delete</button>
+                </div>
+              </div>
+              <div class="meal-cals">100</div>
+            </div>
+          
+        </div>
+        
+        <div style="padding:8px 18px 12px">
+          <button onclick="addExtraSnack(2)" style="width:100%;padding:8px;border-radius:10px;border:1.5px dashed var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--soft);cursor:pointer">+ Add extra snack</button>
+        </div>
+      </div>
+    </div><div class="day-card">
+      <div class="day-header" onclick="toggleDay(3)">
+        <h3>Thursday</h3>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="day-cals" id="day-cals-3">1000 kcal / 1000</div>
+          <svg class="chevron " id="chev-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" width="18" height="18"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+      </div>
+      <div class="day-cal-bar"><div class="day-cal-fill " style="width:0%"></div></div>
+      <div class="collapsible " id="day-body-3">
+        <div class="day-meals">
+          
+            <div class="meal-item " id="meal-item-3-0">
+              <div class="meal-type-badge breakfast">Breakfast</div>
+              <div class="meal-info">
+                <div class="meal-name">Cottage Cheese with Peach Slices</div>
+                <div class="meal-macros">P: 20g · C: 25g · F: 5g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(3,0)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(3,0)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(3,0)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">200</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-3-1">
+              <div class="meal-type-badge lunch">Lunch</div>
+              <div class="meal-info">
+                <div class="meal-name">Tuna Salad (light mayo) on Lettuce Wraps</div>
+                <div class="meal-macros">P: 35g · C: 10g · F: 15g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(3,1)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(3,1)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(3,1)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">300</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-3-2">
+              <div class="meal-type-badge dinner">Dinner</div>
+              <div class="meal-info">
+                <div class="meal-name">Lean Beef Stir-fry with Mixed Vegetables</div>
+                <div class="meal-macros">P: 40g · C: 15g · F: 10g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(3,2)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(3,2)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(3,2)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">300</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-3-3">
+              <div class="meal-type-badge snack">Snack</div>
+              <div class="meal-info">
+                <div class="meal-name">Apple Slices with Peanut Butter</div>
+                <div class="meal-macros">P: 15g · C: 15g · F: 5g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(3,3)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(3,3)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(3,3)">📋 Copy</button>
+                  <button class="meal-action-btn" style="color:var(--danger);border-color:rgba(201,107,107,0.3)" onclick="deleteMeal(3,3)">🗑 Delete</button>
+                </div>
+              </div>
+              <div class="meal-cals">100</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-3-4">
+              <div class="meal-type-badge snack">Snack</div>
+              <div class="meal-info">
+                <div class="meal-name">Steamed Edamame (shelled)</div>
+                <div class="meal-macros">P: 10g · C: 8g · F: 4g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(3,4)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(3,4)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(3,4)">📋 Copy</button>
+                  <button class="meal-action-btn" style="color:var(--danger);border-color:rgba(201,107,107,0.3)" onclick="deleteMeal(3,4)">🗑 Delete</button>
+                </div>
+              </div>
+              <div class="meal-cals">100</div>
+            </div>
+          
+        </div>
+        
+        <div style="padding:8px 18px 12px">
+          <button onclick="addExtraSnack(3)" style="width:100%;padding:8px;border-radius:10px;border:1.5px dashed var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--soft);cursor:pointer">+ Add extra snack</button>
+        </div>
+      </div>
+    </div><div class="day-card">
+      <div class="day-header" onclick="toggleDay(4)">
+        <h3>Friday</h3>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="day-cals" id="day-cals-4">1000 kcal / 1000</div>
+          <svg class="chevron " id="chev-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" width="18" height="18"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+      </div>
+      <div class="day-cal-bar"><div class="day-cal-fill " style="width:0%"></div></div>
+      <div class="collapsible " id="day-body-4">
+        <div class="day-meals">
+          
+            <div class="meal-item " id="meal-item-4-0">
+              <div class="meal-type-badge breakfast">Breakfast</div>
+              <div class="meal-info">
+                <div class="meal-name">Cottage Cheese with Peach Slices</div>
+                <div class="meal-macros">P: 20g · C: 25g · F: 5g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(4,0)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(4,0)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(4,0)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">200</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-4-1">
+              <div class="meal-type-badge lunch">Lunch</div>
+              <div class="meal-info">
+                <div class="meal-name">Tuna Salad (light mayo) on Lettuce Wraps</div>
+                <div class="meal-macros">P: 35g · C: 10g · F: 15g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(4,1)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(4,1)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(4,1)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">300</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-4-2">
+              <div class="meal-type-badge dinner">Dinner</div>
+              <div class="meal-info">
+                <div class="meal-name">Lean Beef Stir-fry with Mixed Vegetables</div>
+                <div class="meal-macros">P: 40g · C: 15g · F: 10g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(4,2)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(4,2)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(4,2)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">300</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-4-3">
+              <div class="meal-type-badge snack">Snack</div>
+              <div class="meal-info">
+                <div class="meal-name">Apple Slices with Peanut Butter</div>
+                <div class="meal-macros">P: 15g · C: 15g · F: 5g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(4,3)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(4,3)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(4,3)">📋 Copy</button>
+                  <button class="meal-action-btn" style="color:var(--danger);border-color:rgba(201,107,107,0.3)" onclick="deleteMeal(4,3)">🗑 Delete</button>
+                </div>
+              </div>
+              <div class="meal-cals">100</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-4-4">
+              <div class="meal-type-badge snack">Snack</div>
+              <div class="meal-info">
+                <div class="meal-name">Steamed Edamame (shelled)</div>
+                <div class="meal-macros">P: 10g · C: 8g · F: 4g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(4,4)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(4,4)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(4,4)">📋 Copy</button>
+                  <button class="meal-action-btn" style="color:var(--danger);border-color:rgba(201,107,107,0.3)" onclick="deleteMeal(4,4)">🗑 Delete</button>
+                </div>
+              </div>
+              <div class="meal-cals">100</div>
+            </div>
+          
+        </div>
+        
+        <div style="padding:8px 18px 12px">
+          <button onclick="addExtraSnack(4)" style="width:100%;padding:8px;border-radius:10px;border:1.5px dashed var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--soft);cursor:pointer">+ Add extra snack</button>
+        </div>
+      </div>
+    </div><div class="day-card">
+      <div class="day-header" onclick="toggleDay(5)">
+        <h3>Saturday</h3>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="day-cals" id="day-cals-5">1000 kcal / 1000</div>
+          <svg class="chevron " id="chev-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" width="18" height="18"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+      </div>
+      <div class="day-cal-bar"><div class="day-cal-fill " style="width:0%"></div></div>
+      <div class="collapsible " id="day-body-5">
+        <div class="day-meals">
+          
+            <div class="meal-item " id="meal-item-5-0">
+              <div class="meal-type-badge breakfast">Breakfast</div>
+              <div class="meal-info">
+                <div class="meal-name">Cottage Cheese with Peach Slices</div>
+                <div class="meal-macros">P: 20g · C: 25g · F: 5g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(5,0)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(5,0)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(5,0)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">200</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-5-1">
+              <div class="meal-type-badge lunch">Lunch</div>
+              <div class="meal-info">
+                <div class="meal-name">Tuna Salad (light mayo) on Lettuce Wraps</div>
+                <div class="meal-macros">P: 35g · C: 10g · F: 15g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(5,1)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(5,1)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(5,1)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">300</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-5-2">
+              <div class="meal-type-badge dinner">Dinner</div>
+              <div class="meal-info">
+                <div class="meal-name">Lean Beef Stir-fry with Mixed Vegetables</div>
+                <div class="meal-macros">P: 40g · C: 15g · F: 10g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(5,2)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(5,2)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(5,2)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">300</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-5-3">
+              <div class="meal-type-badge snack">Snack</div>
+              <div class="meal-info">
+                <div class="meal-name">Apple Slices with Peanut Butter</div>
+                <div class="meal-macros">P: 15g · C: 15g · F: 5g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(5,3)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(5,3)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(5,3)">📋 Copy</button>
+                  <button class="meal-action-btn" style="color:var(--danger);border-color:rgba(201,107,107,0.3)" onclick="deleteMeal(5,3)">🗑 Delete</button>
+                </div>
+              </div>
+              <div class="meal-cals">100</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-5-4">
+              <div class="meal-type-badge snack">Snack</div>
+              <div class="meal-info">
+                <div class="meal-name">Steamed Edamame (shelled)</div>
+                <div class="meal-macros">P: 10g · C: 8g · F: 4g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(5,4)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(5,4)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(5,4)">📋 Copy</button>
+                  <button class="meal-action-btn" style="color:var(--danger);border-color:rgba(201,107,107,0.3)" onclick="deleteMeal(5,4)">🗑 Delete</button>
+                </div>
+              </div>
+              <div class="meal-cals">100</div>
+            </div>
+          
+        </div>
+        
+        <div style="padding:8px 18px 12px">
+          <button onclick="addExtraSnack(5)" style="width:100%;padding:8px;border-radius:10px;border:1.5px dashed var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--soft);cursor:pointer">+ Add extra snack</button>
+        </div>
+      </div>
+    </div><div class="day-card">
+      <div class="day-header" onclick="toggleDay(6)">
+        <h3>Sunday</h3>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="day-cals" id="day-cals-6">1000 kcal / 1000</div>
+          <svg class="chevron " id="chev-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" width="18" height="18"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+      </div>
+      <div class="day-cal-bar"><div class="day-cal-fill " style="width:0%"></div></div>
+      <div class="collapsible " id="day-body-6">
+        <div class="day-meals">
+          
+            <div class="meal-item " id="meal-item-6-0">
+              <div class="meal-type-badge breakfast">Breakfast</div>
+              <div class="meal-info">
+                <div class="meal-name">Cottage Cheese with Peach Slices</div>
+                <div class="meal-macros">P: 20g · C: 25g · F: 5g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(6,0)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(6,0)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(6,0)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">200</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-6-1">
+              <div class="meal-type-badge lunch">Lunch</div>
+              <div class="meal-info">
+                <div class="meal-name">Tuna Salad (light mayo) on Lettuce Wraps</div>
+                <div class="meal-macros">P: 35g · C: 10g · F: 15g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(6,1)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(6,1)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(6,1)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">300</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-6-2">
+              <div class="meal-type-badge dinner">Dinner</div>
+              <div class="meal-info">
+                <div class="meal-name">Lean Beef Stir-fry with Mixed Vegetables</div>
+                <div class="meal-macros">P: 40g · C: 15g · F: 10g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(6,2)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(6,2)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(6,2)">📋 Copy</button>
+                  
+                </div>
+              </div>
+              <div class="meal-cals">300</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-6-3">
+              <div class="meal-type-badge snack">Snack</div>
+              <div class="meal-info">
+                <div class="meal-name">Apple Slices with Peanut Butter</div>
+                <div class="meal-macros">P: 15g · C: 15g · F: 5g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(6,3)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(6,3)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(6,3)">📋 Copy</button>
+                  <button class="meal-action-btn" style="color:var(--danger);border-color:rgba(201,107,107,0.3)" onclick="deleteMeal(6,3)">🗑 Delete</button>
+                </div>
+              </div>
+              <div class="meal-cals">100</div>
+            </div>
+          
+            <div class="meal-item " id="meal-item-6-4">
+              <div class="meal-type-badge snack">Snack</div>
+              <div class="meal-info">
+                <div class="meal-name">Steamed Edamame (shelled)</div>
+                <div class="meal-macros">P: 10g · C: 8g · F: 4g</div>
+                <div class="meal-actions">
+                  <button class="meal-eaten-btn " onclick="toggleEaten(6,4)">
+                    Mark eaten
+                  </button>
+                  <button class="meal-action-btn recipe" onclick="openRecipe(6,4)">📖 Recipe</button>
+                  <button class="meal-action-btn" onclick="openCopy(6,4)">📋 Copy</button>
+                  <button class="meal-action-btn" style="color:var(--danger);border-color:rgba(201,107,107,0.3)" onclick="deleteMeal(6,4)">🗑 Delete</button>
+                </div>
+              </div>
+              <div class="meal-cals">100</div>
+            </div>
+          
+        </div>
+        
+        <div style="padding:8px 18px 12px">
+          <button onclick="addExtraSnack(6)" style="width:100%;padding:8px;border-radius:10px;border:1.5px dashed var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--soft);cursor:pointer">+ Add extra snack</button>
+        </div>
+      </div>
+    </div></div>
   </div>
 </div>
 
@@ -1104,28 +1825,28 @@
       </div>
 
       <!-- Live preview -->
-      <div id="calorie-preview" style="display: block; margin-bottom: 16px;">
+      <div id="calorie-preview" style="display:none; margin-bottom:16px">
         <div style="background:rgba(122,158,126,0.1); border:1px solid rgba(122,158,126,0.25); border-radius:12px; padding:14px 16px;">
           <div style="font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:var(--soft);margin-bottom:8px">Calculated Targets</div>
           <div style="display:flex;gap:6px;flex-wrap:wrap">
             <div style="flex:1;min-width:80px;text-align:center;background:white;border-radius:10px;padding:10px 6px;">
-              <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--sage-dark)" id="prev-cals">1000</div>
+              <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--sage-dark)" id="prev-cals">—</div>
               <div style="font-size:10px;color:var(--soft);margin-top:2px">kcal/day</div>
             </div>
             <div style="flex:1;min-width:80px;text-align:center;background:white;border-radius:10px;padding:10px 6px;">
-              <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--sage-dark)" id="prev-protein">100</div>
+              <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--sage-dark)" id="prev-protein">—</div>
               <div style="font-size:10px;color:var(--soft);margin-top:2px">protein g</div>
             </div>
             <div style="flex:1;min-width:80px;text-align:center;background:white;border-radius:10px;padding:10px 6px;">
-              <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--accent)" id="prev-carbs">75</div>
+              <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--accent)" id="prev-carbs">—</div>
               <div style="font-size:10px;color:var(--soft);margin-top:2px">carbs g</div>
             </div>
             <div style="flex:1;min-width:80px;text-align:center;background:white;border-radius:10px;padding:10px 6px;">
-              <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:#a07040" id="prev-fat">33</div>
+              <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:#a07040" id="prev-fat">—</div>
               <div style="font-size:10px;color:var(--soft);margin-top:2px">fat g</div>
             </div>
           </div>
-          <div style="font-size:11px;color:var(--soft);margin-top:10px;text-align:center" id="prev-note">1700 maintenance − 1100 kcal/day deficit = 1000 kcal target</div>
+          <div style="font-size:11px;color:var(--soft);margin-top:10px;text-align:center" id="prev-note">—</div>
         </div>
       </div>
 
