@@ -947,69 +947,63 @@
     <!-- Setup Instructions toggle -->
     <button onclick="toggleSetupInProfile()" style="width:100%;display:flex;align-items:center;justify-content:space-between;background:rgba(122,158,126,0.08);border:1.5px solid rgba(122,158,126,0.2);border-radius:14px;padding:12px 16px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--sage-dark);cursor:pointer;margin-bottom:14px">
       <span>⚙️ Setup Instructions</span>
-      <span id="setup-toggle-icon" style="font-size: 16px; transition: transform 0.2s;">▾</span>
+      <span id="setup-toggle-icon" style="font-size:16px;transition:transform 0.2s">▾</span>
     </button>
-    <div id="setup-in-profile" style="display: none; margin-bottom: 14px;">
+    <div id="setup-in-profile" style="display:none;margin-bottom:14px">
 
-    <!-- Section: Install -->
-    <div class="section-title" style="padding:0;margin-top:0;margin-bottom:10px">📱 Install on Your Phone</div>
-    <div class="card" style="margin-bottom:14px">
-      <!-- Device toggle -->
-      <div style="display:flex;background:rgba(122,158,126,0.1);border-radius:30px;padding:3px;gap:2px;margin-bottom:16px">
-        <button id="install-ios-btn" onclick="switchInstall('ios')" style="flex:1;padding:8px;border:none;border-radius:24px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;background:var(--sage-dark);color:white;transition:all 0.2s"> iPhone (iOS)</button>
-        <button id="install-android-btn" onclick="switchInstall('android')" style="flex:1;padding:8px;border:none;border-radius:24px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;background:transparent;color:var(--soft);transition:all 0.2s">Android</button>
+      <!-- Install -->
+      <div class="section-title" style="padding:0;margin-top:0;margin-bottom:10px">📱 Install on Your Phone</div>
+      <div class="card" style="margin-bottom:14px">
+        <div style="display:flex;background:rgba(122,158,126,0.1);border-radius:30px;padding:3px;gap:2px;margin-bottom:16px">
+          <button id="install-ios-btn" onclick="switchInstall('ios')" style="flex:1;padding:8px;border:none;border-radius:24px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;background:var(--sage-dark);color:white;transition:all 0.2s">iPhone (iOS)</button>
+          <button id="install-android-btn" onclick="switchInstall('android')" style="flex:1;padding:8px;border:none;border-radius:24px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;background:transparent;color:var(--soft);transition:all 0.2s">Android</button>
+        </div>
+        <div id="install-ios">
+          <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Open in Safari</strong><br>Open the NourishAI link in <strong>Safari</strong> — not Chrome or any other browser.</div></div>
+          <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Tap Share</strong><br>Tap the <strong>Share ⎙</strong> button at the bottom of the screen.</div></div>
+          <div style="display:flex;gap:10px;padding:10px 0"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Add to Home Screen</strong><br>Scroll down and tap <strong>"Add to Home Screen"</strong> → tap <strong>Add</strong>.</div></div>
+          <div style="background:rgba(122,158,126,0.1);border-radius:10px;padding:10px 12px;margin-top:10px;font-size:12px;color:var(--sage-dark);font-weight:500;line-height:1.5">✓ Must be Safari — Chrome on iPhone cannot add PWAs to the home screen.</div>
+        </div>
+        <div id="install-android" style="display:none">
+          <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Open in Chrome</strong><br>Open the NourishAI link in <strong>Chrome</strong> on your Android or Samsung phone.</div></div>
+          <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Tap the menu</strong><br>Tap the <strong>⋮ three-dot menu</strong> in the top-right corner of Chrome.</div></div>
+          <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Add to Home screen</strong><br>Tap <strong>"Add to Home screen"</strong> or <strong>"Install app"</strong> → tap <strong>Add</strong>.</div></div>
+          <div style="display:flex;gap:10px;padding:10px 0"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Samsung Internet</strong><br>Tap the <strong>☰ menu → Add page to → Home screen</strong>.</div></div>
+          <div style="background:rgba(122,158,126,0.1);border-radius:10px;padding:10px 12px;margin-top:10px;font-size:12px;color:var(--sage-dark);font-weight:500;line-height:1.5">✓ Works on Samsung Galaxy, Google Pixel, and all Android phones.</div>
+        </div>
       </div>
 
-      <!-- iOS steps -->
-      <div id="install-ios">
-        <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Open in Safari</strong><br>Open the NourishAI link in <strong>Safari</strong> — not Chrome or any other browser.</div></div>
-        <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Tap Share</strong><br>Tap the <strong>Share ⎙</strong> button at the bottom of the screen.</div></div>
-        <div style="display:flex;gap:10px;padding:10px 0"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Add to Home Screen</strong><br>Scroll down and tap <strong>"Add to Home Screen"</strong> → tap <strong>Add</strong>.</div></div>
-        <div style="background:rgba(122,158,126,0.1);border-radius:10px;padding:10px 12px;margin-top:10px;font-size:12px;color:var(--sage-dark);font-weight:500;line-height:1.5">✓ Must be Safari — Chrome on iPhone cannot add PWAs to the home screen.</div>
+      <!-- Gemini -->
+      <div class="section-title" style="padding:0;margin-bottom:10px">🔑 Get Your Free Gemini API Key</div>
+      <div class="card" style="margin-bottom:14px">
+        <div style="font-size:12px;color:var(--soft);margin-bottom:12px;line-height:1.5">Powers AI meal plan generation. Free — no card needed.</div>
+        <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><div style="font-size:13px;color:var(--mid);line-height:1.5">Go to <a href="https://aistudio.google.com" target="_blank" rel="noopener" style="color:var(--sage-dark);font-weight:600">aistudio.google.com</a> and sign in with your Google account.</div></div>
+        <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><div style="font-size:13px;color:var(--mid);line-height:1.5">Click <strong>Get API Key → Create API key in new project</strong>. Copy the key (starts with <code>AIza</code>).</div></div>
+        <div style="display:flex;gap:10px;padding:10px 0"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><div style="font-size:13px;color:var(--mid);line-height:1.5">In NourishAI → <strong>Profile → Danger Zone → Gemini API Key</strong> → paste and save.</div></div>
       </div>
 
-      <!-- Android steps -->
-      <div id="install-android" style="display:none">
-        <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Open in Chrome</strong><br>Open the NourishAI link in <strong>Chrome</strong> on your Android or Samsung phone.</div></div>
-        <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Tap the menu</strong><br>Tap the <strong>⋮ three-dot menu</strong> in the top-right corner of Chrome.</div></div>
-        <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Add to Home screen</strong><br>Tap <strong>"Add to Home screen"</strong> or <strong>"Install app"</strong> → tap <strong>Add</strong>.</div></div>
-        <div style="display:flex;gap:10px;padding:10px 0"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Samsung Internet (alternative)</strong><br>If using Samsung Internet browser: tap the <strong>☰ menu → Add page to → Home screen</strong>.</div></div>
-        <div style="background:rgba(122,158,126,0.1);border-radius:10px;padding:10px 12px;margin-top:10px;font-size:12px;color:var(--sage-dark);font-weight:500;line-height:1.5">✓ Works on Samsung Galaxy, Google Pixel, and all Android phones running Chrome or Samsung Internet.</div>
+      <!-- Account -->
+      <div class="section-title" style="padding:0;margin-bottom:10px">👤 Create Your Account</div>
+      <div class="card" style="margin-bottom:14px">
+        <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><div style="font-size:13px;color:var(--mid);line-height:1.5">Scroll up to the top of this page → enter your name and a password → tap <strong>Create Account</strong>.</div></div>
+        <div style="display:flex;gap:10px;padding:10px 0"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><div style="font-size:13px;color:var(--mid);line-height:1.5">Set up your weight, target and maintenance calories → tap <strong>Save Profile</strong>.</div></div>
+        <div style="background:rgba(122,158,126,0.1);border-radius:10px;padding:10px 12px;margin-top:10px;font-size:12px;color:var(--sage-dark);font-weight:500;line-height:1.5">✓ You're ready! Go to <strong>Plan</strong> and tap <strong>Generate 7-Day Plan</strong>.</div>
       </div>
-    </div>
 
-    <!-- Section: Gemini API Key -->
-    <div class="section-title" style="padding:0;margin-bottom:10px">🔑 Get Your Free Gemini API Key</div>
-    <div class="card" style="margin-bottom:14px">
-      <div style="font-size:12px;color:var(--soft);margin-bottom:12px;line-height:1.5">This powers the AI meal plan generation. It's free — no card needed.</div>
-      <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><div style="font-size:13px;color:var(--mid);line-height:1.5">Go to <a href="https://aistudio.google.com" target="_blank" rel="noopener" style="color:var(--sage-dark);font-weight:600">aistudio.google.com</a> and sign in with your Google account.</div></div>
-      <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><div style="font-size:13px;color:var(--mid);line-height:1.5">Click <strong>Get API Key → Create API key in new project</strong>. Copy the key — it starts with <code>AIza</code>.</div></div>
-      <div style="display:flex;gap:10px;padding:10px 0"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><div style="font-size:13px;color:var(--mid);line-height:1.5">In NourishAI, go to <strong>Profile → Danger Zone → Gemini API Key</strong> → paste and save.</div></div>
-    </div>
-
-    <!-- Section: Create Account -->
-    <div class="section-title" style="padding:0;margin-bottom:10px">👤 Create Your Account</div>
-    <div class="card" style="margin-bottom:14px">
-      <div style="font-size:12px;color:var(--soft);margin-bottom:12px;line-height:1.5">Your account stores your name and lets you export your data if you ever need it on another device.</div>
-      <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><div style="font-size:13px;color:var(--mid);line-height:1.5">Go to <strong>Profile</strong> → enter your name and a password → tap <strong>Create Account</strong>.</div></div>
-      <div style="display:flex;gap:10px;padding:10px 0"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><div style="font-size:13px;color:var(--mid);line-height:1.5">Go to <strong>Profile</strong> → set up your weight, target and maintenance calories → tap <strong>Save Profile</strong>.</div></div>
-      <div style="background:rgba(122,158,126,0.1);border-radius:10px;padding:10px 12px;margin-top:10px;font-size:12px;color:var(--sage-dark);font-weight:500;line-height:1.5">✓ You're ready! Go to <strong>Plan</strong> and tap <strong>Generate 7-Day Plan</strong> to get started.</div>
-    </div>
-
-    <!-- Optional: Data Sync -->
-    <div class="section-title" style="padding:0;margin-bottom:10px">🔄 Optional — Sync Across Devices</div>
-    <div class="card" style="margin-bottom:14px">
-      <div style="font-size:12px;color:var(--soft);margin-bottom:10px;line-height:1.5">Only needed if you want your meal plan and progress available on multiple devices (e.g. iPhone + iPad). Requires a free GitHub account.</div>
-      <button class="btn outline" style="width:100%" onclick="showGistSetup()">Show Gist Sync Setup</button>
-      <div id="gist-setup-detail" style="display:none;margin-top:14px">
-        <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Create a Secret Gist</strong><br>Go to <a href="https://gist.github.com" target="_blank" rel="noopener" style="color:var(--sage-dark);font-weight:600">gist.github.com</a> → filename: <code>nourish-data.json</code> → content: <code>{}</code> → click <strong>Create secret gist</strong>.</div></div>
-        <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Copy the Gist ID</strong><br>From the URL: <code>gist.github.com/username/<strong>THIS_PART</strong></code></div></div>
-        <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Create a token</strong><br><a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener" style="color:var(--sage-dark);font-weight:600">GitHub → Fine-grained tokens</a> → name: <code>NourishAI</code> → Permissions → Gists: <strong>Read &amp; write</strong> → Generate.</div></div>
-        <div style="display:flex;gap:10px;padding:10px 0"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Connect in app</strong><br><strong>Profile → Danger Zone → GitHub Gist Sync</strong> → paste ID and token → tap <strong>Save &amp; Connect</strong>.</div></div>
+      <!-- Sync -->
+      <div class="section-title" style="padding:0;margin-bottom:10px">🔄 Optional — Sync Across Devices</div>
+      <div class="card" style="margin-bottom:14px">
+        <div style="font-size:12px;color:var(--soft);margin-bottom:10px;line-height:1.5">Only needed if you want your data on multiple devices. Requires a free GitHub account.</div>
+        <button class="btn outline" style="width:100%" onclick="showGistSetup()">Show Gist Sync Setup</button>
+        <div id="gist-setup-detail" style="display:none;margin-top:14px">
+          <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Create a Secret Gist</strong><br>Go to <a href="https://gist.github.com" target="_blank" rel="noopener" style="color:var(--sage-dark);font-weight:600">gist.github.com</a> → filename: <code>nourish-data.json</code> → content: <code>{}</code> → click <strong>Create secret gist</strong>.</div></div>
+          <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Copy the Gist ID</strong><br>From the URL: <code>gist.github.com/username/<strong>THIS_PART</strong></code></div></div>
+          <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Create a token</strong><br><a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener" style="color:var(--sage-dark);font-weight:600">GitHub → Fine-grained tokens</a> → name: <code>NourishAI</code> → Gists: <strong>Read &amp; write</strong> → Generate.</div></div>
+          <div style="display:flex;gap:10px;padding:10px 0"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Connect in app</strong><br><strong>Profile → Danger Zone → GitHub Gist Sync</strong> → paste ID and token → tap <strong>Save &amp; Connect</strong>.</div></div>
+        </div>
       </div>
-    </div>
 
-  </div>
+    </div>
     <div class="card" style="margin-bottom:14px" id="identity-card">
       <div id="identity-signed-in" style="display: block;">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
@@ -1220,85 +1214,11 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
     Progress
   </button>
-  <button class="nav-btn" id="nav-setup" onclick="goTo('setup')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"></path></svg>
-    Setup
-  </button>
   <button class="nav-btn" id="nav-profile" onclick="goTo('profile')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
     Profile
   </button>
 </nav>
-
-<!-- SETUP PAGE -->
-<div class="page" id="page-setup">
-  <div class="page-header">
-    <div class="logo-badge">⚙️ Setup</div>
-    <h1>Setup Guide</h1>
-    <p>Get NourishAI running on all your devices</p>
-  </div>
-  <div class="section">
-
-    <!-- Section: Install -->
-    <div class="section-title" style="padding:0;margin-top:0;margin-bottom:10px">📱 Install on Your Phone</div>
-    <div class="card" style="margin-bottom:14px">
-      <!-- Device toggle -->
-      <div style="display:flex;background:rgba(122,158,126,0.1);border-radius:30px;padding:3px;gap:2px;margin-bottom:16px">
-        <button id="install-ios-btn" onclick="switchInstall('ios')" style="flex:1;padding:8px;border:none;border-radius:24px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;background:var(--sage-dark);color:white;transition:all 0.2s"> iPhone (iOS)</button>
-        <button id="install-android-btn" onclick="switchInstall('android')" style="flex:1;padding:8px;border:none;border-radius:24px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;background:transparent;color:var(--soft);transition:all 0.2s">Android</button>
-      </div>
-
-      <!-- iOS steps -->
-      <div id="install-ios">
-        <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Open in Safari</strong><br>Open the NourishAI link in <strong>Safari</strong> — not Chrome or any other browser.</div></div>
-        <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Tap Share</strong><br>Tap the <strong>Share ⎙</strong> button at the bottom of the screen.</div></div>
-        <div style="display:flex;gap:10px;padding:10px 0"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Add to Home Screen</strong><br>Scroll down and tap <strong>"Add to Home Screen"</strong> → tap <strong>Add</strong>.</div></div>
-        <div style="background:rgba(122,158,126,0.1);border-radius:10px;padding:10px 12px;margin-top:10px;font-size:12px;color:var(--sage-dark);font-weight:500;line-height:1.5">✓ Must be Safari — Chrome on iPhone cannot add PWAs to the home screen.</div>
-      </div>
-
-      <!-- Android steps -->
-      <div id="install-android" style="display:none">
-        <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Open in Chrome</strong><br>Open the NourishAI link in <strong>Chrome</strong> on your Android or Samsung phone.</div></div>
-        <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Tap the menu</strong><br>Tap the <strong>⋮ three-dot menu</strong> in the top-right corner of Chrome.</div></div>
-        <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Add to Home screen</strong><br>Tap <strong>"Add to Home screen"</strong> or <strong>"Install app"</strong> → tap <strong>Add</strong>.</div></div>
-        <div style="display:flex;gap:10px;padding:10px 0"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Samsung Internet (alternative)</strong><br>If using Samsung Internet browser: tap the <strong>☰ menu → Add page to → Home screen</strong>.</div></div>
-        <div style="background:rgba(122,158,126,0.1);border-radius:10px;padding:10px 12px;margin-top:10px;font-size:12px;color:var(--sage-dark);font-weight:500;line-height:1.5">✓ Works on Samsung Galaxy, Google Pixel, and all Android phones running Chrome or Samsung Internet.</div>
-      </div>
-    </div>
-
-    <!-- Section: Gemini API Key -->
-    <div class="section-title" style="padding:0;margin-bottom:10px">🔑 Get Your Free Gemini API Key</div>
-    <div class="card" style="margin-bottom:14px">
-      <div style="font-size:12px;color:var(--soft);margin-bottom:12px;line-height:1.5">This powers the AI meal plan generation. It's free — no card needed.</div>
-      <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><div style="font-size:13px;color:var(--mid);line-height:1.5">Go to <a href="https://aistudio.google.com" target="_blank" rel="noopener" style="color:var(--sage-dark);font-weight:600">aistudio.google.com</a> and sign in with your Google account.</div></div>
-      <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><div style="font-size:13px;color:var(--mid);line-height:1.5">Click <strong>Get API Key → Create API key in new project</strong>. Copy the key — it starts with <code>AIza</code>.</div></div>
-      <div style="display:flex;gap:10px;padding:10px 0"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><div style="font-size:13px;color:var(--mid);line-height:1.5">In NourishAI, go to <strong>Profile → Danger Zone → Gemini API Key</strong> → paste and save.</div></div>
-    </div>
-
-    <!-- Section: Create Account -->
-    <div class="section-title" style="padding:0;margin-bottom:10px">👤 Create Your Account</div>
-    <div class="card" style="margin-bottom:14px">
-      <div style="font-size:12px;color:var(--soft);margin-bottom:12px;line-height:1.5">Your account stores your name and lets you export your data if you ever need it on another device.</div>
-      <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><div style="font-size:13px;color:var(--mid);line-height:1.5">Go to <strong>Profile</strong> → enter your name and a password → tap <strong>Create Account</strong>.</div></div>
-      <div style="display:flex;gap:10px;padding:10px 0"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><div style="font-size:13px;color:var(--mid);line-height:1.5">Go to <strong>Profile</strong> → set up your weight, target and maintenance calories → tap <strong>Save Profile</strong>.</div></div>
-      <div style="background:rgba(122,158,126,0.1);border-radius:10px;padding:10px 12px;margin-top:10px;font-size:12px;color:var(--sage-dark);font-weight:500;line-height:1.5">✓ You're ready! Go to <strong>Plan</strong> and tap <strong>Generate 7-Day Plan</strong> to get started.</div>
-    </div>
-
-    <!-- Optional: Data Sync -->
-    <div class="section-title" style="padding:0;margin-bottom:10px">🔄 Optional — Sync Across Devices</div>
-    <div class="card" style="margin-bottom:14px">
-      <div style="font-size:12px;color:var(--soft);margin-bottom:10px;line-height:1.5">Only needed if you want your meal plan and progress available on multiple devices (e.g. iPhone + iPad). Requires a free GitHub account.</div>
-      <button class="btn outline" style="width:100%" onclick="showGistSetup()">Show Gist Sync Setup</button>
-      <div id="gist-setup-detail" style="display:none;margin-top:14px">
-        <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Create a Secret Gist</strong><br>Go to <a href="https://gist.github.com" target="_blank" rel="noopener" style="color:var(--sage-dark);font-weight:600">gist.github.com</a> → filename: <code>nourish-data.json</code> → content: <code>{}</code> → click <strong>Create secret gist</strong>.</div></div>
-        <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Copy the Gist ID</strong><br>From the URL: <code>gist.github.com/username/<strong>THIS_PART</strong></code></div></div>
-        <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Create a token</strong><br><a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener" style="color:var(--sage-dark);font-weight:600">GitHub → Fine-grained tokens</a> → name: <code>NourishAI</code> → Permissions → Gists: <strong>Read &amp; write</strong> → Generate.</div></div>
-        <div style="display:flex;gap:10px;padding:10px 0"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div><div style="font-size:13px;color:var(--mid);line-height:1.5"><strong>Connect in app</strong><br><strong>Profile → Danger Zone → GitHub Gist Sync</strong> → paste ID and token → tap <strong>Save &amp; Connect</strong>.</div></div>
-      </div>
-    </div>
-
-  </div>
-</div>
 
 <!-- ACTUALS LOG PAGE -->
 <div class="page" id="page-log">
@@ -1524,7 +1444,6 @@ function goTo(page) {
   if (page === 'plan') renderPlanPage();
   if (page === 'log') renderLogPage();
   if (page === 'shop') renderShopPage();
-  if (page === 'setup') renderSetupPage();
   if (page === 'weight') renderWeightPage();
   if (page === 'profile') renderProfilePage();
   window.scrollTo(0, 0);
@@ -1592,13 +1511,8 @@ function toggleSetupInProfile() {
   const icon = document.getElementById('setup-toggle-icon');
   if (!el) return;
   const opening = el.style.display === 'none';
-  el.style.display = opening ? 'block' : 'none';
+  el.style.display  = opening ? 'block' : 'none';
   icon.style.transform = opening ? 'rotate(180deg)' : '';
-  if (opening && !el.innerHTML.trim()) {
-    // Clone content from the setup page
-    const setupSection = document.querySelector('#page-setup .section');
-    if (setupSection) el.innerHTML = setupSection.innerHTML;
-  }
 }
 
 function switchInstall(platform) {
@@ -2770,7 +2684,7 @@ async function updateApp() {
 
   try {
     const resp = await fetch(fetchUrl + '?bust=' + Date.now());
-    if (!resp.ok) throw new Error(`Could not reach ${fetchUrl} (${resp.status})`);
+    if (!resp.ok) throw new Error(`${resp.status} fetching ${fetchUrl}`);
     const remoteHtml = await resp.text();
 
     // Check it looks like NourishAI
@@ -2794,11 +2708,11 @@ async function updateApp() {
 
     showToast('Latest version downloaded ✓ — replace your local file');
     if (btn) { btn.textContent = 'Downloaded ✓'; }
-    setTimeout(() => { if (btn) { btn.textContent = 'Check for Update'; btn.disabled = false; } }, 4000);
+    setTimeout(() => { if (btn) { btn.textContent = 'Pull Latest from GitHub'; btn.disabled = false; } }, 4000);
 
   } catch(e) {
-    showToast('Update failed: ' + e.message);
-    if (btn) { btn.textContent = 'Check for Update'; btn.disabled = false; }
+    showToast('Update failed: ' + e.message + (fetchUrl ? ` — tried: ${fetchUrl}` : ''));
+    if (btn) { btn.textContent = 'Pull Latest from GitHub'; btn.disabled = false; }
   }
 }
 function renderLogPage() {
