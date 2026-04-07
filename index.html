@@ -797,7 +797,7 @@
 
   <div id="plan-content" style="display: block;">
     <div id="plan-no-key-soft" class="section" style="display:none">
-      <div class="alert info">📖 Viewing synced plan. Add your Gemini key in Profile → Danger Zone to generate a new one.</div>
+      <div class="alert info">📖 Viewing synced plan. A Gemini API key is needed to generate a new one.</div>
     </div>
 
     <!-- Mode toggle -->
@@ -1696,7 +1696,7 @@
         <div style="font-size:12px;color:var(--soft);margin-bottom:12px;line-height:1.5">Powers AI meal plan generation. Free — no card needed.</div>
         <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><div style="font-size:13px;color:var(--mid);line-height:1.5">Go to <a href="https://aistudio.google.com" target="_blank" rel="noopener" style="color:var(--sage-dark);font-weight:600">aistudio.google.com</a> and sign in with your Google account.</div></div>
         <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><div style="font-size:13px;color:var(--mid);line-height:1.5">Click <strong>Get API Key → Create API key in new project</strong>. Copy the key (starts with <code>AIza</code>).</div></div>
-        <div style="display:flex;gap:10px;padding:10px 0"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><div style="font-size:13px;color:var(--mid);line-height:1.5">In NourishAI → <strong>Profile → Danger Zone → Gemini API Key</strong> → paste and save.</div></div>
+        <div style="display:flex;gap:10px;padding:10px 0"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><div style="font-size:13px;color:var(--mid);line-height:1.5">Share the key with your app admin to set it up on the device.</div></div>
       </div>
 
       <!-- Account -->
@@ -1707,78 +1707,48 @@
         <div style="background:rgba(122,158,126,0.1);border-radius:10px;padding:10px 12px;margin-top:10px;font-size:12px;color:var(--sage-dark);font-weight:500;line-height:1.5">✓ You're ready! Go to <strong>Plan</strong> and tap <strong>Generate 7-Day Plan</strong>.</div>
       </div>
 
-      <!-- Sync -->
-      <div class="section-title" style="padding:0;margin-bottom:10px">🔄 Sync Across Devices (Optional)</div>
-      <div class="card" style="margin-bottom:14px">
-        <div style="font-size:12px;color:var(--soft);margin-bottom:12px;line-height:1.5">Only needed if you want your meal plan and progress on multiple devices. Requires a free GitHub account.</div>
-        <button class="btn outline" style="width:100%;margin-bottom:0" onclick="showGistSetup()">I want to sync across devices ▾</button>
-        <div id="gist-setup-detail" style="display:none;margin-top:14px">
-          <div style="font-size:12px;font-weight:600;color:var(--mid);margin-bottom:12px;line-height:1.6">
-            <div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><div style="font-size:13px;color:var(--mid);line-height:1.5;font-weight:400"><strong>Create a Secret Gist</strong><br>Go to <a href="https://gist.github.com" target="_blank" rel="noopener" style="color:var(--sage-dark);font-weight:600">gist.github.com</a> → filename: <code>nourish-data.json</code> → content: <code>{}</code> → click <strong>Create secret gist</strong>.</div></div>
-            <div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><div style="font-size:13px;color:var(--mid);line-height:1.5;font-weight:400"><strong>Copy the Gist ID</strong><br>From the URL: <code>gist.github.com/username/<strong>THIS_PART</strong></code></div></div>
-            <div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><div style="font-size:13px;color:var(--mid);line-height:1.5;font-weight:400"><strong>Create a token</strong><br><a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener" style="color:var(--sage-dark);font-weight:600">GitHub → Fine-grained tokens</a> → name: <code>NourishAI</code> → Gists: <strong>Read &amp; write</strong> → Generate.</div></div>
-            <div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid rgba(122,158,126,0.08)"><div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div><div style="font-size:13px;color:var(--mid);line-height:1.5;font-weight:400"><strong>Enter your details below and connect</strong></div></div>
-          </div>
-          <div class="form-group" style="margin-bottom:8px">
-            <label>Gist ID</label>
-            <input type="text" id="p-gist-id" placeholder="e.g. a1b2c3d4e5f6…">
-          </div>
-          <div class="form-group" style="margin-bottom:12px">
-            <label>GitHub Token (Gists scope only)</label>
-            <div class="api-key-wrap">
-              <input type="password" id="p-gist-token" placeholder="github_pat_…">
-              <button class="api-key-toggle" onclick="toggleGistVisibility()">Show</button>
-            </div>
-          </div>
-          <div style="display:flex;gap:8px;align-items:stretch">
-            <button class="btn" style="flex:1" onclick="saveGistConfig()">Save &amp; Connect</button>
-            <button class="btn outline" style="flex:0 0 44px;width:44px;padding:0;display:flex;align-items:center;justify-content:center" onclick="syncNow()" title="Sync now">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="16" height="16" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"></path></svg>
-            </button>
-          </div>
-          <div id="gist-sync-msg" style="display:none;margin-top:10px;font-size:12px;padding:8px 12px;border-radius:8px"></div>
-          <div style="font-size:11px;color:var(--soft);margin-top:10px;line-height:1.5" id="sync-status-profile">Connected — tap ↻ to sync</div>
-        </div>
-      </div>
-
     </div>
     <div class="card" style="margin-bottom:14px" id="identity-card">
-      <div id="identity-signed-in" style="display: block;">
+      <!-- Signed-in state -->
+      <div id="identity-signed-in" style="display:none">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
           <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--sage-dark),var(--sage));display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <span id="identity-avatar" style="font-size:18px;font-weight:700;color:white">T</span>
+            <span id="identity-avatar" style="font-size:18px;font-weight:700;color:white">?</span>
           </div>
           <div>
-            <div id="identity-name" style="font-weight:700;font-size:16px;color:var(--charcoal)">TaonaJ</div>
-            <div style="font-size:12px;color:var(--soft)">Signed in on this device</div>
+            <div id="identity-name" style="font-weight:700;font-size:16px;color:var(--charcoal)"></div>
+            <div id="cloud-sync-status" style="font-size:12px;color:var(--sage)">Synced</div>
           </div>
         </div>
         <div style="display:flex;gap:8px">
-          <button class="btn outline" style="flex:1;font-size:13px" onclick="exportCredentials()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="14" height="14" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-            Export credentials
+          <button class="btn outline" style="flex:1;font-size:13px" onclick="syncNowSupabase()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="14" height="14" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"></path></svg>
+            Sync Now
           </button>
-          <button class="btn outline" style="flex:1;font-size:13px;border-color:var(--danger);color:var(--danger)" onclick="signOut()">Sign out</button>
+          <button class="btn outline" style="flex:1;font-size:13px;border-color:var(--danger);color:var(--danger)" onclick="handleSignOut()">Sign out</button>
         </div>
+        <p style="font-size:11px;color:var(--soft);margin-top:10px;line-height:1.4">Your data saves to the cloud automatically. Use Sync Now if you want to force a refresh from another device.</p>
       </div>
 
-      <div id="identity-setup" style="display: none;">
-        <div style="font-size:13px;font-weight:600;color:var(--mid);margin-bottom:12px">Create your profile account</div>
+      <!-- Guest state (not signed in) -->
+      <div id="identity-setup" style="display:none">
+        <div style="font-size:13px;font-weight:600;color:var(--mid);margin-bottom:4px">Sign in or create an account</div>
+        <p style="font-size:12px;color:var(--soft);margin-bottom:12px;line-height:1.5">Your data syncs across devices automatically. Just pick a name and password — no email needed.</p>
         <div class="form-group" style="margin-bottom:10px">
-          <label>Display Name</label>
-          <input type="text" id="id-name" placeholder="e.g. Jane Doe">
-        </div>
-        <div class="form-group" style="margin-bottom:10px">
-          <label>Password</label>
-          <input type="password" id="id-password" placeholder="Choose a strong password">
+          <label>Your Name</label>
+          <input type="text" id="id-name" placeholder="e.g. Jane" autocomplete="username">
         </div>
         <div class="form-group" style="margin-bottom:12px">
-          <label>Confirm Password</label>
-          <input type="password" id="id-password2" placeholder="Repeat password">
+          <label>Password</label>
+          <input type="password" id="id-password" placeholder="Min 6 characters" autocomplete="current-password">
         </div>
-        <button class="btn" onclick="createIdentity()">Create Account</button>
+        <div id="auth-error" style="display:none;background:rgba(201,107,107,0.1);color:var(--danger);font-size:12px;padding:8px 12px;border-radius:8px;margin-bottom:12px;line-height:1.5"></div>
+        <div style="display:flex;gap:8px">
+          <button class="btn" style="flex:1" onclick="handleSignUp()" id="btn-signup">Create Account</button>
+          <button class="btn outline" style="flex:1" onclick="handleSignIn()" id="btn-signin">Sign In</button>
+        </div>
         <div style="text-align:center;margin-top:10px;font-size:12px;color:var(--soft)">
-          Already have a credentials file?
+          Have a credentials file?
           <label style="color:var(--sage-dark);font-weight:600;cursor:pointer">
             Import it <input type="file" id="import-creds-file" accept=".json" style="display:none" onchange="importCredentials(this)">
           </label>
@@ -1855,13 +1825,12 @@
 
     <div id="profile-saved" class="alert success" style="display:none; margin-top:14px">✓ Profile saved! Your macro targets have been calculated.</div>
 
-    <!-- ── DANGER ZONE ─────────────────────────────────────── -->
-    <div style="margin-top:28px;margin-bottom:12px;display:flex;align-items:center;gap:10px">
-      <div style="flex:1;height:1px;background:rgba(201,107,107,0.3)"></div>
-      <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--danger);white-space:nowrap">⚠ Danger Zone</div>
-      <div style="flex:1;height:1px;background:rgba(201,107,107,0.3)"></div>
-    </div>
-    <p style="font-size:12px;color:var(--soft);margin-bottom:14px;line-height:1.5">API keys, tokens and integration settings. Keep these private — never share them.</p>
+    <!-- ── ADVANCED SETTINGS (collapsible) ───── -->
+    <button onclick="toggleDangerZone()" style="width:100%;display:flex;align-items:center;justify-content:space-between;background:rgba(201,107,107,0.06);border:1.5px solid rgba(201,107,107,0.2);border-radius:14px;padding:12px 16px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--danger);cursor:pointer;margin-top:20px;margin-bottom:14px">
+      <span>⚠️ Advanced Settings</span>
+      <span id="danger-zone-icon" style="font-size:16px;transition:transform 0.2s">▾</span>
+    </button>
+    <div id="danger-zone" style="display:none">
 
     <!-- 1. Gemini API Key -->
     <div class="card" style="border-color:rgba(201,107,107,0.2);margin-bottom:12px">
@@ -1880,9 +1849,10 @@
     <!-- 2. Clear local data -->
     <div class="card" style="border-color:rgba(201,107,107,0.2);margin-bottom:12px">
       <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--danger);margin-bottom:6px">🗑 Clear Local Data</div>
-      <p style="font-size:11px;color:var(--soft);margin-bottom:10px;line-height:1.5">Wipes all data from this device only. Your GitHub Gist is unaffected — re-sync to restore.</p>
+      <p style="font-size:11px;color:var(--soft);margin-bottom:10px;line-height:1.5">Wipes all data from this device only. Your cloud data is unaffected — sign in to restore.</p>
       <button class="btn" style="background:var(--danger)" onclick="clearAllData()">Clear All Local Data</button>
     </div>
+    </div><!-- /danger-zone -->
   </div>
 </div>
 
@@ -2053,6 +2023,17 @@
 <div class="toast" id="toast">Pulled from GitHub ✓</div>
 
 <script>
+// ── SUPABASE CONFIG ──────────────────────────────────────────
+const SUPABASE_URL = 'https://dxdffkeiwpdwlbxdbefr.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR4ZGZma2Vpd3Bkd2xieGRiZWZyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1OTA5OTYsImV4cCI6MjA5MTE2Njk5Nn0.mJVVbk3uyTOTgQrpKLF0-ukuXNu-dDRQC_DT-eZP_BI';
+const NOURISH_EMAIL_DOMAIN = 'nourish.local';
+
+function nameToEmail(name) {
+  const slug = name.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  if (!slug) return '';
+  return slug + '@' + NOURISH_EMAIL_DOMAIN;
+}
+
 // ── STATE ─────────────────────────────────────────────────────
 let state = {
   profile: null,
@@ -2065,6 +2046,134 @@ let state = {
   foodLog: [],
   userIdentity: null
 };
+
+// ── SUPABASE AUTH ────────────────────────────────────────────
+let _supabaseSession = null; // cached in memory from localStorage
+
+function loadSupabaseSession() {
+  try {
+    const s = localStorage.getItem('nourish_supabase_session');
+    if (s) _supabaseSession = JSON.parse(s);
+  } catch(e) { _supabaseSession = null; }
+}
+
+function saveSupabaseSession(session) {
+  _supabaseSession = session;
+  if (session) {
+    localStorage.setItem('nourish_supabase_session', JSON.stringify(session));
+  } else {
+    localStorage.removeItem('nourish_supabase_session');
+  }
+}
+
+function isSupabaseAuthenticated() {
+  return !!(_supabaseSession && _supabaseSession.access_token);
+}
+
+function getSupabaseHeaders() {
+  const h = {
+    'apikey': SUPABASE_ANON_KEY,
+    'Content-Type': 'application/json'
+  };
+  if (_supabaseSession && _supabaseSession.access_token) {
+    h['Authorization'] = 'Bearer ' + _supabaseSession.access_token;
+  }
+  return h;
+}
+
+async function supabaseAuth(endpoint, body) {
+  const resp = await fetch(SUPABASE_URL + '/auth/v1/' + endpoint, {
+    method: 'POST',
+    headers: { 'apikey': SUPABASE_ANON_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  const data = await resp.json();
+  if (!resp.ok) throw new Error(data.error_description || data.msg || data.message || 'Auth failed');
+  return data;
+}
+
+async function supabaseSignUp(name, password) {
+  const email = nameToEmail(name);
+  if (!email) throw new Error('Invalid name');
+  const data = await supabaseAuth('signup', {
+    email: email,
+    password: password,
+    data: { display_name: name }
+  });
+  // Supabase returns user + session on signup (when email confirm is off)
+  if (data.access_token) {
+    saveSupabaseSession({
+      access_token: data.access_token,
+      refresh_token: data.refresh_token,
+      expires_at: data.expires_at,
+      user_id: data.user.id
+    });
+  } else if (data.id) {
+    // User created but no session — sign in immediately
+    return await supabaseSignIn(name, password);
+  }
+  state.userIdentity = { name: name, createdAt: new Date().toISOString(), userId: data.user.id };
+  save();
+  return data;
+}
+
+async function supabaseSignIn(name, password) {
+  const email = nameToEmail(name);
+  if (!email) throw new Error('Invalid name');
+  const data = await supabaseAuth('token?grant_type=password', {
+    email: email,
+    password: password
+  });
+  saveSupabaseSession({
+    access_token: data.access_token,
+    refresh_token: data.refresh_token,
+    expires_at: data.expires_at,
+    user_id: data.user.id
+  });
+  state.userIdentity = {
+    name: data.user.user_metadata?.display_name || name,
+    createdAt: data.user.created_at,
+    userId: data.user.id
+  };
+  save();
+  return data;
+}
+
+async function supabaseSignOut() {
+  try {
+    if (isSupabaseAuthenticated()) {
+      await fetch(SUPABASE_URL + '/auth/v1/logout', {
+        method: 'POST',
+        headers: getSupabaseHeaders()
+      });
+    }
+  } catch(e) { /* ignore logout errors */ }
+  saveSupabaseSession(null);
+  state.userIdentity = null;
+  save();
+}
+
+async function supabaseRefreshToken() {
+  if (!_supabaseSession || !_supabaseSession.refresh_token) {
+    saveSupabaseSession(null);
+    return false;
+  }
+  try {
+    const data = await supabaseAuth('token?grant_type=refresh_token', {
+      refresh_token: _supabaseSession.refresh_token
+    });
+    saveSupabaseSession({
+      access_token: data.access_token,
+      refresh_token: data.refresh_token,
+      expires_at: data.expires_at,
+      user_id: data.user.id
+    });
+    return true;
+  } catch(e) {
+    saveSupabaseSession(null);
+    return false;
+  }
+}
 
 // ── UNIT HELPERS ──────────────────────────────────────────────
 const KG_TO_LBS = 2.20462;
@@ -2099,6 +2208,106 @@ function setUnit(u) {
   livePreview();
 }
 
+// ── SUPABASE SYNC ────────────────────────────────────────────
+let _isSyncingFromRemote = false;
+let _supabasePushTimer = null;
+
+function debouncedSupabasePush() {
+  clearTimeout(_supabasePushTimer);
+  _supabasePushTimer = setTimeout(() => pushToSupabase(), 3000);
+}
+
+async function supabaseFetchWithRetry(url, options) {
+  let resp = await fetch(url, options);
+  if (resp.status === 401 && _supabaseSession) {
+    const refreshed = await supabaseRefreshToken();
+    if (refreshed) {
+      options.headers = getSupabaseHeaders();
+      resp = await fetch(url, options);
+    }
+  }
+  return resp;
+}
+
+async function pushToSupabase() {
+  if (!isSupabaseAuthenticated()) return;
+  try {
+    // Build payload — strip apiKey (never leaves device)
+    const syncState = Object.assign({}, state);
+    delete syncState.apiKey;
+    const payload = {
+      id: _supabaseSession.user_id,
+      data: { state: syncState, recipeCache: recipeCache, typeCache: typeCache },
+      updated_at: new Date().toISOString()
+    };
+    const resp = await supabaseFetchWithRetry(
+      SUPABASE_URL + '/rest/v1/user_data',
+      {
+        method: 'POST',
+        headers: Object.assign({}, getSupabaseHeaders(), { 'Prefer': 'resolution=merge-duplicates' }),
+        body: JSON.stringify(payload)
+      }
+    );
+    if (!resp.ok) {
+      const err = await resp.text();
+      throw new Error('Push failed: ' + resp.status + ' ' + err);
+    }
+    localStorage.setItem('nourish_last_sync', new Date().toISOString());
+    // Update sync badge
+    const syncStatus = document.getElementById('cloud-sync-status');
+    if (syncStatus) { syncStatus.textContent = 'Synced just now'; }
+  } catch(e) {
+    console.warn('Supabase push failed:', e.message);
+  }
+}
+
+async function pullFromSupabase() {
+  if (!isSupabaseAuthenticated()) return;
+  try {
+    const resp = await supabaseFetchWithRetry(
+      SUPABASE_URL + '/rest/v1/user_data?id=eq.' + _supabaseSession.user_id + '&select=data,updated_at',
+      { method: 'GET', headers: getSupabaseHeaders() }
+    );
+    if (!resp.ok) throw new Error('Pull failed: ' + resp.status);
+    const rows = await resp.json();
+    if (!rows || rows.length === 0 || !rows[0].data) {
+      // No remote data — push local data up
+      await pushToSupabase();
+      return;
+    }
+    const remote = rows[0].data;
+    _isSyncingFromRemote = true;
+    const localApiKey = state.apiKey; // preserve
+    if (remote.state) {
+      const rs = remote.state;
+      if (rs.profile)        state.profile        = rs.profile;
+      if (rs.mealPlan)       state.mealPlan       = rs.mealPlan;
+      if (rs.weightLog)      state.weightLog      = rs.weightLog;
+      if (rs.eatenMeals)     state.eatenMeals     = rs.eatenMeals;
+      if (rs.purchasedItems) state.purchasedItems  = rs.purchasedItems;
+      if (rs.foodLog)        state.foodLog         = rs.foodLog;
+      if (rs.unit)           state.unit            = rs.unit;
+      if (rs.userIdentity)   state.userIdentity    = rs.userIdentity;
+      if (rs.recipeRatings)  state.recipeRatings   = rs.recipeRatings;
+    }
+    state.apiKey = localApiKey; // never overwrite from remote
+    if (remote.recipeCache) recipeCache = remote.recipeCache;
+    if (remote.typeCache)   typeCache   = { Breakfast:[], Lunch:[], Dinner:[], Snack:[], ...remote.typeCache };
+    save();
+    localStorage.setItem('nourish_last_sync', new Date().toISOString());
+    _isSyncingFromRemote = false;
+    // Refresh UI
+    setUnit(state.unit || 'kg');
+    renderHome();
+    const activePage = document.querySelector('.page.active');
+    const activeId = activePage ? activePage.id.replace('page-', '') : '';
+    if (activeId && activeId !== 'home') goTo(activeId);
+  } catch(e) {
+    _isSyncingFromRemote = false;
+    console.warn('Supabase pull failed:', e.message);
+  }
+}
+
 // ── PERSIST ───────────────────────────────────────────────────
 function save() {
   localStorage.setItem('nourish_state', JSON.stringify(state));
@@ -2109,10 +2318,9 @@ function save() {
     localStorage.setItem('nourish_recipe_cache', JSON.stringify(recipeCache));
     localStorage.setItem('nourish_type_cache',   JSON.stringify(typeCache));
   } catch(e) {}
-  // Debounced auto-push to Gist (3s after last change)
-  if (typeof isGistConfigured === 'function' && isGistConfigured()) {
-    clearTimeout(window._syncTimer);
-    window._syncTimer = setTimeout(() => pushToGist(), 3000);
+  // Debounced auto-push to Supabase (3s after last change)
+  if (!_isSyncingFromRemote && isSupabaseAuthenticated()) {
+    debouncedSupabasePush();
   }
 }
 function load() {
@@ -2191,15 +2399,19 @@ function saveProfile() {
   showToast('Profile saved ✓');
 }
 
-function showGistSetup() {
-  const el = document.getElementById('gist-setup-detail');
-  if (!el) return;
-  el.style.display = el.style.display === 'none' ? 'block' : 'none';
-}
 
 function toggleSetupInProfile() {
   const el   = document.getElementById('setup-in-profile');
   const icon = document.getElementById('setup-toggle-icon');
+  if (!el) return;
+  const opening = el.style.display === 'none';
+  el.style.display  = opening ? 'block' : 'none';
+  icon.style.transform = opening ? 'rotate(180deg)' : '';
+}
+
+function toggleDangerZone() {
+  const el   = document.getElementById('danger-zone');
+  const icon = document.getElementById('danger-zone-icon');
   if (!el) return;
   const opening = el.style.display === 'none';
   el.style.display  = opening ? 'block' : 'none';
@@ -2222,14 +2434,14 @@ function switchInstall(platform) {
 }
 
 function clearAllData() {
-  if (!confirm('Clear all local data on this device? Your GitHub Gist is unaffected.')) return;
-  const gist     = localStorage.getItem('nourish_gist');
+  if (!confirm('Clear all local data on this device? Your cloud data is unaffected.')) return;
   const apikey   = localStorage.getItem('nourish_apikey');
   const identity = localStorage.getItem('nourish_identity');
+  const session  = localStorage.getItem('nourish_supabase_session');
   localStorage.clear();
-  if (gist)     localStorage.setItem('nourish_gist',     gist);
   if (apikey)   localStorage.setItem('nourish_apikey',   apikey);
   if (identity) localStorage.setItem('nourish_identity', identity);
+  if (session)  localStorage.setItem('nourish_supabase_session', session);
   state = { profile:null, apiKey:null, mealPlan:null, weightLog:[], unit:'kg', eatenMeals:{}, purchasedItems:{}, foodLog:[], };
   recipeCache = {}; typeCache = { Breakfast:[], Lunch:[], Dinner:[], Snack:[] };
   load(); // restore credentials immediately
@@ -2258,7 +2470,6 @@ function renderProfilePage() {
   setUnit(state.unit || 'kg');
   renderIdentityUI();
   if (state.apiKey) document.getElementById('p-apikey').value = state.apiKey;
-  updateSyncUI();
   if (!state.profile) return;
   const p = state.profile;
   document.getElementById('p-weight').value      = toDisplay(p.weight);
@@ -2327,7 +2538,7 @@ function switchPlanMode(mode) {
 }
 
 async function suggestMeal(random = false) {
-  if (!state.apiKey) { showToast('Add your Gemini API key in Profile → Danger Zone'); return; }
+  if (!state.apiKey) { showToast('Gemini API key not set — contact the app owner'); return; }
   if (!state.profile) { showToast('Set up your profile first'); return; }
 
   const description = random ? '' : (document.getElementById('meal-describe-input').value.trim());
@@ -3349,7 +3560,7 @@ function downloadApp() {
 
 // Fetch latest app code from GitHub Pages and download it locally.
 // Local data is NOT involved — this only updates the app code on this device.
-// Gist is never touched, so other devices are unaffected.
+// Cloud data is never touched, so other devices are unaffected.
 async function updateApp() {
   const fetchUrl = 'https://claudetj.github.io/Nourish-Ai/index.html';
   const btn = document.getElementById('update-app-btn');
@@ -3372,7 +3583,7 @@ async function updateApp() {
       return;
     }
 
-    // Download the new version locally — data stays in localStorage/Gist untouched
+    // Download the new version locally — data stays in localStorage/cloud untouched
     const blob = new Blob([remoteHtml], { type: 'text/html' });
     const dlUrl = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -3524,11 +3735,13 @@ async function callGemini(prompt) {
 
 function renderIdentityUI() {
   const identity = state.userIdentity;
+  const isCloud  = isSupabaseAuthenticated();
   const signedin = document.getElementById('identity-signed-in');
   const setup    = document.getElementById('identity-setup');
   const chip     = document.getElementById('home-user-chip');
   const nameEl   = document.getElementById('home-user-name');
   const label    = document.getElementById('profile-signed-in-label');
+  const syncEl   = document.getElementById('cloud-sync-status');
 
   if (identity && identity.name) {
     if (signedin) signedin.style.display = 'block';
@@ -3539,7 +3752,8 @@ function renderIdentityUI() {
     if (avatar)      avatar.textContent      = identity.name.charAt(0).toUpperCase();
     if (chip)  { chip.style.display = 'inline-flex'; }
     if (nameEl) nameEl.textContent = identity.name;
-    if (label)  label.textContent  = `Signed in as ${identity.name}`;
+    if (label)  label.textContent  = 'Signed in as ' + identity.name;
+    if (syncEl) syncEl.textContent = isCloud ? 'Cloud sync active' : 'Signed in on this device';
   } else {
     if (signedin) signedin.style.display = 'none';
     if (setup)    setup.style.display    = 'block';
@@ -3548,30 +3762,96 @@ function renderIdentityUI() {
   }
 }
 
-function createIdentity() {
-  const name  = document.getElementById('id-name').value.trim();
-  const pw    = document.getElementById('id-password').value;
-  const pw2   = document.getElementById('id-password2').value;
-  if (!name)       { showToast('Enter a display name'); return; }
-  if (pw.length < 6) { showToast('Password must be at least 6 characters'); return; }
-  if (pw !== pw2)  { showToast('Passwords do not match'); return; }
-  state.userIdentity = { name, createdAt: new Date().toISOString() };
-  save();
-  renderIdentityUI();
-  showToast(`Account created for ${name} ✓`);
-  // Clear fields
-  document.getElementById('id-name').value = '';
-  document.getElementById('id-password').value = '';
-  document.getElementById('id-password2').value = '';
+// ── AUTH UI HANDLERS ─────────────────────────────────────────
+async function handleSignUp() {
+  const name = document.getElementById('id-name').value.trim();
+  const pw   = document.getElementById('id-password').value;
+  const errEl = document.getElementById('auth-error');
+  errEl.style.display = 'none';
+
+  if (!name || name.length < 2) { errEl.textContent = 'Name must be at least 2 characters'; errEl.style.display = 'block'; return; }
+  if (!pw || pw.length < 6)     { errEl.textContent = 'Password must be at least 6 characters'; errEl.style.display = 'block'; return; }
+
+  const btn = document.getElementById('btn-signup');
+  btn.disabled = true; btn.textContent = 'Creating...';
+  try {
+    // Reset state for the new user — don't carry over previous user's data
+    state.profile = null;
+    state.mealPlan = null;
+    state.weightLog = [];
+    state.eatenMeals = {};
+    state.purchasedItems = {};
+    state.foodLog = [];
+    state.recipeRatings = {};
+    recipeCache = {};
+    typeCache = { Breakfast:[], Lunch:[], Dinner:[], Snack:[] };
+
+    await supabaseSignUp(name, pw);
+    await pushToSupabase();
+    save();
+    renderIdentityUI();
+    renderHome();
+    showToast('Account created! Your data syncs across devices.');
+  } catch(e) {
+    const msg = (e.message || '').toLowerCase();
+    if (msg.includes('already') || msg.includes('exists') || msg.includes('registered')) {
+      errEl.textContent = 'That name is taken. Try a different name or sign in.';
+    } else {
+      errEl.textContent = e.message || 'Sign up failed. Please try again.';
+    }
+    errEl.style.display = 'block';
+  } finally {
+    btn.disabled = false; btn.textContent = 'Create Account';
+  }
 }
 
-function signOut() {
-  if (!confirm('Sign out? Your data stays on this device and in the Gist.')) return;
-  state.userIdentity = null;
-  save();
-  renderIdentityUI();
-  showToast('Signed out ✓');
+async function handleSignIn() {
+  const name = document.getElementById('id-name').value.trim();
+  const pw   = document.getElementById('id-password').value;
+  const errEl = document.getElementById('auth-error');
+  errEl.style.display = 'none';
+
+  if (!name || !pw) { errEl.textContent = 'Enter your name and password'; errEl.style.display = 'block'; return; }
+
+  const btn = document.getElementById('btn-signin');
+  btn.disabled = true; btn.textContent = 'Signing in...';
+  try {
+    await supabaseSignIn(name, pw);
+    await pullFromSupabase();
+    renderIdentityUI();
+    renderHome();
+    showToast('Signed in! Your data has been synced.');
+  } catch(e) {
+    errEl.textContent = 'Sign in failed: ' + (e.message || 'Invalid name or password');
+    errEl.style.display = 'block';
+  } finally {
+    btn.disabled = false; btn.textContent = 'Sign In';
+  }
 }
+
+async function handleSignOut() {
+  if (!confirm('Sign out? Your data stays on this device.')) return;
+  await supabaseSignOut();
+  renderIdentityUI();
+  showToast('Signed out');
+}
+
+async function syncNowSupabase() {
+  showToast('Syncing...');
+  const syncEl = document.getElementById('cloud-sync-status');
+  if (syncEl) syncEl.textContent = 'Syncing...';
+  try {
+    await pullFromSupabase();
+    await pushToSupabase();
+    renderHome();
+    if (syncEl) syncEl.textContent = 'Synced just now';
+    showToast('All synced');
+  } catch(e) {
+    if (syncEl) syncEl.textContent = 'Sync failed';
+    showToast('Sync failed: ' + e.message);
+  }
+}
+
 
 // ── WEB CRYPTO HELPERS ────────────────────────────────────────
 async function deriveKey(password, salt) {
@@ -3613,26 +3893,18 @@ async function exportCredentials() {
   if (!state.userIdentity?.name) {
     showToast('Create your account first'); return;
   }
-  const pw = prompt('Enter your password to encrypt the credentials file:');
+  const pw = prompt('Enter your password to encrypt the backup file:');
   if (!pw) return;
 
   // Read apiKey from input field as fallback in case state hasn't been saved yet
   const apiKeyFromField = document.getElementById('p-apikey')?.value?.trim();
   const apiKey = state.apiKey || apiKeyFromField || '';
 
-  if (!gistConfig.gistId || !gistConfig.token) {
-    showToast('Set up Gist sync in Danger Zone first'); return;
-  }
-  if (!apiKey) {
-    showToast('Save your Gemini API key in Danger Zone first'); return;
-  }
-
   const payload = {
     name:      state.userIdentity?.name || 'NourishAI User',
-    gistId:    gistConfig.gistId,
-    token:     gistConfig.token,
-    apiKey,
-    createdAt: new Date().toISOString()
+    apiKey:    apiKey,
+    createdAt: new Date().toISOString(),
+    supabaseUserId: _supabaseSession ? _supabaseSession.user_id : ''
   };
 
   try {
@@ -3644,7 +3916,7 @@ async function exportCredentials() {
     a.download = 'nourish-credentials.json';
     a.click();
     URL.revokeObjectURL(url);
-    showToast('Credentials exported ✓ — save this file safely');
+    showToast('Backup exported — save this file safely');
   } catch(e) {
     showToast('Export failed: ' + e.message);
   }
@@ -3662,172 +3934,50 @@ async function importCredentials(input) {
     const encrypted = JSON.parse(text);
     const payload   = await decryptData(encrypted, pw);
 
-    // Apply
-    gistConfig = { gistId: payload.gistId, token: payload.token };
-    localStorage.setItem('nourish_gist', JSON.stringify(gistConfig));
     if (payload.apiKey) state.apiKey = payload.apiKey;
     state.userIdentity = { name: payload.name, createdAt: payload.createdAt };
     save();
-    updateSyncUI();
     renderIdentityUI();
-    showToast(`Signed in as ${payload.name} — syncing data…`);
 
-    // Immediately pull data from Gist
-    setTimeout(() => pullFromGist(true), 500);
+    // Try Supabase sign-in with the name and the same password
+    try {
+      await supabaseSignIn(payload.name, pw);
+      await pullFromSupabase();
+      renderIdentityUI();
+      renderHome();
+      showToast('Signed in as ' + payload.name + ' — cloud data synced');
+    } catch(e2) {
+      showToast('Imported as ' + payload.name + ' — sign in to enable cloud sync');
+    }
 
   } catch(e) {
     showToast('Import failed — wrong password or invalid file');
   }
   input.value = ''; // reset file input
 }
-let gistConfig = { gistId: '', token: '' };
-
-function loadGistConfig() {
-  try {
-    const g = localStorage.getItem('nourish_gist');
-    if (g) gistConfig = JSON.parse(g);
-  } catch(e) {}
-}
-
-function saveGistConfig() {
-  const gistId = document.getElementById('p-gist-id').value.trim();
-  const token  = document.getElementById('p-gist-token').value.trim();
-  if (!gistId || !token) { showToast('Enter both Gist ID and token'); return; }
-  gistConfig = { gistId, token };
-  localStorage.setItem('nourish_gist', JSON.stringify(gistConfig));
-  updateSyncUI();
-  showGistMsg('Connecting…', 'info');
-  pullFromGist(true);
-}
-
-function toggleGistVisibility() {
-  const inp = document.getElementById('p-gist-token');
-  inp.type = inp.type === 'password' ? 'text' : 'password';
-}
-
-function isGistConfigured() {
-  return !!(gistConfig.gistId && gistConfig.token);
-}
-
-function updateSyncUI() {
-  const configured = isGistConfigured();
-  const badge = document.getElementById('sync-home-badge');
-  if (badge) badge.style.display = configured ? 'flex' : 'none';
-  const statusEl = document.getElementById('sync-status-profile');
-  if (statusEl) statusEl.textContent = configured ? 'Connected — tap ↻ to sync' : 'Not configured';
-  if (configured) {
-    const gi = document.getElementById('p-gist-id');
-    const gt = document.getElementById('p-gist-token');
-    if (gi && !gi.value) gi.value = gistConfig.gistId;
-    if (gt && !gt.value) gt.value = gistConfig.token;
-  }
-}
-
-function showGistMsg(msg, type) {
-  const el = document.getElementById('gist-sync-msg');
-  if (!el) return;
-  el.style.display = 'block';
-  el.textContent = msg;
-  el.style.background = type === 'success' ? 'rgba(122,158,126,0.12)' : type === 'error' ? 'rgba(201,107,107,0.1)' : 'rgba(201,125,78,0.1)';
-  el.style.color = type === 'success' ? 'var(--sage-dark)' : type === 'error' ? 'var(--danger)' : 'var(--accent)';
-  if (type === 'success') setTimeout(() => { if (el) el.style.display = 'none'; }, 3000);
-}
-
-function buildSyncPayload() {
-  return {
-    profile:        state.profile,
-    mealPlan:       state.mealPlan,
-    weightLog:      state.weightLog,
-    eatenMeals:     state.eatenMeals,
-    purchasedItems: state.purchasedItems,
-    foodLog:        state.foodLog,
-    unit:           state.unit,
-    recipeCache:    recipeCache,
-    typeCache:      typeCache,
-    syncedAt:       new Date().toISOString()
-  };
-}
-
-async function pushToGist() {
-  if (!isGistConfigured()) return;
-  try {
-    const resp = await fetch(`https://api.github.com/gists/${gistConfig.gistId}`, {
-      method: 'PATCH',
-      headers: {
-        'Authorization': `Bearer ${gistConfig.token}`,
-        'Accept': 'application/vnd.github+json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        files: { 'nourish-data.json': { content: JSON.stringify(buildSyncPayload(), null, 2) } }
-      })
-    });
-    if (!resp.ok) throw new Error(`GitHub ${resp.status}`);
-    const label = document.getElementById('sync-home-label');
-    if (label) { label.textContent = 'Synced ✓'; setTimeout(() => { label.textContent = 'Sync'; }, 3000); }
-    return true;
-  } catch(e) {
-    showToast('Sync push failed: ' + e.message);
-    return false;
-  }
-}
-
-async function pullFromGist(isSetup = false) {
-  if (!isGistConfigured()) return;
-  try {
-    const resp = await fetch(`https://api.github.com/gists/${gistConfig.gistId}`, {
-      headers: { 'Authorization': `Bearer ${gistConfig.token}`, 'Accept': 'application/vnd.github+json' }
-    });
-    if (!resp.ok) throw new Error(`GitHub ${resp.status} — check your Gist ID and token`);
-    const data    = await resp.json();
-    const content = data.files?.['nourish-data.json']?.content;
-    if (!content || content.trim() === '{}') {
-      await pushToGist();
-      if (isSetup) showGistMsg('✓ Connected! Local data pushed to GitHub.', 'success');
-      return;
-    }
-    const remote = JSON.parse(content);
-    const apiKey = state.apiKey; // never overwrite local apiKey from remote
-    if (remote.profile)        state.profile        = remote.profile;
-    if (remote.mealPlan)       state.mealPlan       = remote.mealPlan;
-    if (remote.weightLog)      state.weightLog      = remote.weightLog;
-    if (remote.eatenMeals)     state.eatenMeals     = remote.eatenMeals;
-    if (remote.purchasedItems) state.purchasedItems = remote.purchasedItems;
-    if (remote.foodLog)        state.foodLog        = remote.foodLog;
-    if (remote.unit)           state.unit           = remote.unit;
-    if (remote.recipeCache)    recipeCache          = remote.recipeCache;
-    if (remote.typeCache)      typeCache            = { Breakfast:[], Lunch:[], Dinner:[], Snack:[], ...remote.typeCache };
-    state.apiKey = apiKey;
-    save();
-    setUnit(state.unit || 'kg');
-    renderHome();
-    const activePage = document.querySelector('.page.active')?.id?.replace('page-', '');
-    if (activePage && activePage !== 'home') goTo(activePage);
-    if (isSetup) showGistMsg('✓ Connected and synced! Data loaded from GitHub.', 'success');
-    else showToast('Pulled from GitHub ✓');
-  } catch(e) {
-    if (isSetup) showGistMsg('✗ ' + e.message, 'error');
-    // Silent fail on startup auto-pull — don't show error toast to user
-    else if (!isSetup) console.warn('Gist auto-pull failed:', e.message);
-  }
-}
-
-async function syncNow() {
-  if (!isGistConfigured()) { goTo('profile'); showToast('Set up GitHub Gist sync in Profile first'); return; }
-  const label = document.getElementById('sync-home-label');
-  if (label) label.textContent = 'Syncing…';
-  await pushToGist();
-}
-
 load();
 loadCaches();
-loadGistConfig();
+loadSupabaseSession();
 setUnit(state.unit || 'kg');
-updateSyncUI();
 renderIdentityUI();
 renderHome();
 attachPreviewListeners();
-if (isGistConfigured()) setTimeout(() => pullFromGist(false), 1500);
+
+// Cloud sync on startup
+if (isSupabaseAuthenticated()) {
+  (async () => {
+    try {
+      if (_supabaseSession.expires_at * 1000 < Date.now() + 60000) {
+        await supabaseRefreshToken();
+      }
+      if (isSupabaseAuthenticated()) {
+        await pullFromSupabase();
+      }
+    } catch(e) {
+      console.warn('Supabase startup sync failed:', e.message);
+    }
+  })();
+}
 </script>
 
 
