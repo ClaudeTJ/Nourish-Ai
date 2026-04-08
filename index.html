@@ -75,6 +75,7 @@
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  button, a, input, select, label, [onclick] { touch-action: manipulation; }
 
   body {
     font-family: 'DM Sans', sans-serif;
@@ -2314,6 +2315,7 @@ function save() {
   // Persist critical credentials separately so they survive iOS PWA storage clears
   try { if (state.apiKey)         localStorage.setItem('nourish_apikey',    state.apiKey); } catch(e) {}
   try { if (state.userIdentity)   localStorage.setItem('nourish_identity',  JSON.stringify(state.userIdentity)); } catch(e) {}
+  try { if (_supabaseSession)    localStorage.setItem('nourish_supabase_session', JSON.stringify(_supabaseSession)); } catch(e) {}
   try {
     localStorage.setItem('nourish_recipe_cache', JSON.stringify(recipeCache));
     localStorage.setItem('nourish_type_cache',   JSON.stringify(typeCache));
@@ -3775,17 +3777,6 @@ async function handleSignUp() {
   const btn = document.getElementById('btn-signup');
   btn.disabled = true; btn.textContent = 'Creating...';
   try {
-    // Reset state for the new user — don't carry over previous user's data
-    state.profile = null;
-    state.mealPlan = null;
-    state.weightLog = [];
-    state.eatenMeals = {};
-    state.purchasedItems = {};
-    state.foodLog = [];
-    state.recipeRatings = {};
-    recipeCache = {};
-    typeCache = { Breakfast:[], Lunch:[], Dinner:[], Snack:[] };
-
     await supabaseSignUp(name, pw);
     await pushToSupabase();
     save();
@@ -3820,6 +3811,7 @@ async function handleSignIn() {
     await pullFromSupabase();
     renderIdentityUI();
     renderHome();
+    goTo('home');
     showToast('Signed in! Your data has been synced.');
   } catch(e) {
     errEl.textContent = 'Sign in failed: ' + (e.message || 'Invalid name or password');
