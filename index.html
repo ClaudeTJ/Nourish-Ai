@@ -2027,6 +2027,24 @@
   <div class="modal-handle"></div>
   <h2 style="font-family:'Playfair Display',serif;font-size:20px;margin-bottom:4px">📥 Import a Recipe</h2>
   <p style="font-size:12px;color:var(--soft);margin-bottom:14px;line-height:1.5">Add your own recipe and Gemini will build the rest of the day's meals around it to hit your macro targets.</p>
+  <!-- Image scan area -->
+  <div id="import-recipe-image-area" style="margin-bottom:12px">
+    <input type="file" id="import-recipe-image-input" accept="image/*" onchange="handleRecipeImageSelect(event)" style="display:none">
+    <div id="import-recipe-image-drop" onclick="document.getElementById('import-recipe-image-input').click()" style="border:1.5px dashed rgba(201,125,78,0.35);border-radius:12px;padding:16px;text-align:center;cursor:pointer;background:rgba(201,125,78,0.04);transition:background .2s">
+      <div id="import-recipe-image-preview" style="display:none;margin-bottom:8px">
+        <img id="import-recipe-image-thumb" style="max-height:120px;border-radius:8px;max-width:100%;object-fit:cover">
+      </div>
+      <div id="import-recipe-image-placeholder">
+        <div style="font-size:24px;margin-bottom:4px">📷</div>
+        <div style="font-size:12px;font-weight:600;color:var(--accent)">Tap to upload a recipe photo</div>
+        <div style="font-size:11px;color:var(--soft);margin-top:2px">Gemini will read the recipe name &amp; macros from the image</div>
+      </div>
+      <div id="import-recipe-image-scanning" style="display:none">
+        <div class="spinner" style="width:18px;height:18px;border-width:2px;margin:0 auto 6px"></div>
+        <div style="font-size:12px;color:var(--accent)">Scanning image...</div>
+      </div>
+    </div>
+  </div>
   <div class="form-group" style="margin-bottom:10px">
     <label>Recipe name</label>
     <input type="text" id="import-recipe-name" placeholder="e.g. Grilled chicken with rice and broccoli">
@@ -2902,8 +2920,87 @@ function toggleDay(i) {
 // ── IMPORT RECIPE ─────────────────────────────────────────────
 let _importDayIndex = null;
 
+let _importRecipeImageBase64 = null;
+
+function handleRecipeImageSelect(e) {
+  const file = e.target.files && e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = async function(ev) {
+    const dataUrl = ev.target.result;
+    // Show thumbnail
+    const thumb = document.getElementById('import-recipe-image-thumb');
+    const preview = document.getElementById('import-recipe-image-preview');
+    const placeholder = document.getElementById('import-recipe-image-placeholder');
+    thumb.src = dataUrl;
+    preview.style.display = 'block';
+    placeholder.innerHTML = '<div style="font-size:11px;color:var(--accent);font-weight:600">Tap to change photo</div>';
+    // Store base64 (strip data:image/...;base64, prefix)
+    _importRecipeImageBase64 = dataUrl.split(',')[1];
+    // Auto-scan with Gemini
+    await scanRecipeImage();
+  };
+  reader.readAsDataURL(file);
+}
+
+async function scanRecipeImage() {
+  if (!_importRecipeImageBase64) return;
+  if (!state.apiKey) {
+    const errEl = document.getElementById('import-recipe-error');
+    errEl.textContent = 'Set a Gemini API key first to scan images';
+    errEl.style.display = 'block';
+    return;
+  }
+  const scanning = document.getElementById('import-recipe-image-scanning');
+  const errEl = document.getElementById('import-recipe-error');
+  scanning.style.display = 'block';
+  errEl.style.display = 'none';
+
+  try {
+    const resp = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${state.apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{
+            parts: [
+              { inlineData: { mimeType: 'image/jpeg', data: _importRecipeImageBase64 } },
+              { text: 'Look at this recipe image. Extract the recipe name, meal type (one of: Breakfast, Lunch, Dinner, Snack), and estimated macros per serving. Return ONLY valid JSON, no markdown:\n{"name": "Recipe name", "type": "Breakfast|Lunch|Dinner|Snack", "calories": NUMBER, "protein": NUMBER, "carbs": NUMBER, "fat": NUMBER}\n\nIf you cannot determine exact macros, provide your best estimate based on typical ingredients visible. Always return all fields.' }
+            ]
+          }],
+          generationConfig: { temperature: 0.5, maxOutputTokens: 1024 }
+        })
+      }
+    );
+    if (!resp.ok) { const e = await resp.json(); throw new Error(e.error?.message || 'API error'); }
+    const data = await resp.json();
+    const text = (data.candidates?.[0]?.content?.parts || []).map(p => p.text || '').join('').trim();
+    const start = text.indexOf('{');
+    const end = text.lastIndexOf('}');
+    if (start === -1 || end === -1) throw new Error('Could not parse recipe from image');
+    const result = JSON.parse(text.slice(start, end + 1));
+
+    // Auto-fill the form fields
+    if (result.name) document.getElementById('import-recipe-name').value = result.name;
+    if (result.type) document.getElementById('import-recipe-type').value = result.type;
+    if (result.calories) document.getElementById('import-recipe-cals').value = Math.round(result.calories);
+    if (result.protein) document.getElementById('import-recipe-protein').value = Math.round(result.protein);
+    if (result.carbs) document.getElementById('import-recipe-carbs').value = Math.round(result.carbs);
+    if (result.fat) document.getElementById('import-recipe-fat').value = Math.round(result.fat);
+
+    showToast('Recipe scanned — review and adjust if needed');
+  } catch(e) {
+    errEl.textContent = 'Image scan failed: ' + e.message;
+    errEl.style.display = 'block';
+  } finally {
+    scanning.style.display = 'none';
+  }
+}
+
 function openImportRecipe(di) {
   _importDayIndex = di;
+  _importRecipeImageBase64 = null;
   document.getElementById('import-recipe-name').value = '';
   document.getElementById('import-recipe-cals').value = '';
   document.getElementById('import-recipe-protein').value = '';
@@ -2911,6 +3008,11 @@ function openImportRecipe(di) {
   document.getElementById('import-recipe-fat').value = '';
   document.getElementById('import-recipe-type').value = 'Lunch';
   document.getElementById('import-recipe-error').style.display = 'none';
+  document.getElementById('import-recipe-image-input').value = '';
+  document.getElementById('import-recipe-image-preview').style.display = 'none';
+  document.getElementById('import-recipe-image-thumb').src = '';
+  document.getElementById('import-recipe-image-placeholder').innerHTML = '<div style="font-size:24px;margin-bottom:4px">📷</div><div style="font-size:12px;font-weight:600;color:var(--accent)">Tap to upload a recipe photo</div><div style="font-size:11px;color:var(--soft);margin-top:2px">Gemini will read the recipe name &amp; macros from the image</div>';
+  document.getElementById('import-recipe-image-scanning').style.display = 'none';
   document.getElementById('import-recipe-overlay').classList.add('open');
   document.getElementById('import-recipe-sheet').classList.add('open');
 }
