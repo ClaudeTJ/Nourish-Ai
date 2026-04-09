@@ -2021,7 +2021,53 @@
   </div>
 </div>
 
-<div class="toast" id="toast">Pulled from GitHub ✓</div>
+<!-- Import Recipe Modal -->
+<div class="modal-overlay" id="import-recipe-overlay" onclick="closeImportRecipe()"></div>
+<div class="modal-sheet" id="import-recipe-sheet">
+  <div class="modal-handle"></div>
+  <h2 style="font-family:'Playfair Display',serif;font-size:20px;margin-bottom:4px">📥 Import a Recipe</h2>
+  <p style="font-size:12px;color:var(--soft);margin-bottom:14px;line-height:1.5">Add your own recipe and Gemini will build the rest of the day's meals around it to hit your macro targets.</p>
+  <div class="form-group" style="margin-bottom:10px">
+    <label>Recipe name</label>
+    <input type="text" id="import-recipe-name" placeholder="e.g. Grilled chicken with rice and broccoli">
+  </div>
+  <div class="form-row" style="margin-bottom:10px">
+    <div class="form-group" style="margin-bottom:0">
+      <label>Meal type</label>
+      <select id="import-recipe-type">
+        <option value="Breakfast">Breakfast</option>
+        <option value="Lunch" selected>Lunch</option>
+        <option value="Dinner">Dinner</option>
+        <option value="Snack">Snack</option>
+      </select>
+    </div>
+    <div class="form-group" style="margin-bottom:0">
+      <label>Calories (optional)</label>
+      <input type="number" id="import-recipe-cals" placeholder="e.g. 550">
+    </div>
+  </div>
+  <div class="form-row" style="margin-bottom:12px">
+    <div class="form-group" style="margin-bottom:0">
+      <label>Protein g (optional)</label>
+      <input type="number" id="import-recipe-protein" placeholder="e.g. 40">
+    </div>
+    <div class="form-group" style="margin-bottom:0">
+      <label>Carbs g (optional)</label>
+      <input type="number" id="import-recipe-carbs" placeholder="e.g. 50">
+    </div>
+    <div class="form-group" style="margin-bottom:0">
+      <label>Fat g (optional)</label>
+      <input type="number" id="import-recipe-fat" placeholder="e.g. 18">
+    </div>
+  </div>
+  <div id="import-recipe-error" style="display:none;background:rgba(201,107,107,0.1);color:var(--danger);font-size:12px;padding:8px 12px;border-radius:8px;margin-bottom:12px"></div>
+  <button class="btn accent" id="import-recipe-btn" onclick="submitImportRecipe()" style="width:100%">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="16" height="16"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+    Import &amp; Generate Remaining Meals
+  </button>
+</div>
+
+<div class="toast" id="toast">Synced</div>
 
 <script>
 // ── SUPABASE CONFIG ──────────────────────────────────────────
@@ -2676,8 +2722,24 @@ Make meals practical, varied, and delicious. Aim for totals close to the daily t
   }
 }
 
+let _openDays = null; // tracks which days are expanded
+
 function renderDays(plan) {
   seedTypeCache();
+  // Remember which days are open before re-render
+  if (_openDays === null) {
+    // First render — open today's day of week (0=Mon if plan starts Mon)
+    const todayIdx = (new Date().getDay() + 6) % 7; // JS Sun=0 → Mon=0
+    _openDays = new Set([todayIdx]);
+  } else {
+    // Preserve currently open days
+    const open = new Set();
+    plan.days.forEach((_, i) => {
+      const el = document.getElementById('day-body-' + i);
+      if (el && el.classList.contains('open')) open.add(i);
+    });
+    if (open.size > 0) _openDays = open;
+  }
   const container = document.getElementById('plan-days');
   container.innerHTML = '';
   container.style.display = 'block';
@@ -2701,11 +2763,11 @@ function renderDays(plan) {
         <h3>${day.day}</h3>
         <div style="display:flex;align-items:center;gap:10px">
           <div class="day-cals" id="day-cals-${di}">${day.totalCalories} kcal${target ? ` / ${target}` : ''}</div>
-          <svg class="chevron ${di===0?'open':''}" id="chev-${di}" viewBox="0 0 24 24" fill="none" stroke="currentColor" width="18" height="18"><polyline points="6 9 12 15 18 9"/></svg>
+          <svg class="chevron ${_openDays.has(di)?'open':''}" id="chev-${di}" viewBox="0 0 24 24" fill="none" stroke="currentColor" width="18" height="18"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
       </div>
       <div class="day-cal-bar"><div class="day-cal-fill ${pct>=100?'over':''}" style="width:${pct}%"></div></div>
-      <div class="collapsible ${di===0?'open':''}" id="day-body-${di}">
+      <div class="collapsible ${_openDays.has(di)?'open':''}" id="day-body-${di}">
         <div class="day-meals">
           ${day.meals.map((meal, mi) => {
             const eaten = !!state.eatenMeals[`${di}|${mi}`];
@@ -2734,8 +2796,11 @@ function renderDays(plan) {
             <button class="deficit-banner-btn" onclick="addExtraSnack(${di})">+ Add snack</button>
           </div>
         ` : ''}
-        <div style="padding:8px 18px 12px">
+        <div style="padding:8px 18px 4px">
           <button onclick="addExtraSnack(${di})" style="width:100%;padding:8px;border-radius:10px;border:1.5px dashed var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--soft);cursor:pointer">+ Add extra snack</button>
+        </div>
+        <div style="padding:4px 18px 12px">
+          <button onclick="openImportRecipe(${di})" style="width:100%;padding:8px;border-radius:10px;border:1.5px dashed rgba(201,125,78,0.3);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--accent);cursor:pointer">📥 Import a recipe</button>
         </div>
       </div>
     `;
@@ -2832,6 +2897,137 @@ function toggleDay(i) {
   const chev = document.getElementById('chev-' + i);
   body.classList.toggle('open');
   chev.classList.toggle('open');
+}
+
+// ── IMPORT RECIPE ─────────────────────────────────────────────
+let _importDayIndex = null;
+
+function openImportRecipe(di) {
+  _importDayIndex = di;
+  document.getElementById('import-recipe-name').value = '';
+  document.getElementById('import-recipe-cals').value = '';
+  document.getElementById('import-recipe-protein').value = '';
+  document.getElementById('import-recipe-carbs').value = '';
+  document.getElementById('import-recipe-fat').value = '';
+  document.getElementById('import-recipe-type').value = 'Lunch';
+  document.getElementById('import-recipe-error').style.display = 'none';
+  document.getElementById('import-recipe-overlay').classList.add('open');
+  document.getElementById('import-recipe-sheet').classList.add('open');
+}
+
+function closeImportRecipe() {
+  document.getElementById('import-recipe-overlay').classList.remove('open');
+  document.getElementById('import-recipe-sheet').classList.remove('open');
+}
+
+async function submitImportRecipe() {
+  const name = document.getElementById('import-recipe-name').value.trim();
+  const type = document.getElementById('import-recipe-type').value;
+  const cals = parseInt(document.getElementById('import-recipe-cals').value) || 0;
+  const protein = parseInt(document.getElementById('import-recipe-protein').value) || 0;
+  const carbs = parseInt(document.getElementById('import-recipe-carbs').value) || 0;
+  const fat = parseInt(document.getElementById('import-recipe-fat').value) || 0;
+  const errEl = document.getElementById('import-recipe-error');
+
+  if (!name) { errEl.textContent = 'Enter a recipe name'; errEl.style.display = 'block'; return; }
+  if (!state.apiKey) { errEl.textContent = 'Gemini API key not set'; errEl.style.display = 'block'; return; }
+  if (!state.profile) { errEl.textContent = 'Set up your profile first'; errEl.style.display = 'block'; return; }
+
+  errEl.style.display = 'none';
+  const btn = document.getElementById('import-recipe-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner" style="width:16px;height:16px;border-width:2px;margin:0 auto"></div> Generating...';
+
+  const m = calcMacros(state.profile);
+  const di = _importDayIndex;
+  const dayName = state.mealPlan ? state.mealPlan.days[di].day : ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'][di];
+
+  // Build the imported meal object
+  const importedMeal = { type: type, name: name, calories: cals, protein: protein, carbs: carbs, fat: fat };
+
+  // Figure out which meal types still need to be generated
+  const allTypes = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
+  const remainingTypes = allTypes.filter(t => t !== type);
+
+  // Calculate remaining budget
+  const remainCals = m.calories - cals;
+  const remainProtein = m.protein - protein;
+  const remainCarbs = m.carbs - carbs;
+  const remainFat = m.fat - fat;
+
+  const hasMacros = cals > 0;
+  const macroNote = hasMacros
+    ? 'The imported meal has ' + cals + ' kcal, ' + protein + 'g protein, ' + carbs + 'g carbs, ' + fat + 'g fat. Distribute the remaining ' + remainCals + ' kcal across the other meals.'
+    : 'Estimate the macros for the imported meal first, then distribute the remaining calories across the other meals. Total daily target is ' + m.calories + ' kcal.';
+
+  const prompt = 'You are a professional nutritionist. I have already chosen one meal for ' + dayName + ':\n\n'
+    + '- ' + type + ': "' + name + '"'
+    + (hasMacros ? ' (' + cals + ' kcal, P:' + protein + 'g, C:' + carbs + 'g, F:' + fat + 'g)' : ' (macros unknown — estimate them)')
+    + '\n\nGenerate the remaining meals for this day: ' + remainingTypes.join(', ') + '.\n\n'
+    + 'Daily targets: ' + m.calories + ' kcal, ' + m.protein + 'g protein, ' + m.carbs + 'g carbs, ' + m.fat + 'g fat.\n'
+    + macroNote + '\n\n'
+    + 'Return ONLY valid JSON, no markdown:\n'
+    + '{\n'
+    + '  "importedMeal": { "type": "' + type + '", "name": "' + name + '", "calories": NUMBER, "protein": NUMBER, "carbs": NUMBER, "fat": NUMBER },\n'
+    + '  "meals": [\n'
+    + '    { "type": "TYPE", "name": "Meal name", "calories": NUMBER, "protein": NUMBER, "carbs": NUMBER, "fat": NUMBER }\n'
+    + '  ]\n'
+    + '}\n\n'
+    + 'Include the importedMeal with estimated macros (or the provided ones). Make the remaining meals practical, varied, and delicious.';
+
+  try {
+    const text = await callGemini(prompt);
+    const start = text.indexOf('{');
+    const end = text.lastIndexOf('}');
+    if (start === -1 || end === -1) throw new Error('No JSON in response');
+    const result = JSON.parse(text.slice(start, end + 1));
+
+    // Build the full day's meals in correct order
+    const allMeals = [];
+    allTypes.forEach(t => {
+      if (t === type) {
+        // Use the imported meal (with Gemini's macro estimates if user didn't provide them)
+        const im = result.importedMeal || importedMeal;
+        allMeals.push({ type: t, name: im.name || name, calories: im.calories || cals, protein: im.protein || protein, carbs: im.carbs || carbs, fat: im.fat || fat });
+      } else {
+        const generated = (result.meals || []).find(m => m.type === t);
+        if (generated) allMeals.push(generated);
+      }
+    });
+
+    if (allMeals.length === 0) throw new Error('Could not parse meals');
+
+    // Calculate day total
+    const totalCals = allMeals.reduce((s, m) => s + (m.calories || 0), 0);
+
+    // Update the plan
+    if (!state.mealPlan) {
+      // No plan yet — create one with just this day filled
+      const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'].map((d, i) => {
+        if (i === di) return { day: d, totalCalories: totalCals, meals: allMeals };
+        return { day: d, totalCalories: 0, meals: [] };
+      });
+      state.mealPlan = { days: days };
+    } else {
+      state.mealPlan.days[di].meals = allMeals;
+      state.mealPlan.days[di].totalCalories = totalCals;
+    }
+
+    // Clear eaten state for this day
+    allMeals.forEach((_, mi) => { delete state.eatenMeals[di + '|' + mi]; });
+
+    _openDays = new Set([di]); // keep this day open
+    save();
+    renderDays(state.mealPlan);
+    closeImportRecipe();
+    showToast('Recipe imported — day rebuilt around it');
+  } catch(e) {
+    errEl.textContent = 'Failed: ' + e.message;
+    errEl.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="16" height="16"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> Import &amp; Generate Remaining Meals';
+  }
 }
 
 // ── WEIGHT LOG ────────────────────────────────────────────────
