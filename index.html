@@ -2348,16 +2348,26 @@ async function pullFromSupabase() {
     const localApiKey = state.apiKey; // preserve — never overwrite from remote
     if (remote.state) {
       const rs = remote.state;
-      // Merge each field — use remote value if it exists (even if empty array/object)
-      if ('profile'        in rs) state.profile        = rs.profile;
-      if ('mealPlan'       in rs) state.mealPlan       = rs.mealPlan;
-      if ('weightLog'      in rs) state.weightLog      = rs.weightLog;
-      if ('eatenMeals'     in rs) state.eatenMeals     = rs.eatenMeals;
-      if ('purchasedItems' in rs) state.purchasedItems  = rs.purchasedItems;
-      if ('foodLog'        in rs) state.foodLog         = rs.foodLog;
-      if ('unit'           in rs) state.unit            = rs.unit;
-      if ('userIdentity'   in rs) state.userIdentity    = rs.userIdentity;
-      if ('recipeRatings'  in rs) state.recipeRatings   = rs.recipeRatings;
+      // Objects: prefer remote if it has data, otherwise keep local
+      if (rs.profile)        state.profile        = rs.profile;        else if (!state.profile)        state.profile = rs.profile;
+      if (rs.mealPlan)       state.mealPlan       = rs.mealPlan;       else if (!state.mealPlan)       state.mealPlan = rs.mealPlan;
+      if (rs.userIdentity)   state.userIdentity   = rs.userIdentity;   else if (!state.userIdentity)   state.userIdentity = rs.userIdentity;
+      if ('unit' in rs)      state.unit            = rs.unit;
+      // Arrays: merge by ID, keeping all unique entries from both local and remote
+      if (rs.weightLog && rs.weightLog.length) {
+        const ids = new Set(state.weightLog.map(e => e.id));
+        rs.weightLog.forEach(e => { if (!ids.has(e.id)) state.weightLog.push(e); });
+        state.weightLog.sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+      }
+      if (rs.foodLog && rs.foodLog.length) {
+        const ids = new Set(state.foodLog.map(e => e.id));
+        rs.foodLog.forEach(e => { if (!ids.has(e.id)) state.foodLog.push(e); });
+        state.foodLog.sort((a, b) => (b.id || 0) - (a.id || 0));
+      }
+      // Objects: merge keys
+      if (rs.eatenMeals)     state.eatenMeals     = { ...state.eatenMeals, ...rs.eatenMeals };
+      if (rs.purchasedItems) state.purchasedItems  = { ...state.purchasedItems, ...rs.purchasedItems };
+      if (rs.recipeRatings)  state.recipeRatings   = { ...state.recipeRatings, ...rs.recipeRatings };
     }
     state.apiKey = localApiKey;
     if (remote.recipeCache) recipeCache = remote.recipeCache;
@@ -4101,9 +4111,10 @@ async function handleSignIn() {
   btn.disabled = true; btn.textContent = 'Signing in...';
   try {
     await supabaseSignIn(name, pw);
-    await pullFromSupabase();
-    // After pull, push local data to ensure anything added before auth gets synced
+    // Push local data FIRST so cloud has everything from this device
     await pushToSupabase();
+    // Then pull to merge any data from other devices
+    await pullFromSupabase();
     renderIdentityUI();
     renderHome();
     goTo('home');
@@ -4258,9 +4269,9 @@ async function importCredentials(input) {
 load();
 loadCaches();
 loadSupabaseSession();
-// Fix stale state: if userIdentity exists but session was fully removed (not just expired),
-// user signed out with old code that didn't clear identity
-if (state.userIdentity && !_supabaseSession) {
+// Fix stale state: if userIdentity exists but session was fully removed AND
+// there's no session in localStorage at all, user signed out but identity wasn't cleaned up
+if (state.userIdentity && !_supabaseSession && !localStorage.getItem('nourish_supabase_session')) {
   state.userIdentity = null;
   localStorage.removeItem('nourish_identity');
   save();
