@@ -3,6 +3,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta name="apple-mobile-web-app-title" content="NourishAI">
 <meta name="theme-color" content="#4f6e53">
 <title>NourishAI — Smart Meal Planner</title>
@@ -4116,8 +4119,14 @@ async function handleSignIn() {
 async function handleSignOut() {
   if (!confirm('Sign out? Your data stays on this device.')) return;
   await supabaseSignOut();
-  // Clear separate identity key so reload doesn't restore signed-in state
+  // Clear ALL auth-related localStorage keys so reload can't restore signed-in state
   localStorage.removeItem('nourish_identity');
+  localStorage.removeItem('nourish_supabase_session');
+  localStorage.removeItem('nourish_last_sync');
+  // Also update nourish_state to remove userIdentity inside it
+  state.userIdentity = null;
+  _supabaseSession = null;
+  save();
   renderIdentityUI();
   renderHome();
   showToast('Signed out');
