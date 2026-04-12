@@ -2688,34 +2688,14 @@ async function generateMealPlan() {
   document.getElementById('plan-empty').style.display = 'none';
   document.getElementById('plan-days').style.display = 'none';
 
-  const prompt = `You are a professional nutritionist. Create a 7-day meal plan for weight loss.
+  const prompt = `Create a 7-day meal plan. Daily targets: ${m.calories} kcal, ${m.protein}g protein, ${m.carbs}g carbs, ${m.fat}g fat.
 
-User stats:
-- Daily calorie target: ${m.calories} kcal
-- Protein: ${m.protein}g (40% of calories)
-- Carbohydrates: ${m.carbs}g (30% of calories)  
-- Fat: ${m.fat}g (30% of calories)
-- No dietary restrictions
+Each day has 4 meals: Breakfast, Lunch, Dinner, Snack. Keep meal names short (under 6 words).
 
-For each of the 7 days, provide 4 meals: Breakfast, Lunch, Dinner, and Snack.
+Return ONLY this JSON, no markdown, no explanation:
+{"days":[{"day":"Monday","totalCalories":0,"meals":[{"type":"Breakfast","name":"...","calories":0,"protein":0,"carbs":0,"fat":0},{"type":"Lunch","name":"...","calories":0,"protein":0,"carbs":0,"fat":0},{"type":"Dinner","name":"...","calories":0,"protein":0,"carbs":0,"fat":0},{"type":"Snack","name":"...","calories":0,"protein":0,"carbs":0,"fat":0}]}]}
 
-Return ONLY a valid JSON object in this exact structure, no markdown, no commentary:
-{
-  "days": [
-    {
-      "day": "Monday",
-      "totalCalories": 1850,
-      "meals": [
-        { "type": "Breakfast", "name": "Meal name here", "calories": 450, "protein": 35, "carbs": 40, "fat": 15 },
-        { "type": "Lunch", "name": "Meal name here", "calories": 550, "protein": 45, "carbs": 50, "fat": 18 },
-        { "type": "Dinner", "name": "Meal name here", "calories": 650, "protein": 50, "carbs": 55, "fat": 22 },
-        { "type": "Snack", "name": "Meal name here", "calories": 200, "protein": 15, "carbs": 20, "fat": 8 }
-      ]
-    }
-  ]
-}
-
-Make meals practical, varied, and delicious. Aim for totals close to the daily targets.`;
+All 7 days: Monday through Sunday. Varied, practical meals. totalCalories = sum of that day's meal calories.`;
 
   try {
     const text = await callGemini(prompt);
@@ -2969,7 +2949,7 @@ async function scanRecipeImage() {
               { text: 'Look at this recipe image. Extract the recipe name, meal type (one of: Breakfast, Lunch, Dinner, Snack), and estimated macros per serving. Return ONLY valid JSON, no markdown:\n{"name": "Recipe name", "type": "Breakfast|Lunch|Dinner|Snack", "calories": NUMBER, "protein": NUMBER, "carbs": NUMBER, "fat": NUMBER}\n\nIf you cannot determine exact macros, provide your best estimate based on typical ingredients visible. Always return all fields.' }
             ]
           }],
-          generationConfig: { temperature: 0.5, maxOutputTokens: 1024, responseMimeType: 'application/json' }
+          generationConfig: { temperature: 0.5, maxOutputTokens: 2048 }
         })
       }
     );
@@ -4019,7 +3999,7 @@ async function callGemini(prompt) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.8, maxOutputTokens: 16384, responseMimeType: 'application/json' }
+        generationConfig: { temperature: 0.8, maxOutputTokens: 65536 }
       })
     }
   );
