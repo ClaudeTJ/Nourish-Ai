@@ -4040,8 +4040,7 @@ async function callGemini(prompt, retries = 1) {
 
 function renderIdentityUI() {
   const identity = state.userIdentity;
-  const hasSession = !!_supabaseSession; // session exists (even if token expired — will refresh)
-  const isSignedIn = hasSession && identity && identity.name;
+  const hasSession = !!_supabaseSession;
   const signedin = document.getElementById('identity-signed-in');
   const setup    = document.getElementById('identity-setup');
   const chip     = document.getElementById('home-user-chip');
@@ -4049,7 +4048,8 @@ function renderIdentityUI() {
   const label    = document.getElementById('profile-signed-in-label');
   const syncEl   = document.getElementById('cloud-sync-status');
 
-  if (isSignedIn) {
+  if (hasSession && identity && identity.name) {
+    // Fully signed in with active session
     if (signedin) signedin.style.display = 'block';
     if (setup)    setup.style.display    = 'none';
     const nameDisplay = document.getElementById('identity-name');
@@ -4060,7 +4060,18 @@ function renderIdentityUI() {
     if (nameEl) nameEl.textContent = identity.name;
     if (label)  label.textContent  = 'Signed in as ' + identity.name;
     if (syncEl) syncEl.textContent = isSupabaseAuthenticated() ? 'Cloud sync active' : 'Reconnecting...';
+  } else if (identity && identity.name && !hasSession) {
+    // Identity exists but session lost — pre-fill sign-in form
+    if (signedin) signedin.style.display = 'none';
+    if (setup)    setup.style.display    = 'block';
+    if (chip)  { chip.style.display = 'inline-flex'; }
+    if (nameEl) nameEl.textContent = identity.name;
+    if (label)  label.textContent  = 'Sign in to sync as ' + identity.name;
+    // Pre-fill name field
+    const nameInput = document.getElementById('id-name');
+    if (nameInput && !nameInput.value) nameInput.value = identity.name;
   } else {
+    // Guest — no identity, no session
     if (signedin) signedin.style.display = 'none';
     if (setup)    setup.style.display    = 'block';
     if (chip)     chip.style.display     = 'none';
