@@ -4123,12 +4123,16 @@ async function handleSignOut() {
   localStorage.removeItem('nourish_identity');
   localStorage.removeItem('nourish_supabase_session');
   localStorage.removeItem('nourish_last_sync');
-  // Also update nourish_state to remove userIdentity inside it
+  // Clear session and identity in memory
   state.userIdentity = null;
   _supabaseSession = null;
   save();
   renderIdentityUI();
   renderHome();
+  // Refresh current page to reflect signed-out state
+  const activePage = document.querySelector('.page.active');
+  const activeId = activePage ? activePage.id.replace('page-', '') : 'home';
+  goTo(activeId);
   showToast('Signed out');
 }
 
@@ -4254,8 +4258,9 @@ async function importCredentials(input) {
 load();
 loadCaches();
 loadSupabaseSession();
-// Fix stale state: if userIdentity exists but no active session, user signed out with old code
-if (state.userIdentity && !isSupabaseAuthenticated()) {
+// Fix stale state: if userIdentity exists but session was fully removed (not just expired),
+// user signed out with old code that didn't clear identity
+if (state.userIdentity && !_supabaseSession) {
   state.userIdentity = null;
   localStorage.removeItem('nourish_identity');
   save();
@@ -4266,14 +4271,16 @@ renderHome();
 attachPreviewListeners();
 
 // Cloud sync on startup
-if (isSupabaseAuthenticated()) {
+if (_supabaseSession) {
   (async () => {
     try {
+      // Refresh token if expired or near expiry
       if (_supabaseSession.expires_at * 1000 < Date.now() + 60000) {
         await supabaseRefreshToken();
       }
       if (isSupabaseAuthenticated()) {
         await pullFromSupabase();
+        renderIdentityUI(); // re-render after pull in case identity was updated
       }
     } catch(e) {
       console.warn('Supabase startup sync failed:', e.message);
