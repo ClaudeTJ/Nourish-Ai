@@ -4254,6 +4254,12 @@ async function importCredentials(input) {
 load();
 loadCaches();
 loadSupabaseSession();
+// Fix stale state: if userIdentity exists but no active session, user signed out with old code
+if (state.userIdentity && !isSupabaseAuthenticated()) {
+  state.userIdentity = null;
+  localStorage.removeItem('nourish_identity');
+  save();
+}
 setUnit(state.unit || 'kg');
 renderIdentityUI();
 renderHome();
