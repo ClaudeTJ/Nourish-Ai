@@ -2393,7 +2393,7 @@ function save() {
   // Persist critical credentials separately so they survive iOS PWA storage clears
   try { if (state.apiKey)         localStorage.setItem('nourish_apikey',    state.apiKey); } catch(e) {}
   try { if (state.userIdentity) localStorage.setItem('nourish_identity', JSON.stringify(state.userIdentity)); else localStorage.removeItem('nourish_identity'); } catch(e) {}
-  try { if (_supabaseSession)    localStorage.setItem('nourish_supabase_session', JSON.stringify(_supabaseSession)); } catch(e) {}
+  try { if (_supabaseSession) localStorage.setItem('nourish_supabase_session', JSON.stringify(_supabaseSession)); else localStorage.removeItem('nourish_supabase_session'); } catch(e) {}
   try {
     localStorage.setItem('nourish_recipe_cache', JSON.stringify(recipeCache));
     localStorage.setItem('nourish_type_cache',   JSON.stringify(typeCache));
@@ -4040,7 +4040,8 @@ async function callGemini(prompt, retries = 1) {
 
 function renderIdentityUI() {
   const identity = state.userIdentity;
-  const isCloud  = isSupabaseAuthenticated();
+  const hasSession = !!_supabaseSession; // session exists (even if token expired — will refresh)
+  const isSignedIn = hasSession && identity && identity.name;
   const signedin = document.getElementById('identity-signed-in');
   const setup    = document.getElementById('identity-setup');
   const chip     = document.getElementById('home-user-chip');
@@ -4048,7 +4049,7 @@ function renderIdentityUI() {
   const label    = document.getElementById('profile-signed-in-label');
   const syncEl   = document.getElementById('cloud-sync-status');
 
-  if (identity && identity.name) {
+  if (isSignedIn) {
     if (signedin) signedin.style.display = 'block';
     if (setup)    setup.style.display    = 'none';
     const nameDisplay = document.getElementById('identity-name');
@@ -4058,7 +4059,7 @@ function renderIdentityUI() {
     if (chip)  { chip.style.display = 'inline-flex'; }
     if (nameEl) nameEl.textContent = identity.name;
     if (label)  label.textContent  = 'Signed in as ' + identity.name;
-    if (syncEl) syncEl.textContent = isCloud ? 'Cloud sync active' : 'Signed in on this device';
+    if (syncEl) syncEl.textContent = isSupabaseAuthenticated() ? 'Cloud sync active' : 'Reconnecting...';
   } else {
     if (signedin) signedin.style.display = 'none';
     if (setup)    setup.style.display    = 'block';
@@ -4269,13 +4270,6 @@ async function importCredentials(input) {
 load();
 loadCaches();
 loadSupabaseSession();
-// Fix stale state: if userIdentity exists but session was fully removed AND
-// there's no session in localStorage at all, user signed out but identity wasn't cleaned up
-if (state.userIdentity && !_supabaseSession && !localStorage.getItem('nourish_supabase_session')) {
-  state.userIdentity = null;
-  localStorage.removeItem('nourish_identity');
-  save();
-}
 setUnit(state.unit || 'kg');
 renderIdentityUI();
 renderHome();
