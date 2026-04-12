@@ -2342,20 +2342,21 @@ async function pullFromSupabase() {
     }
     const remote = rows[0].data;
     _isSyncingFromRemote = true;
-    const localApiKey = state.apiKey; // preserve
+    const localApiKey = state.apiKey; // preserve — never overwrite from remote
     if (remote.state) {
       const rs = remote.state;
-      if (rs.profile)        state.profile        = rs.profile;
-      if (rs.mealPlan)       state.mealPlan       = rs.mealPlan;
-      if (rs.weightLog)      state.weightLog      = rs.weightLog;
-      if (rs.eatenMeals)     state.eatenMeals     = rs.eatenMeals;
-      if (rs.purchasedItems) state.purchasedItems  = rs.purchasedItems;
-      if (rs.foodLog)        state.foodLog         = rs.foodLog;
-      if (rs.unit)           state.unit            = rs.unit;
-      if (rs.userIdentity)   state.userIdentity    = rs.userIdentity;
-      if (rs.recipeRatings)  state.recipeRatings   = rs.recipeRatings;
+      // Merge each field — use remote value if it exists (even if empty array/object)
+      if ('profile'        in rs) state.profile        = rs.profile;
+      if ('mealPlan'       in rs) state.mealPlan       = rs.mealPlan;
+      if ('weightLog'      in rs) state.weightLog      = rs.weightLog;
+      if ('eatenMeals'     in rs) state.eatenMeals     = rs.eatenMeals;
+      if ('purchasedItems' in rs) state.purchasedItems  = rs.purchasedItems;
+      if ('foodLog'        in rs) state.foodLog         = rs.foodLog;
+      if ('unit'           in rs) state.unit            = rs.unit;
+      if ('userIdentity'   in rs) state.userIdentity    = rs.userIdentity;
+      if ('recipeRatings'  in rs) state.recipeRatings   = rs.recipeRatings;
     }
-    state.apiKey = localApiKey; // never overwrite from remote
+    state.apiKey = localApiKey;
     if (remote.recipeCache) recipeCache = remote.recipeCache;
     if (remote.typeCache)   typeCache   = { Breakfast:[], Lunch:[], Dinner:[], Snack:[], ...remote.typeCache };
     save();
@@ -4098,6 +4099,8 @@ async function handleSignIn() {
   try {
     await supabaseSignIn(name, pw);
     await pullFromSupabase();
+    // After pull, push local data to ensure anything added before auth gets synced
+    await pushToSupabase();
     renderIdentityUI();
     renderHome();
     goTo('home');
