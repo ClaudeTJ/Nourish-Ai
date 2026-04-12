@@ -3991,26 +3991,35 @@ function deleteLogEntry(id) {
   renderLogPage();
   showToast('Entry removed ✓');
 }
-async function callGemini(prompt) {
-  const resp = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${state.apiKey}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.8, maxOutputTokens: 65536 }
-      })
+async function callGemini(prompt, retries = 1) {
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      const resp = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${state.apiKey}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: { temperature: 0.8, maxOutputTokens: 65536 }
+          })
+        }
+      );
+      if (!resp.ok) { const e = await resp.json(); throw new Error(e.error?.message || 'API error'); }
+      const data = await resp.json();
+      const finish = data.candidates?.[0]?.finishReason;
+      if (finish === 'MAX_TOKENS') throw new Error('Response too long — try again');
+      const parts = data.candidates?.[0]?.content?.parts || [];
+      const text = parts.map(p => p.text || '').join('').trim();
+      if (!text) throw new Error('Empty response');
+      return text;
+    } catch(e) {
+      const isNetwork = e.name === 'TypeError' || e.message === 'Load failed' || e.message === 'Failed to fetch';
+      if (isNetwork && attempt < retries) continue; // retry once on network failure
+      if (isNetwork) throw new Error('Network error — check your connection and try again');
+      throw e;
     }
-  );
-  if (!resp.ok) { const e = await resp.json(); throw new Error(e.error?.message || 'API error'); }
-  const data = await resp.json();
-  const finish = data.candidates?.[0]?.finishReason;
-  if (finish === 'MAX_TOKENS') throw new Error('Response too long — try again');
-  const parts = data.candidates?.[0]?.content?.parts || [];
-  const text = parts.map(p => p.text || '').join('').trim();
-  if (!text) throw new Error('Empty response');
-  return text;
+  }
 }
 
 // ── USER IDENTITY & CREDENTIALS ──────────────────────────────
