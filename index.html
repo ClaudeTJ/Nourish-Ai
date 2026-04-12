@@ -2721,7 +2721,10 @@ All 7 days: Monday through Sunday. Varied, practical meals. totalCalories = sum 
     const clean = text.slice(start, end + 1);
     const plan = JSON.parse(clean);
 
+    // Detach old food log entries from plan keys so they aren't affected by new plan
+    state.foodLog.forEach(e => { if (e.source) delete e.source; });
     state.mealPlan = plan;
+    state.eatenMeals = {}; // clear eaten state — new plan starts fresh
     save();
     renderDays(plan);
     showToast('7-day plan generated ✓');
