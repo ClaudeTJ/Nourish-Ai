@@ -2379,7 +2379,7 @@ function save() {
   localStorage.setItem('nourish_state', JSON.stringify(state));
   // Persist critical credentials separately so they survive iOS PWA storage clears
   try { if (state.apiKey)         localStorage.setItem('nourish_apikey',    state.apiKey); } catch(e) {}
-  try { if (state.userIdentity)   localStorage.setItem('nourish_identity',  JSON.stringify(state.userIdentity)); } catch(e) {}
+  try { if (state.userIdentity) localStorage.setItem('nourish_identity', JSON.stringify(state.userIdentity)); else localStorage.removeItem('nourish_identity'); } catch(e) {}
   try { if (_supabaseSession)    localStorage.setItem('nourish_supabase_session', JSON.stringify(_supabaseSession)); } catch(e) {}
   try {
     localStorage.setItem('nourish_recipe_cache', JSON.stringify(recipeCache));
@@ -4116,7 +4116,10 @@ async function handleSignIn() {
 async function handleSignOut() {
   if (!confirm('Sign out? Your data stays on this device.')) return;
   await supabaseSignOut();
+  // Clear separate identity key so reload doesn't restore signed-in state
+  localStorage.removeItem('nourish_identity');
   renderIdentityUI();
+  renderHome();
   showToast('Signed out');
 }
 
