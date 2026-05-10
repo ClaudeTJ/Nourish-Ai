@@ -2150,14 +2150,23 @@ function getSupabaseHeaders() {
 }
 
 async function supabaseAuth(endpoint, body) {
-  const resp = await fetch(SUPABASE_URL + '/auth/v1/' + endpoint, {
-    method: 'POST',
-    headers: { 'apikey': SUPABASE_ANON_KEY, 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
-  });
-  const data = await resp.json();
-  if (!resp.ok) throw new Error(data.error_description || data.msg || data.message || 'Auth failed');
-  return data;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const resp = await fetch(SUPABASE_URL + '/auth/v1/' + endpoint, {
+        method: 'POST',
+        headers: { 'apikey': SUPABASE_ANON_KEY, 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      const data = await resp.json();
+      if (!resp.ok) throw new Error(data.error_description || data.msg || data.message || 'Auth failed');
+      return data;
+    } catch(e) {
+      const isNetwork = e.name === 'TypeError' || e.message === 'Load failed' || e.message === 'Failed to fetch';
+      if (isNetwork && attempt < 2) { await new Promise(r => setTimeout(r, 2000)); continue; }
+      if (isNetwork) throw new Error('Network error — check your connection and try again');
+      throw e;
+    }
+  }
 }
 
 async function supabaseSignUp(name, password) {
@@ -2286,15 +2295,23 @@ function debouncedSupabasePush() {
 }
 
 async function supabaseFetchWithRetry(url, options) {
-  let resp = await fetch(url, options);
-  if (resp.status === 401 && _supabaseSession) {
-    const refreshed = await supabaseRefreshToken();
-    if (refreshed) {
-      options.headers = getSupabaseHeaders();
-      resp = await fetch(url, options);
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      let resp = await fetch(url, options);
+      if (resp.status === 401 && _supabaseSession) {
+        const refreshed = await supabaseRefreshToken();
+        if (refreshed) {
+          options.headers = getSupabaseHeaders();
+          resp = await fetch(url, options);
+        }
+      }
+      return resp;
+    } catch(e) {
+      const isNetwork = e.name === 'TypeError' || e.message === 'Load failed' || e.message === 'Failed to fetch';
+      if (isNetwork && attempt < 2) { await new Promise(r => setTimeout(r, 2000)); continue; }
+      throw e;
     }
   }
-  return resp;
 }
 
 async function pushToSupabase() {
