@@ -3712,19 +3712,18 @@ function generateShoppingList(numDays) {
 
   listEl.innerHTML = '<div class="loading-state"><div class="spinner"></div><p>Building your shopping list…</p></div>';
 
-  const prompt = `You are a nutritionist. Generate a consolidated grocery shopping list for these meals:
+  const prompt = `Generate a grocery shopping list for these ${mealNames.length} meals:
 ${mealNames.map((n,i) => `${i+1}. ${n}`).join('\n')}
 
-Consolidate duplicate ingredients. Group by category.
+Rules:
+- Consolidate duplicate ingredients across all meals
+- Use SPECIFIC quantities in grams, ml, or exact counts (e.g. "600g chicken breast", "400ml coconut milk", "6 eggs", "3 medium bananas")
+- NEVER use vague amounts like "1 tub", "1 bag", "1 pack", "1 box" — always specify weight or count
+- Group by category
+
 Return ONLY valid JSON, no markdown:
-{
-  "categories": [
-    { "name": "Meat & Fish", "items": ["500g chicken breast", "2 salmon fillets"] },
-    { "name": "Vegetables", "items": ["1 bag spinach", "3 bell peppers"] }
-  ]
-}
-Categories should be: Meat & Fish, Dairy & Eggs, Vegetables, Fruit, Grains & Carbs, Pantry & Condiments, Other.
-Only include categories that have items.`;
+{"categories":[{"name":"Meat & Fish","items":["600g chicken breast","250g salmon fillet"]},{"name":"Vegetables","items":["300g spinach","3 bell peppers"]}]}
+Categories: Meat & Fish, Dairy & Eggs, Vegetables, Fruit, Grains & Carbs, Pantry & Condiments, Other. Only include categories with items.`;
 
   callGemini(prompt).then(text => {
     const start = text.indexOf('{'); const end = text.lastIndexOf('}');
